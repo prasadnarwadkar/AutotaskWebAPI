@@ -45,3 +45,7 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+_bin_deployableAssemblies
+packages
+bin
+obj
