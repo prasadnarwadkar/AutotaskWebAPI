@@ -7,7 +7,9 @@ namespace AutotaskWebAPI.Models
 {
     public class Constants
     {
-        public static string API_LOGIN_ID = "5KP3u95bQpv";
-        public static string TRANSACTION_KEY = "346HZ32z3fP4hTG2";
+        // Use your own API login Id and transaction key from
+        // Authorize.NET.
+        public static string API_LOGIN_ID = "";
+        public static string TRANSACTION_KEY = "";
     }
 }
