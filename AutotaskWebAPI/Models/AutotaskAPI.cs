@@ -1,16 +1,10 @@
-﻿using System.Linq;
-using AutotaskWebAPI.Autotask.Net.Webservices;
+﻿using AutotaskWebAPI.Autotask.Net.Webservices;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.Entity;
 using System.Diagnostics;
-using System.IO;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using System.Data.Entity.Validation;
 
 namespace AutotaskWebAPI.Models
 {
