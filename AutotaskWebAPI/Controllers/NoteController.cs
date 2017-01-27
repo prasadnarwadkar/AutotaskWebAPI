@@ -3,10 +3,22 @@ using AutotaskWebAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 
 namespace AutotaskWebAPI.Controllers
 {
+    public class NoteDetails
+    {
+        public long TicketId { get; set; }
+        public long CreatorResourceId { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public long NoteType { get; set; }
+        public long Publish { get; set; }
+    }
+
     public class NoteController : ApiController
     {
         private AutotaskAPI api = null;
@@ -18,20 +30,26 @@ namespace AutotaskWebAPI.Controllers
 
         // GET api/note/GetByTicketId?ticketId={}
         [HttpGet]
-        public List<Autotask.Net.Webservices.TicketNote> GetByTicketId(string ticketId)
+        public List<TicketNote> GetByTicketId(string ticketId)
         {
             return api.GetNoteByTicketId(ticketId);
         }
 
         // GET api/note/GetById?id={}
         [HttpGet]
-        public List<Autotask.Net.Webservices.TicketNote> GetById(string id)
+        public List<TicketNote> GetById(string id)
         {
             return api.GetNoteById(id);
         }
 
+        [HttpGet]
+        public List<TicketNote> GetByLastActivityDate(string lastActivityDate)
+        {
+            return api.GetNoteByLastActivityDate(lastActivityDate);
+        }
+
         [HttpPost]
-        public long Post([FromBody] TicketNote details)
+        public long Post([FromBody] NoteDetails details)
         {
             try
             {
@@ -43,9 +61,9 @@ namespace AutotaskWebAPI.Controllers
                 AutotaskAPI api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"],
                                                             ConfigurationManager.AppSettings["APIPassword"]);
 
-                Autotask.Net.Webservices.TicketNote note = api.CreateTicketNote(Convert.ToInt32(details.TicketID), 
+                TicketNote note = api.CreateTicketNote(Convert.ToInt32(details.TicketId), 
                                             details.Title.ToString(),
-                                            details.Description.ToString(), Convert.ToInt32(details.CreatorResourceID),
+                                            details.Description.ToString(), Convert.ToInt32(details.CreatorResourceId),
                                             Convert.ToInt32(details.NoteType), Convert.ToInt32(details.Publish));
 
                 if (note != null)

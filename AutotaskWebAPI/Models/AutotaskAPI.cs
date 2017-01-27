@@ -8,32 +8,22 @@ using System.Text;
 
 namespace AutotaskWebAPI.Models
 {
-    public class ClientPortalDisplayTicket
+    public class TicketDetails
     {
-        // AEMAlertID
-        // AllocationCodeID
-        // AssignedResourceID
-        // AssignedResourceRoleID
-        // ContractID
-        // Priority
-        // Source
-        public string Number { get; set; }
-        public string AccountID { get; set; }
+        public long AccountID { get; set; }
         public string Title { get; set; }
-        public string AccountName { get; set; }
-        public string ID { get;  set; }
+        public long id { get;  set; }
         public string Description { get;  set; }
-        public string RequestType { get;  set; }
-        public string Status { get;  set; }
-        public string TicketContactName { get;  set; }
-        public string CreateDate { get; set; }
+        public int Status { get;  set; }
         public string DueDateTime { get; set; }
-        public string Resolution { get; set; }
-        public string CreatorResourceId { get; set; }
+        public long AssignedResourceID  { get; set; }
+        public long AssignedResourceRoleID { get; set; }
+        public long CreatorResourceID { get; set; }
+        public int Priority { get; set; }
     }
 
     /// <summary>
-    /// Public Class DbApi.
+    /// Public Class AutotaskAPI.
     /// </summary>
     public class AutotaskAPI
 	{
@@ -42,7 +32,7 @@ namespace AutotaskWebAPI.Models
         private string _webServiceBaseAPIURL = ConfigurationManager.AppSettings["APIServiceURLZoneInfo"];
         
 		/// <summary>
-		/// Public Constuctor for API Tests.
+		/// Public Constuctor.
 		/// </summary>
 		public AutotaskAPI(string user, string pass)
 		{
@@ -106,38 +96,7 @@ namespace AutotaskWebAPI.Models
             return string.Empty;
          }
 
-        
-
-        public List<NotificationHistory> FindHistoryOfTicketsById(string ticketId)
-        {
-            List<NotificationHistory> ticketList = new List<NotificationHistory>();
-
-            if (ticketId.Length > 0)
-            {
-                StringBuilder strResource = new StringBuilder();
-                strResource.Append("<queryxml version=\"1.0\">");
-                strResource.Append("<entity>NotificationHistory</entity>");
-                strResource.Append("<query>");
-                strResource.Append("<field>TicketID<expression op=\"equals\">");
-                strResource.Append(ticketId);
-                strResource.Append("</expression></field>");
-                strResource.Append("</query></queryxml>");
-
-                ATWSResponse respResource = this._atwsServices.query(strResource.ToString());
-
-                if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
-                {
-                    foreach (Entity entity in respResource.EntityResults)
-                    {
-                        ticketList.Add((NotificationHistory)entity);
-                    }
-                }
-            }
-
-            return ticketList;
-        }
-
-        public Autotask.Net.Webservices.Invoice FindInvoice(string invoiceId)
+        public Autotask.Net.Webservices.Invoice FindInvoiceById(string invoiceId)
         {
             Autotask.Net.Webservices.Invoice invoice = null;
 
@@ -168,12 +127,10 @@ namespace AutotaskWebAPI.Models
         {
             Autotask.Net.Webservices.Invoice retInvoice = null;
 
-            retInvoice = FindInvoice(invoiceId);
+            retInvoice = FindInvoiceById(invoiceId);
 
             retInvoice.PaidDate = DateTime.Now;
-
-
-
+            
             Entity[] entityArray = new Entity[] { retInvoice };
             ATWSResponse respUpdate = this._atwsServices.update(entityArray);
 
@@ -189,14 +146,14 @@ namespace AutotaskWebAPI.Models
             return true;
         }
 
-        public Autotask.Net.Webservices.TicketNote CreateTicketNote(long ticketId, string title,
+        public TicketNote CreateTicketNote(long ticketId, string title,
                                         string description, long creatorResourceID,
                                         long noteType, long publish)
         {
-            Autotask.Net.Webservices.TicketNote retNote = null;
+            TicketNote retNote = null;
 
             // Time to create the Note.
-            Autotask.Net.Webservices.TicketNote noteAct = new Autotask.Net.Webservices.TicketNote();
+            TicketNote noteAct = new TicketNote();
 
             noteAct.TicketID = ticketId;
             noteAct.CreatorResourceID = creatorResourceID;
@@ -210,7 +167,7 @@ namespace AutotaskWebAPI.Models
             ATWSResponse respNote = this._atwsServices.create(entNote);
             if (respNote.ReturnCode > 0 && respNote.EntityResults.Length > 0)
             {
-                retNote = (Autotask.Net.Webservices.TicketNote)respNote.EntityResults[0];
+                retNote = (TicketNote)respNote.EntityResults[0];
             }
             else
             {
@@ -223,10 +180,54 @@ namespace AutotaskWebAPI.Models
             return retNote;
         }
 
+        public Ticket CreateTicket(long accountId, string dueDateTime,
+                                                            string title,
+                                        string description, long creatorResourceID,
+                                        long priority, long status,
+                                        long assignedResourceID,
+                                        long assignedResourceRoleID, out string error)
+        {
+            error = string.Empty;
+
+            // Time to create the Ticket.
+            Ticket ticket = new Autotask.Net.Webservices.Ticket();
+
+            // Bare-minimum number of fields needed to create the ticket.
+            ticket.AccountID = accountId;
+            ticket.CreatorResourceID = creatorResourceID;
+            ticket.Title = title;
+            ticket.Description = description;
+            ticket.Status = status;
+            ticket.Priority = priority;
+            ticket.AssignedResourceID = assignedResourceID;
+            ticket.AssignedResourceRoleID = assignedResourceRoleID;
+            ticket.DueDateTime = Convert.ToDateTime(dueDateTime);
+
+            Entity[] entityToCreate = new Entity[] { ticket };
+
+            ATWSResponse response = this._atwsServices.create(entityToCreate);
+
+            if (response.ReturnCode > 0 && response.EntityResults.Length > 0)
+            {
+                return (Ticket)response.EntityResults[0];
+            }
+            else
+            {
+                if (response != null && response.Errors != null 
+                    && response.Errors.Length > 0)
+                {
+                    error = response.Errors[0].Message;
+                    return null;
+                }
+            }
+
+            return null;
+        }
+
         /// <summary>
-        /// Get account contact id.
+        /// Get client portal user contact id.
         /// </summary>
-        /// <param name="email">Client Portal username.</param>
+        /// <param name="email">Client Portal username/email.</param>
         /// <returns></returns>
         public string FindClientPortalUserContactIdByEmail(string email)
         {
@@ -286,9 +287,44 @@ namespace AutotaskWebAPI.Models
             return null;
         }
 
-        public List<Autotask.Net.Webservices.TicketNote> GetNoteByTicketId(string ticketId)
+        public List<Ticket> GetTicketByAccountId(string accountId, out string errorMsg)
         {
-            List<Autotask.Net.Webservices.TicketNote> list = new List<Autotask.Net.Webservices.TicketNote>();
+            List<Ticket> list = new List<Ticket>();
+
+            string ret = string.Empty;
+            errorMsg = string.Empty;
+
+            // Query
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>Ticket</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<field>AccountID<expression op=\"equals\">");
+            strResource.Append(accountId);
+            strResource.Append("</expression></field>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = this._atwsServices.query(strResource.ToString());
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+            {
+                foreach (Entity entity in respResource.EntityResults)
+                {
+                    list.Add((Ticket)entity);
+                }
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
+            }
+
+            return list;
+        }
+
+        public List<TicketNote> GetNoteByTicketId(string ticketId)
+        {
+            List<TicketNote> list = new List<TicketNote>();
 
             string ret = string.Empty;
 
@@ -308,16 +344,16 @@ namespace AutotaskWebAPI.Models
             {
                 foreach (Entity entity in respResource.EntityResults)
                 {
-                    list.Add((Autotask.Net.Webservices.TicketNote)entity);
+                    list.Add((TicketNote)entity);
                 }
             }
 
             return list;
         }
 
-        public List<Autotask.Net.Webservices.TicketNote> GetNoteById(string id)
+        public List<TicketNote> GetNoteById(string id)
         {
-            List<Autotask.Net.Webservices.TicketNote> list = new List<Autotask.Net.Webservices.TicketNote>();
+            List<TicketNote> list = new List<TicketNote>();
 
             string ret = string.Empty;
 
@@ -337,8 +373,43 @@ namespace AutotaskWebAPI.Models
             {
                 foreach (Entity entity in respResource.EntityResults)
                 {
-                    list.Add((Autotask.Net.Webservices.TicketNote)entity);
+                    list.Add((TicketNote)entity);
                 }
+            }
+
+            return list;
+        }
+
+        public List<Ticket> GetTicketById(string id, out string errorMsg)
+        {
+            List<Ticket> list = new List<Ticket>();
+
+            string ret = string.Empty;
+            errorMsg = string.Empty;
+
+            // Query
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>Ticket</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<field>id<expression op=\"equals\">");
+            strResource.Append(id);
+            strResource.Append("</expression></field>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = this._atwsServices.query(strResource.ToString());
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+            {
+                foreach (Entity entity in respResource.EntityResults)
+                {
+                    list.Add((Ticket)entity);
+                }
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
             }
 
             return list;
@@ -377,9 +448,68 @@ namespace AutotaskWebAPI.Models
             return this._atwsServices.CreateAttachment(attachment);
         }
 
-        internal List<InvoiceDto> FindAllInvoicesByCreatorResourceId(int creatorResourceId, string searchString, int daysEarlier)
+        public List<TicketNote> GetNoteByLastActivityDate(string lastActivityDate)
         {
-            throw new NotImplementedException();
+            List<TicketNote> list = new List<TicketNote>();
+
+            string ret = string.Empty;
+
+            // Query
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>TicketNote</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<field>LastActivityDate<expression op=\"greaterthan\">");
+            strResource.Append(lastActivityDate);
+            strResource.Append("</expression></field>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = this._atwsServices.query(strResource.ToString());
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+            {
+                foreach (Entity entity in respResource.EntityResults)
+                {
+                    list.Add((TicketNote)entity);
+                }
+            }
+
+            return list;
+        }
+
+        public List<Ticket> GetTicketByLastActivityDate(string lastActivityDate, out string errorMsg)
+        {
+            List<Ticket> list = new List<Ticket>();
+
+            string ret = string.Empty;
+            errorMsg = string.Empty;
+
+            // Query
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>Ticket</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<field>LastActivityDate<expression op=\"greaterthan\">");
+            strResource.Append(lastActivityDate);
+            strResource.Append("</expression></field>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = this._atwsServices.query(strResource.ToString());
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+            {
+                foreach (Entity entity in respResource.EntityResults)
+                {
+                    list.Add((Ticket)entity);
+                }
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
+            }
+
+            return list;
         }
     }
 }
