@@ -14,14 +14,17 @@ Two prominent namespaces used are
 AutotaskWebAPI.Autotask.Net.Webservices;
 System.Web.Http;
 ```
-Namespace ```AutotaskWebAPI.Autotask.Net.Webservices``` refers to [AT Web Services](https://www.autotask.net/help/Content/AdminSetup/2ExtensionsIntegrations/APIs/WebServicesAPI.htm). Please check the VS solutions demonstrating .NET code to query SOAP based AT API.
+Namespace `AutotaskWebAPI.Autotask.Net.Webservices` refers to [AT Web Services](https://www.autotask.net/help/Content/AdminSetup/2ExtensionsIntegrations/APIs/WebServicesAPI.htm). Please check the VS solutions demonstrating .NET code to query SOAP based AT API.
+
 ## Configuration
-  All you need is two keys in appSettings (web.config) with values as per your Autotask Account.
-  ```
-  <add key="APIUsername" value="" />
-  <add key="APIPassword" value="" />
-  ```
+All you need is two keys in appSettings (web.config) with values as per your Autotask Account.
+```
+<add key="APIUsername" value="" />
+<add key="APIPassword" value="" />
+```
+
 ## Querying Ticket notes in Autotask
+
 Base url: http://localhost:{port number} or if you deploy it to IIS, it is http://localhost/{appname}
 You can query ticket notes by note id. This query returns a note matching the given id.
 
@@ -32,6 +35,7 @@ You can also query ticket notes by ticket id. This query returns all notes added
 HTTP GET {base url}/api/note/GetByTicketId?ticketId={ticket_id}
 
 ## Posting a ticket note for a ticket is simpler.
+
 HTTP POST to {base url}/api/note/post with the following body. Of course, the content type is application/json.
 ```
 {"TicketId":"", "CreatorResourceId":"", "Title":"test note", "Description":"Description" ,"NoteType":3, "Publish":1}
