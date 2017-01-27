@@ -9,15 +9,13 @@ Your clients can log on to your dashboard using your own login mechanism and the
 This Web API is in development and will be updated regularly. However, at any given point in time, read me will be updated to reflect changes done. At present, it supports Tickets, Accounts, and Ticket Notes.
 
 ## Namespaces used
-Two prominent namespaces used are
-```
-AutotaskWebAPI.Autotask.Net.Webservices;
-System.Web.Http;
-```
+Two prominent namespaces used are `AutotaskWebAPI.Autotask.Net.Webservices` and `System.Web.Http`.
+
 Namespace `AutotaskWebAPI.Autotask.Net.Webservices` refers to [AT Web Services](https://www.autotask.net/help/Content/AdminSetup/2ExtensionsIntegrations/APIs/WebServicesAPI.htm). Please check the VS solutions demonstrating .NET code to query SOAP based AT API.
 
 ## Configuration
 All you need is two keys in appSettings (web.config) with values as per your Autotask Account.
+
 ```
 <add key="APIUsername" value="" />
 <add key="APIPassword" value="" />
@@ -37,20 +35,23 @@ HTTP GET {base url}/api/note/GetByTicketId?ticketId={ticket_id}
 ## Posting a ticket note for a ticket is simpler.
 
 HTTP POST to {base url}/api/note/post with the following body. Of course, the content type is application/json.
+
 ```
 {"TicketId":"", "CreatorResourceId":"", "Title":"test note", "Description":"Description" ,"NoteType":3, "Publish":1}
 ```
--```CreatorResourceId```is creator resource id which is resource id of the note creator.
 
--```TicketId``` is the id of the ticket to which new note is being added.
+-`CreatorResourceId` is creator resource id which is resource id of the note creator.
 
--```Title``` is note title.
+-`TicketId` is the id of the ticket to which new note is being added.
 
--```Description``` is note description.
+-`Title` is note title.
 
--```NoteType``` is note type. e.g for a user note it is 3. Please refer to [AT Web Services](https://www.autotask.net/help/Content/AdminSetup/2ExtensionsIntegrations/APIs/WebServicesAPI.htm).
+-`Description` is note description.
 
--```Publish``` is 1 to publish.
+-`NoteType` is note type. e.g for a user note it is 3. Please refer to [AT Web Services](https://www.autotask.net/help/Content/AdminSetup/2ExtensionsIntegrations/APIs/WebServicesAPI.htm).
+
+-`Publish` is 1 to publish.
+
 
 More examples of usage will appear here soon.
 
