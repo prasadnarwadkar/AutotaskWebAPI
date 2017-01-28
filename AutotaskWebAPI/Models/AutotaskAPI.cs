@@ -322,11 +322,18 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
-        public List<TicketNote> GetNoteByTicketId(string ticketId)
+        /// <summary>
+        /// Get a note by its ticket id.
+        /// </summary>
+        /// <param name="ticketId"></param>
+        /// <param name="errorMsg">Out parameter to set error from AT SOAP API.</param>
+        /// <returns></returns>
+        public List<TicketNote> GetNoteByTicketId(string ticketId, out string errorMsg)
         {
             List<TicketNote> list = new List<TicketNote>();
 
             string ret = string.Empty;
+            errorMsg = string.Empty;
 
             // Query
             StringBuilder strResource = new StringBuilder();
@@ -347,15 +354,21 @@ namespace AutotaskWebAPI.Models
                     list.Add((TicketNote)entity);
                 }
             }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
+            }
 
             return list;
         }
 
-        public List<TicketNote> GetNoteById(string id)
+        public List<TicketNote> GetNoteById(string id, out string errorMsg)
         {
             List<TicketNote> list = new List<TicketNote>();
 
             string ret = string.Empty;
+            errorMsg = string.Empty;
 
             // Query
             StringBuilder strResource = new StringBuilder();
@@ -375,6 +388,11 @@ namespace AutotaskWebAPI.Models
                 {
                     list.Add((TicketNote)entity);
                 }
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
             }
 
             return list;
@@ -448,11 +466,13 @@ namespace AutotaskWebAPI.Models
             return this._atwsServices.CreateAttachment(attachment);
         }
 
-        public List<TicketNote> GetNoteByLastActivityDate(string lastActivityDate)
+        public List<TicketNote> GetNoteByLastActivityDate(string lastActivityDate,
+                                                          out string errorMsg)
         {
             List<TicketNote> list = new List<TicketNote>();
 
             string ret = string.Empty;
+            errorMsg = string.Empty;
 
             // Query
             StringBuilder strResource = new StringBuilder();
@@ -472,6 +492,11 @@ namespace AutotaskWebAPI.Models
                 {
                     list.Add((TicketNote)entity);
                 }
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
             }
 
             return list;

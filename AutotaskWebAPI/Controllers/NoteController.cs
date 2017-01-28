@@ -30,22 +30,57 @@ namespace AutotaskWebAPI.Controllers
 
         // GET api/note/GetByTicketId?ticketId={}
         [HttpGet]
-        public List<TicketNote> GetByTicketId(string ticketId)
+        public HttpResponseMessage GetByTicketId(string ticketId)
         {
-            return api.GetNoteByTicketId(ticketId);
+            string errorMsg = string.Empty;
+
+            var result = api.GetNoteByTicketId(ticketId, out errorMsg);
+
+            if (errorMsg.Length > 0)
+            {
+                // There is an error.
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
         }
 
         // GET api/note/GetById?id={}
         [HttpGet]
-        public List<TicketNote> GetById(string id)
+        public HttpResponseMessage GetById(string id)
         {
-            return api.GetNoteById(id);
+            string errorMsg = string.Empty;
+            var result = api.GetNoteById(id, out errorMsg);
+
+            if (errorMsg.Length > 0)
+            {
+                // There is an error.
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
         }
 
         [HttpGet]
-        public List<TicketNote> GetByLastActivityDate(string lastActivityDate)
+        public HttpResponseMessage GetByLastActivityDate(string lastActivityDate)
         {
-            return api.GetNoteByLastActivityDate(lastActivityDate);
+            string errorMsg = string.Empty;
+
+            var result = api.GetNoteByLastActivityDate(lastActivityDate, out errorMsg);
+
+            if (errorMsg.Length > 0)
+            {
+                // There is an error.
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
         }
 
         [HttpPost]
