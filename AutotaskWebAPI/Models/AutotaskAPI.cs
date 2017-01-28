@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Net;
 using System.Text;
+using System.Web.Services.Protocols;
 
 namespace AutotaskWebAPI.Models
 {
@@ -68,6 +69,213 @@ namespace AutotaskWebAPI.Models
             {
                 throw new Exception("Error with getZoneInfo()- error: " + ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Get pick list label given its value.
+        /// </summary>
+        /// <param name="entityType">e.g. Account</param>
+        /// <param name="fieldName">e.g. AccountType which follows a picklist.</param>
+        /// <param name="valueToSearch">e.g. 1 which should return label "Customer".</param>
+        /// <returns>Label matching the passed value.</returns>
+        public string GetPickListLabel(string entityType, string fieldName,
+                                        string valueToSearch, out string errorMsg)
+        {
+            errorMsg = string.Empty;
+
+            try
+            {
+                var fields = this._atwsServices.GetFieldInfo(entityType);
+
+                return AutotaskAPI.PickListLabelFromValue(fields, fieldName, valueToSearch);
+            }
+
+            catch (SoapException ex)
+            {
+                errorMsg = ex.Message;
+
+                // This is sort of fatal exception. The entity name or field name or 
+                // both are incorrect and might not exist.
+                return string.Empty;
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+
+                // This is sort of fatal exception. The entity name or field name or 
+                // both are incorrect and might not exist.
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Get account given its name. Uses Like search.
+        /// </summary>
+        /// <param name="accountName"></param>
+        /// <param name="errorMsg"></param>
+        /// <returns></returns>
+        public List<Account> GetAccountByName(string accountName, out string errorMsg)
+        {
+            List<Account> list = new List<Account>();
+
+            string ret = string.Empty;
+            errorMsg = string.Empty;
+
+            // Query
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>Account</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<field>AccountName<expression op=\"Like\">");
+            strResource.Append(accountName);
+            strResource.Append("</expression></field>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = this._atwsServices.query(strResource.ToString());
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+            {
+                foreach (Entity entity in respResource.EntityResults)
+                {
+                    list.Add((Account)entity);
+                }
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// Get account given its number.
+        /// </summary>
+        /// <param name="num">Account Number</param>
+        /// <param name="errorMsg">Error message</param>
+        /// <returns>List of accounts (actually one account matching the passed number)</returns>
+        public List<Account> GetAccountByNumber(string num, out string errorMsg)
+        {
+            List<Account> list = new List<Account>();
+
+            string ret = string.Empty;
+            errorMsg = string.Empty;
+
+            // Query
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>Account</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<field>AccountNumber<expression op=\"equals\">");
+            strResource.Append(num);
+            strResource.Append("</expression></field>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = this._atwsServices.query(strResource.ToString());
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+            {
+                foreach (Entity entity in respResource.EntityResults)
+                {
+                    list.Add((Account)entity);
+                }
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// Get account by id
+        /// </summary>
+        /// <param name="num"></param>
+        /// <param name="errorMsg"></param>
+        /// <returns></returns>
+        public List<Account> GetAccountById(string id, out string errorMsg)
+        {
+            List<Account> list = new List<Account>();
+
+            string ret = string.Empty;
+            errorMsg = string.Empty;
+
+            // Query
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>Account</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<field>id<expression op=\"equals\">");
+            strResource.Append(id);
+            strResource.Append("</expression></field>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = this._atwsServices.query(strResource.ToString());
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+            {
+                foreach (Entity entity in respResource.EntityResults)
+                {
+                    list.Add((Account)entity);
+                }
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// Used to find a specific Field in an array based on the name
+        /// </summary>
+        /// <param name="field">array containing Fields to search from</param>
+        /// <param name="name">contains the name of the Field to search for</param>
+        /// <returns>Field match</returns>
+        protected static Field FindField(Field[] field, string name)
+        {
+            return Array.Find(field, element => element.Name == name);
+        }
+
+        /// <summary>
+        /// Returns the label of a picklist when the value is sent
+        /// </summary>
+        /// <param name="fields">entity fields</param>
+        /// <param name="strField">picklick to choose from</param>
+        /// <param name="strPickListValue">value ("id") of picklist</param>
+        /// <returns>picklist label</returns>
+        protected static string PickListLabelFromValue(Field[] fields, string strField, string strPickListValue)
+        {
+            string strRet = string.Empty;
+
+            Field fldFieldToFind = FindField(fields, strField);
+            if (fldFieldToFind == null)
+            {
+                throw new Exception("Could not get the " + strField + " field from the collection");
+            }
+            PickListValue plvValueToFind = FindPickListValue(fldFieldToFind.PicklistValues, strPickListValue);
+            if (plvValueToFind != null)
+            {
+                strRet = plvValueToFind.Label;
+            }
+
+            return strRet;
+        }
+
+        /// <summary>
+        /// Used to find a specific value in a picklist
+        /// </summary>
+        /// <param name="pickListValue">array of PickListsValues to search from</param>
+        /// <param name="valueID">contains the value of the PickListValue to search for</param>
+        /// <returns>PickListValue match</returns>
+        protected static PickListValue FindPickListValue(PickListValue[] pickListValue, string valueID)
+        {
+            return Array.Find(pickListValue, element => element.Value == valueID);
         }
 
         public string GetCountryDisplayNameById(int countryId)
