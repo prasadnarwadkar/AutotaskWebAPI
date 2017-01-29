@@ -21,6 +21,7 @@ All you need is two keys in appSettings (web.config) with values as per your Aut
 <add key="APIPassword" value="" />
 ```
 
+
 ## Querying Tickets by account id and status
 A ticket is always associated with an account. It makes sense to query tickets by account id and to narrow down search, it helps to filter them by status (e.g. Complete, In Progress, Waiting Approval etc.).
 
