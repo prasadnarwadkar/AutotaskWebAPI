@@ -95,6 +95,10 @@ Then for each `AttachmentInfo` object, you would get its id using `AttachmentInf
 
 This will return attachment byte array content which can be consumed at client side.
 
+## About passing dates to the API methods
+
+You might want to get entities by their last activity date or last modified date. When you send a date in such a case, the API methods return entities with last activity date or last modified date which is after the date argument. For example, if you send a date argument such as ‘2016-12-22T00:00:00’ to an API endpoint such as ` {base url}/api/ticket/GetByLastActivityDate?lastActivityDate=2016-12-22T00:00:00`, it returns tickets which have last activity date that is “after” 22nd Dec’16. 
+
 More examples of usage will appear here soon.
 
 # Error handling
