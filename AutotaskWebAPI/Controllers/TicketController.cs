@@ -140,6 +140,52 @@ namespace AutotaskWebAPI.Controllers
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Status or account id passed is not an integer.");
         }
 
+        /// <summary>
+        /// Get tickets by account id and priority. e.g. Priority of 6 means "Normal".
+        /// </summary>
+        /// <param name="accountId">Account id to which the ticket(s) belong.</param>
+        /// <param name="priority">Priority as an integer passed as string. e.g. "6".</param>
+        /// <returns>List of tickets.</returns>
+        // GET api/ticket/GetByAccountIdAndPriority?accountId={}&priority={}
+        [HttpGet]
+        public HttpResponseMessage GetByAccountIdAndPriority(string accountId, string priority)
+        {
+            string errorMsg = string.Empty;
+
+            if (string.IsNullOrEmpty(priority))
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Priority cannot be null or empty. Please pass the priority as an integer. e.g. '6'");
+            }
+
+            int priorityInt = 0;
+
+            bool parseResult = int.TryParse(priority, out priorityInt);
+
+            if (parseResult)
+            {
+                int accountIdInt = -1;
+
+                parseResult = int.TryParse(accountId, out accountIdInt);
+
+                if (parseResult)
+                {
+                    var result = api.GetTicketByAccountIdAndPriority(accountId, priorityInt, out errorMsg);
+
+                    if (errorMsg.Length > 0)
+                    {
+                        // There is an error.
+                        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.OK, result);
+                    }
+                }
+            }
+
+            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Priority or account id passed is not an integer.");
+        }
+
         [HttpPost]
         public HttpResponseMessage PostTicket([FromBody] TicketDetails details)
         {

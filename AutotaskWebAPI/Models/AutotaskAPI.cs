@@ -827,12 +827,12 @@ namespace AutotaskWebAPI.Models
             strResource.Append("<queryxml version=\"1.0\">");
             strResource.Append("<entity>Ticket</entity>");
             strResource.Append("<query>");
-            strResource.Append("<field>Status<expression op=\"Equals\">");
+            strResource.Append("<condition><field>Status<expression op=\"Equals\">");
             strResource.Append(status);
-            strResource.Append("</expression></field>");
-            strResource.Append("<field>AccountID<expression op=\"Equals\">");
+            strResource.Append("</expression></field></condition>");
+            strResource.Append("<condition><field>AccountID<expression op=\"Equals\">");
             strResource.Append(accountId);
-            strResource.Append("</expression></field>");
+            strResource.Append("</expression></field></condition>");
             strResource.Append("</query></queryxml>");
 
             ATWSResponse respResource = this._atwsServices.query(strResource.ToString());
@@ -842,6 +842,403 @@ namespace AutotaskWebAPI.Models
                 foreach (Entity entity in respResource.EntityResults)
                 {
                     list.Add((Ticket)entity);
+                }
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
+            }
+
+            return list;
+        }
+
+        public List<Ticket> GetTicketByAccountIdAndPriority(string accountId, long priority, out string errorMsg)
+        {
+            List<Ticket> list = new List<Ticket>();
+
+            string ret = string.Empty;
+            errorMsg = string.Empty;
+
+            // Query
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>Ticket</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<condition><field>Priority<expression op=\"Equals\">");
+            strResource.Append(priority);
+            strResource.Append("</expression></field></condition>");
+            strResource.Append("<condition><field>AccountID<expression op=\"Equals\">");
+            strResource.Append(accountId);
+            strResource.Append("</expression></field></condition>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = this._atwsServices.query(strResource.ToString());
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+            {
+                foreach (Entity entity in respResource.EntityResults)
+                {
+                    list.Add((Ticket)entity);
+                }
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
+            }
+
+            return list;
+        }
+
+        public List<Resource> GetResourceById(string id, out string errorMsg)
+        {
+            List<Resource> list = new List<Resource>();
+
+            string ret = string.Empty;
+            errorMsg = string.Empty;
+
+            // Query
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>Resource</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<field>id<expression op=\"equals\">");
+            strResource.Append(id);
+            strResource.Append("</expression></field>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = this._atwsServices.query(strResource.ToString());
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+            {
+                foreach (Entity entity in respResource.EntityResults)
+                {
+                    list.Add((Resource)entity);
+                }
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// Get resource by email. Uses exact match to passed email address.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="errorMsg"></param>
+        /// <returns></returns>
+        public List<Resource> GetResourceByEmail(string email, out string errorMsg)
+        {
+            List<Resource> list = new List<Resource>();
+
+            string ret = string.Empty;
+            errorMsg = string.Empty;
+
+            // Query
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>Resource</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<field>Email<expression op=\"equals\">");
+            strResource.Append(email);
+            strResource.Append("</expression></field>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = this._atwsServices.query(strResource.ToString());
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+            {
+                foreach (Entity entity in respResource.EntityResults)
+                {
+                    list.Add((Resource)entity);
+                }
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// Get resource by user name. Uses exact match to passed user name.
+        /// </summary>
+        /// <param name="userName">username</param>
+        /// <param name="errorMsg"></param>
+        /// <returns></returns>
+        public List<Resource> GetResourceByUsername(string userName, out string errorMsg)
+        {
+            List<Resource> list = new List<Resource>();
+
+            string ret = string.Empty;
+            errorMsg = string.Empty;
+
+            // Query
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>Resource</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<field>UserName<expression op=\"equals\">");
+            strResource.Append(userName);
+            strResource.Append("</expression></field>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = this._atwsServices.query(strResource.ToString());
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+            {
+                foreach (Entity entity in respResource.EntityResults)
+                {
+                    list.Add((Resource)entity);
+                }
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
+            }
+
+            return list;
+        }
+
+        public Attachment GetAttachmentById(long id, out string errorMsg)
+        {
+            errorMsg = string.Empty;
+
+            try
+            {
+                var result = this._atwsServices.GetAttachment(id);
+
+                if (result != null)
+                {
+                    return result;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (SoapException ex)
+            {
+                errorMsg = ex.Message;
+                return null;
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get attachment info by parent id. Usually parent is a ticket.
+        /// </summary>
+        /// <param name="parentId"></param>
+        /// <returns></returns>
+        public List<AttachmentInfo> GetAttachmentInfoByParentId(string parentId,
+                                                                out string errorMsg)
+        {
+            List<AttachmentInfo> list = new List<AttachmentInfo>();
+            errorMsg = string.Empty;
+
+            if (parentId.Length > 0)
+            {
+                StringBuilder strResource = new StringBuilder();
+                strResource.Append("<queryxml version=\"1.0\">");
+                strResource.Append("<entity>AttachmentInfo</entity>");
+                strResource.Append("<query>");
+                strResource.Append("<field>ParentID<expression op=\"equals\">");
+                strResource.Append(parentId);
+                strResource.Append("</expression></field>");
+                strResource.Append("</query></queryxml>");
+
+                ATWSResponse respResource = this._atwsServices.query(strResource.ToString());
+
+                if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+                {
+                    foreach (Entity entity in respResource.EntityResults)
+                    {
+                        list.Add((AttachmentInfo)entity);
+                    }
+                }
+                else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+                {
+                    errorMsg = respResource.Errors[0].Message;
+                }
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// Get attachment info by attach date. 
+        /// This is the date at or after which it was attached to its parent.
+        /// </summary>
+        /// <param name="attachDate"></param>
+        /// <returns></returns>
+        public List<AttachmentInfo> GetAttachmentInfoByAttachDate(string attachDate,
+                                                                out string errorMsg)
+        {
+            List<AttachmentInfo> list = new List<AttachmentInfo>();
+            errorMsg = string.Empty;
+
+            if (attachDate.Length > 0)
+            {
+                StringBuilder strResource = new StringBuilder();
+                strResource.Append("<queryxml version=\"1.0\">");
+                strResource.Append("<entity>AttachmentInfo</entity>");
+                strResource.Append("<query>");
+                strResource.Append("<field>AttachDate<expression op=\"GreaterThanorEquals\">");
+                strResource.Append(attachDate);
+                strResource.Append("</expression></field>");
+                strResource.Append("</query></queryxml>");
+
+                ATWSResponse respResource = this._atwsServices.query(strResource.ToString());
+
+                if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+                {
+                    foreach (Entity entity in respResource.EntityResults)
+                    {
+                        list.Add((AttachmentInfo)entity);
+                    }
+                }
+                else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+                {
+                    errorMsg = respResource.Errors[0].Message;
+                }
+            }
+
+            return list;
+        }
+
+        public List<AttachmentInfo> GetAttachmentInfoByParentIdAndAttachDate(string parentId,
+                                                                string attachDate,
+                                                                out string errorMsg)
+        {
+            List<AttachmentInfo> list = new List<AttachmentInfo>();
+            errorMsg = string.Empty;
+
+            if (attachDate.Length > 0)
+            {
+                StringBuilder strResource = new StringBuilder();
+                strResource.Append("<queryxml version=\"1.0\">");
+                strResource.Append("<entity>AttachmentInfo</entity>");
+                strResource.Append("<query>");
+                strResource.Append("<condition><field>ParentID<expression op=\"Equals\">");
+                strResource.Append(parentId);
+                strResource.Append("</expression></field></condition>");
+                strResource.Append("<condition><field>AttachDate<expression op=\"GreaterThanorEquals\">");
+                strResource.Append(attachDate);
+                strResource.Append("</expression></field></condition>");
+                strResource.Append("</query></queryxml>");
+
+                ATWSResponse respResource = this._atwsServices.query(strResource.ToString());
+
+                if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+                {
+                    foreach (Entity entity in respResource.EntityResults)
+                    {
+                        list.Add((AttachmentInfo)entity);
+                    }
+                }
+                else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+                {
+                    errorMsg = respResource.Errors[0].Message;
+                }
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// Get resource by location id. Uses exact match to passed location id.
+        /// Location id is a picklist field.
+        /// </summary>
+        /// <param name="locationId">Location id of the resource</param>
+        /// <param name="errorMsg"></param>
+        /// <returns></returns>
+        public List<Resource> GetResourceByLocationId(string locationId, 
+                                                    out string errorMsg)
+        {
+            List<Resource> list = new List<Resource>();
+
+            string ret = string.Empty;
+            errorMsg = string.Empty;
+
+            // Query
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>Resource</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<field>LocationID<expression op=\"equals\">");
+            strResource.Append(locationId);
+            strResource.Append("</expression></field>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = this._atwsServices.query(strResource.ToString());
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+            {
+                foreach (Entity entity in respResource.EntityResults)
+                {
+                    list.Add((Resource)entity);
+                }
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// Get resource by name. Uses 'like' operator to match passed
+        /// first name and last name.
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="errorMsg"></param>
+        /// <returns></returns>
+        public List<Resource> GetResourceByName(string firstName, string lastName, 
+                                                out string errorMsg)
+        {
+            List<Resource> list = new List<Resource>();
+
+            string ret = string.Empty;
+            errorMsg = string.Empty;
+
+            // Query
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>Resource</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<condition><field>FirstName<expression op=\"Like\">");
+            strResource.Append(firstName);
+            strResource.Append("</expression></field></condition>");
+            strResource.Append("<condition><field>LastName<expression op=\"Like\">");
+            strResource.Append(lastName);
+            strResource.Append("</expression></field></condition>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = this._atwsServices.query(strResource.ToString());
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+            {
+                foreach (Entity entity in respResource.EntityResults)
+                {
+                    list.Add((Resource)entity);
                 }
             }
             else if (respResource.Errors != null &&

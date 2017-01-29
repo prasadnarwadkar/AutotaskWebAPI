@@ -153,7 +153,10 @@
     <Compile Include="App_Start\Startup.auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AttachmentController.cs" />
     <Compile Include="Controllers\PicklistController.cs" />
+    <Compile Include="Controllers\ResourceController.cs" />
+    <Compile Include="Models\ResourceDetails.cs" />
     <Compile Include="Controllers\TicketController.cs" />
     <Compile Include="Controllers\NoteController.cs" />
     <Compile Include="ExtensionMethods.cs" />
