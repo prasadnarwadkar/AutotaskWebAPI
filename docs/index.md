@@ -79,13 +79,17 @@ HTTP POST to {base url}/api/note/post with the following body. Of course, the co
 When you query an attachment, you first query an `AttachmentInfo`. Using id of a certain attachment info object, you can query the actual attachment.
 This is tricky but that is how it is structured in Autotask. 
 
-So first, you would get attachment info:
+So first, you would get attachment info.
+
+###### URL
 
 `{base url}/api/attachment/GetInfoByParentIdAndAttachDate?parentId=123&attachDate=2016-12-22T00:00:00`
 
 This will return a list of `AttachmentInfo` objects.
 
 Then for each `AttachmentInfo` object, you would get its id using `AttachmentInfo.id`. From this id, you would get the actual attachment as follows.
+
+###### URL
 
 `{base url}/api/attachment/GetById?id=123`
 
