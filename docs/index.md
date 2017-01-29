@@ -21,6 +21,29 @@ All you need is two keys in appSettings (web.config) with values as per your Aut
 <add key="APIPassword" value="" />
 ```
 
+
+## Querying Tickets by account id and status
+A ticket is always associated with an account. It makes sense to query tickets by account id and to narrow down search, it helps to filter them by status (e.g. Complete, In Progress, Waiting Approval etc.).
+
+Following is a lookup table for ticket status.
+
+- In Progress	8
+- New	1
+- Complete	5
+- Waiting Customer	7
+- Waiting Materials	9
+- Dispatched	10
+- Escalated	11
+- Waiting Vendor	12
+- Waiting Approval	13
+- Action required	14
+- Information	15
+- Assigned to GNOC	16
+
+###### URL
+HTTP GET to {base url}/api/ticket/GetByAccountIdAndStatus?accountId={}&status={}.
+For example, {base url}/api/ticket/GetByAccountIdAndStatus?accountId=12345678&status=8 returns all tickets with account id 12345678 and status as 8 (In Progress).
+
 ## Querying Ticket notes in Autotask
 
 Base url: http://localhost:{port number} or if you deploy it to IIS, it is http://localhost/{appname}
@@ -32,7 +55,7 @@ You can also query ticket notes by ticket id. This query returns all notes added
 
 HTTP GET {base url}/api/note/GetByTicketId?ticketId={ticket_id}
 
-## Posting a ticket note for a ticket is simpler.
+## Posting a ticket note for a ticket is simpler
 
 HTTP POST to {base url}/api/note/post with the following body. Of course, the content type is application/json.
 
@@ -56,7 +79,7 @@ HTTP POST to {base url}/api/note/post with the following body. Of course, the co
 More examples of usage will appear here soon.
 
 # Error handling
-Error handling is quite extensive in this API. I have used error messages from AT SOAP API which are quite user-friendly (e.g. while creating a ticket, you must pass both assigned resource id and assigned resource role id together or else there will be an error which the message properly indicates. Please check the error message in the http response in case of an error. If there is no error, the response contains JSON object containing all data you requested.
+Error handling is quite extensive in this API. I have used error messages from AT SOAP API which are quite user-friendly. For example, while creating a ticket, you must pass both assigned resource id and assigned resource role id together or else there will be an error which the message properly indicates. Please check the error message in the http response in case of an error. If there is no error, the response contains JSON object containing all data you requested. Sometimes you might get an empty list of entities which is alright if the parameters do not match any of the entities in the AT database. If there is no error, your query is deemed to have worked.
 
 # Tools
 You may want to use Postman (Chrome extension) to test the API. Any other RESTful API testing tool can also be used, even Fiddler can be used. I have used Postman and found it suitable for my purposes.
