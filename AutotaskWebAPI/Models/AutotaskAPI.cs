@@ -161,7 +161,7 @@ namespace AutotaskWebAPI.Models
             strResource.Append("<queryxml version=\"1.0\">");
             strResource.Append("<entity>Account</entity>");
             strResource.Append("<query>");
-            strResource.Append("<field>AccountName<expression op=\"Like\">");
+            strResource.Append("<field>AccountName<expression op=\"BeginsWith\">");
             strResource.Append(accountName);
             strResource.Append("</expression></field>");
             strResource.Append("</query></queryxml>");

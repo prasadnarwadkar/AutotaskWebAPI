@@ -19,8 +19,12 @@ namespace AutotaskWebAPI.Controllers
                                     ConfigurationManager.AppSettings["APIPassword"]);
         }
 
-        // GET api/account/GetByName?name={}
-        [HttpGet]
+        /// <summary>
+        /// Get account by name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        [Route("api/account/GetByName/{name}")]
         public HttpResponseMessage GetByName(string name)
         {
             string errorMsg = string.Empty;
@@ -38,7 +42,7 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
-        // GET api/account/GetByLastActivityDate?lastActivityDate={}
+        [Route("api/account/GetByLastActivityDate/{lastActivityDate}")]
         [HttpGet]
         public HttpResponseMessage GetByLastActivityDate(string lastActivityDate)
         {
@@ -57,7 +61,7 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
-        // GET api/account/GetByNumber?accountNumber={}
+        [Route("api/account/GetByNumber/{accountNumber}")]
         [HttpGet]
         public HttpResponseMessage GetByNumber(string accountNumber)
         {
@@ -76,7 +80,7 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
-        // GET api/account/GetById?id={}
+        [Route("api/account/GetById/{id}")]
         [HttpGet]
         public HttpResponseMessage GetById(string id)
         {

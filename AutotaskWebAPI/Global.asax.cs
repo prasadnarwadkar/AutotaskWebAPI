@@ -1,5 +1,7 @@
-﻿using System;
+﻿using NSwag.AspNet.Owin;
+using System;
 using System.Collections.Generic;
+using System.EnterpriseServices;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -13,6 +15,15 @@ namespace AutotaskWebAPI
     {
         protected void Application_Start()
         {
+            
+            RouteTable.Routes.MapOwinPath("swagger", app =>
+            {
+                app.UseSwaggerUi(typeof(WebApiApplication).Assembly, new SwaggerUiOwinSettings
+                {
+                    MiddlewareBasePath = "/swagger"
+                });
+            });
+
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

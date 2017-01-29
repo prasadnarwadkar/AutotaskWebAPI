@@ -28,7 +28,7 @@ namespace AutotaskWebAPI.Controllers
             api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"], ConfigurationManager.AppSettings["APIPassword"]);
         }
 
-        // GET api/note/GetByTicketId?ticketId={}
+        [Route("api/note/GetByTicketId/{ticketId}")]
         [HttpGet]
         public HttpResponseMessage GetByTicketId(string ticketId)
         {
@@ -47,7 +47,7 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
-        // GET api/note/GetById?id={}
+        [Route("api/note/GetById/{id}")]
         [HttpGet]
         public HttpResponseMessage GetById(string id)
         {
@@ -65,6 +65,7 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        [Route("api/note/GetByLastActivityDate/{lastActivityDate}")]
         [HttpGet]
         public HttpResponseMessage GetByLastActivityDate(string lastActivityDate)
         {
