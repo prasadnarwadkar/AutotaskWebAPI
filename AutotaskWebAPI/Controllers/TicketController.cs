@@ -56,6 +56,25 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        // GET api/ticket/GetByCreatorResourceId?creatorResourceId={}
+        [HttpGet]
+        public HttpResponseMessage GetByCreatorResourceId(string creatorResourceId)
+        {
+            string errorMsg = string.Empty;
+
+            var result = api.GetTicketByCreatorResourceId(creatorResourceId, out errorMsg);
+
+            if (errorMsg.Length > 0)
+            {
+                // There is an error.
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+        }
+
         [HttpGet]
         public HttpResponseMessage GetByLastActivityDate(string lastActivityDate)
         {
@@ -72,6 +91,53 @@ namespace AutotaskWebAPI.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
+        }
+
+
+        /// <summary>
+        /// Get tickets by status. e.g. Status of 8 means "In Progress".
+        /// </summary>
+        /// <param name="accountId">Account id to which the ticket(s) belong.</param>
+        /// <param name="status">Status as an integer passed as string. e.g. "8".</param>
+        /// <returns>List of tickets.</returns>
+        // GET api/ticket/GetByAccountIdAndStatus?accountId={}&status={}
+        [HttpGet]
+        public HttpResponseMessage GetByAccountIdAndStatus(string accountId, string status)
+        {
+            string errorMsg = string.Empty;
+
+            if (string.IsNullOrEmpty(status))
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Status cannot be null or empty. Please pass the status as an integer. e.g. '8'");
+            }
+
+            int statusInt = 0;
+
+            bool parseResult = int.TryParse(status, out statusInt);
+
+            if (parseResult)
+            {
+                int accountIdInt = -1;
+
+                parseResult = int.TryParse(accountId, out accountIdInt);
+
+                if (parseResult)
+                {
+                    var result = api.GetTicketByAccountIdAndStatus(accountId, statusInt, out errorMsg);
+
+                    if (errorMsg.Length > 0)
+                    {
+                        // There is an error.
+                        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.OK, result);
+                    }
+                }
+            }
+
+            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Status or account id passed is not an integer.");
         }
 
         [HttpPost]

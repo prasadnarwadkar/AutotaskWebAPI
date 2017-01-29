@@ -38,6 +38,25 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        // GET api/account/GetByLastActivityDate?lastActivityDate={}
+        [HttpGet]
+        public HttpResponseMessage GetByLastActivityDate(string lastActivityDate)
+        {
+            string errorMsg = string.Empty;
+
+            var result = api.GetAccountByLastActivityDate(lastActivityDate, out errorMsg);
+
+            if (errorMsg.Length > 0)
+            {
+                // There is an error.
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+        }
+
         // GET api/account/GetByNumber?accountNumber={}
         [HttpGet]
         public HttpResponseMessage GetByNumber(string accountNumber)
@@ -62,18 +81,26 @@ namespace AutotaskWebAPI.Controllers
         public HttpResponseMessage GetById(string id)
         {
             string errorMsg = string.Empty;
+            var accountId = -1;
 
-            var result = api.GetAccountById(id, out errorMsg);
+            bool parseResult = int.TryParse(id, out accountId);
 
-            if (errorMsg.Length > 0)
+            if (parseResult)
             {
-                // There is an error.
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
+                var result = api.GetAccountById(id, out errorMsg);
+
+                if (errorMsg.Length > 0)
+                {
+                    // There is an error.
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, result);
+                }
             }
-            else
-            {
-                return Request.CreateResponse(HttpStatusCode.OK, result);
-            }
+
+            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "id passed is not an integer.");
         }
     }
 }

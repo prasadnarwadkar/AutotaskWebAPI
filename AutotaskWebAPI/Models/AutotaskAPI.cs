@@ -71,6 +71,41 @@ namespace AutotaskWebAPI.Models
             }
         }
 
+        public List<Ticket> GetTicketByCreatorResourceId(string creatorResourceId, out string errorMsg)
+        {
+            List<Ticket> list = new List<Ticket>();
+
+            string ret = string.Empty;
+            errorMsg = string.Empty;
+
+            // Query
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>Ticket</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<field>CreatorResourceID<expression op=\"equals\">");
+            strResource.Append(creatorResourceId);
+            strResource.Append("</expression></field>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = this._atwsServices.query(strResource.ToString());
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+            {
+                foreach (Entity entity in respResource.EntityResults)
+                {
+                    list.Add((Ticket)entity);
+                }
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
+            }
+
+            return list;
+        }
+
         /// <summary>
         /// Get pick list label given its value.
         /// </summary>
@@ -167,7 +202,7 @@ namespace AutotaskWebAPI.Models
             strResource.Append("<queryxml version=\"1.0\">");
             strResource.Append("<entity>Account</entity>");
             strResource.Append("<query>");
-            strResource.Append("<field>AccountNumber<expression op=\"equals\">");
+            strResource.Append("<field>AccountNumber<expression op=\"Like\">");
             strResource.Append(num);
             strResource.Append("</expression></field>");
             strResource.Append("</query></queryxml>");
@@ -710,6 +745,41 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
+        public List<Account> GetAccountByLastActivityDate(string lastActivityDate, out string errorMsg)
+        {
+            List<Account> list = new List<Account>();
+
+            string ret = string.Empty;
+            errorMsg = string.Empty;
+
+            // Query
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>Account</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<field>LastActivityDate<expression op=\"greaterthan\">");
+            strResource.Append(lastActivityDate);
+            strResource.Append("</expression></field>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = this._atwsServices.query(strResource.ToString());
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+            {
+                foreach (Entity entity in respResource.EntityResults)
+                {
+                    list.Add((Account)entity);
+                }
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
+            }
+
+            return list;
+        }
+
         public List<Ticket> GetTicketByLastActivityDate(string lastActivityDate, out string errorMsg)
         {
             List<Ticket> list = new List<Ticket>();
@@ -724,6 +794,44 @@ namespace AutotaskWebAPI.Models
             strResource.Append("<query>");
             strResource.Append("<field>LastActivityDate<expression op=\"greaterthan\">");
             strResource.Append(lastActivityDate);
+            strResource.Append("</expression></field>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = this._atwsServices.query(strResource.ToString());
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+            {
+                foreach (Entity entity in respResource.EntityResults)
+                {
+                    list.Add((Ticket)entity);
+                }
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
+            }
+
+            return list;
+        }
+
+        public List<Ticket> GetTicketByAccountIdAndStatus(string accountId, long status, out string errorMsg)
+        {
+            List<Ticket> list = new List<Ticket>();
+
+            string ret = string.Empty;
+            errorMsg = string.Empty;
+
+            // Query
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>Ticket</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<field>Status<expression op=\"Equals\">");
+            strResource.Append(status);
+            strResource.Append("</expression></field>");
+            strResource.Append("<field>AccountID<expression op=\"Equals\">");
+            strResource.Append(accountId);
             strResource.Append("</expression></field>");
             strResource.Append("</query></queryxml>");
 
