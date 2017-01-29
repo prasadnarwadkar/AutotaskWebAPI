@@ -55,7 +55,12 @@ namespace AutotaskWebAPI.Controllers
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK, result);
+                    var response = Request.CreateResponse(HttpStatusCode.OK);
+                    response.Content = new ByteArrayContent(result.Data, 0, result.Data.Length - 1);
+                    response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+                    response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(result.Info.ContentType.ToString());
+
+                    return response;
                 }
             }
             else
