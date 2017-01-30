@@ -21,8 +21,10 @@ All you need is two keys in appSettings (web.config) with values as per your Aut
 <add key="APIPassword" value="" />
 ```
 
+## Trying the Web API
+This Web API is documented using Swagger spec. It lists all APIs with try it out buttons to help you in trying them. The API requires Autotask API username and password. Currently, on the demo API page, I am not using any credentials. Please contact me if you would like to play with the API with actual credentials of yours.
 
-## Querying Tickets by account id and status
+## Example: Querying Tickets by account id and status
 A ticket is always associated with an account. It makes sense to query tickets by account id and to narrow down search, it helps to filter them by status (e.g. Complete, In Progress, Waiting Approval etc.).
 
 Following is a lookup table for ticket status.
@@ -41,21 +43,10 @@ Following is a lookup table for ticket status.
 - Assigned to GNOC	16
 
 ###### URL
-HTTP GET to {base url}/api/ticket/GetByAccountIdAndStatus?accountId={}&status={}.
-For example, {base url}/api/ticket/GetByAccountIdAndStatus?accountId=12345678&status=8 returns all tickets with account id 12345678 and status as 8 (In Progress).
+HTTP GET to {base url}/api/ticket/GetByAccountIdAndStatus/{}/{}.
+For example, {base url}/api/ticket/GetByAccountIdAndStatus/12345678/8 returns all tickets with account id 12345678 and status as 8 (In Progress).
 
-## Querying Ticket notes in Autotask
-
-Base url: http://localhost:{port number} or if you deploy it to IIS, it is http://localhost/{appname}
-You can query ticket notes by note id. This query returns a note matching the given id.
-
-HTTP GET {base url}/api/note/GetById?id={note id in AT}
-
-You can also query ticket notes by ticket id. This query returns all notes added to the given ticket.
-
-HTTP GET {base url}/api/note/GetByTicketId?ticketId={ticket_id}
-
-## Posting a ticket note for a ticket is simpler
+## Example: Posting a ticket note for a ticket
 
 HTTP POST to {base url}/api/note/post with the following body. Of course, the content type is application/json.
 
@@ -75,7 +66,7 @@ HTTP POST to {base url}/api/note/post with the following body. Of course, the co
 
 -`Publish` is 1 to publish.
 
-## Get Attachments by parent id (such as a ticket id) and attach date
+## Example: Get Attachments by parent id (such as a ticket id) and attach date
 When you query an attachment, you first query an `AttachmentInfo`. Using id of a certain attachment info object, you can query the actual attachment.
 This is tricky but that is how it is structured in Autotask. 
 
@@ -83,7 +74,7 @@ So first, you would get attachment info.
 
 ###### URL
 
-`{base url}/api/attachment/GetInfoByParentIdAndAttachDate?parentId=123&attachDate=2016-12-22T00:00:00`
+`{base url}/api/attachment/GetInfoByParentIdAndAttachDate/123/2016-12-22`
 
 This will return a list of `AttachmentInfo` objects.
 
@@ -91,18 +82,16 @@ Then for each `AttachmentInfo` object, you would get its id using `AttachmentInf
 
 ###### URL
 
-`{base url}/api/attachment/GetById?id=123`
+`{base url}/api/attachment/GetById/123`
 
 This will return attachment byte array content which can be consumed at client side.
 
 ## About passing dates to the API methods
 
-You might want to get entities by their last activity date or last modified date. When you send a date in such a case, the API methods return entities with last activity date or last modified date which is after the date argument. For example, if you send a date argument such as ‘2016-12-22T00:00:00’ to an API endpoint such as ` {base url}/api/ticket/GetByLastActivityDate?lastActivityDate=2016-12-22T00:00:00`, it returns tickets which have last activity date that is “after” 22nd Dec’16. 
-
-More examples of usage will appear here soon.
+You might want to get entities by their last activity date or last modified date. When you send a date in such a case, the API methods return entities with last activity date or last modified date which is after the date argument. For example, if you send a date argument such as ‘2016-12-22’ to an API endpoint such as ` {base url}/api/ticket/GetByLastActivityDate/2016-12-22`, it returns tickets which have last activity date that is “after” 22nd Dec’16. 
 
 # Error handling
 Error handling is quite extensive in this API. I have used error messages from AT SOAP API which are quite user-friendly. For example, while creating a ticket, you must pass both assigned resource id and assigned resource role id together or else there will be an error which the message properly indicates. Please check the error message in the http response in case of an error. If there is no error, the response contains JSON object containing all data you requested. Sometimes you might get an empty list of entities which is alright if the parameters do not match any of the entities in the AT database. If there is no error, your query is deemed to have worked.
 
 # Tools
-You may want to use Postman (Chrome extension) to test the API. Any other RESTful API testing tool can also be used, even Fiddler can be used. I have used Postman and found it suitable for my purposes.
+You may want to use Postman (Chrome extension) to test the API. Any other RESTful API testing tool can also be used, even Fiddler can be used. I have used Postman and found it suitable for my purposes. This Web API uses Swagger spec to document the API endpoints. This makes it easy to try the API and create client-side code to consume them in your dashboards, intranet web apps and so forth.
