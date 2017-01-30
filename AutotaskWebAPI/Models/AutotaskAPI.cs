@@ -37,6 +37,18 @@ namespace AutotaskWebAPI.Models
 		/// </summary>
 		public AutotaskAPI(string user, string pass)
 		{
+            if (string.IsNullOrEmpty(user))
+            {
+                throw new ArgumentException("Autotask API username is blank");
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(pass))
+                {
+                    throw new ArgumentException("Autotask API password is blank");
+                }
+            }
+
             // Initialize db context.
 			string zoneURL = string.Empty;
 

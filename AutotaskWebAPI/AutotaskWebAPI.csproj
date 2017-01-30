@@ -191,6 +191,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AttachmentController.cs" />
+    <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\NoteController.cs" />
     <Compile Include="Controllers\PicklistController.cs" />
     <Compile Include="Controllers\ResourceController.cs" />

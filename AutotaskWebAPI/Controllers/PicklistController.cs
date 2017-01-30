@@ -9,20 +9,20 @@ using System.Web.Http;
 
 namespace AutotaskWebAPI.Controllers
 {
-    public class PicklistController : ApiController
+    public class PicklistController : BaseApiController
     {
-        private AutotaskAPI api = null;
-
-        public PicklistController()
-        {
-            api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"], ConfigurationManager.AppSettings["APIPassword"]);
-        }
-
         [Route("api/picklist/GetLabel/{entityType}/{fieldName}/{valueToSearch}")]
         [HttpGet]
         public HttpResponseMessage GetLabel(string entityType, string fieldName,
                                         string valueToSearch)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
 
             var result = api.GetPickListLabel(entityType, fieldName, valueToSearch, out errorMsg);

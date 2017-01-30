@@ -19,19 +19,19 @@ namespace AutotaskWebAPI.Controllers
         public long Publish { get; set; }
     }
 
-    public class NoteController : ApiController
+    public class NoteController : BaseApiController
     {
-        private AutotaskAPI api = null;
-
-        public NoteController()
-        {
-            api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"], ConfigurationManager.AppSettings["APIPassword"]);
-        }
-
         [Route("api/note/GetByTicketId/{ticketId}")]
         [HttpGet]
         public HttpResponseMessage GetByTicketId(string ticketId)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
 
             var result = api.GetNoteByTicketId(ticketId, out errorMsg);
@@ -51,6 +51,13 @@ namespace AutotaskWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage GetById(string id)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
             var result = api.GetNoteById(id, out errorMsg);
 
@@ -69,6 +76,13 @@ namespace AutotaskWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage GetByLastActivityDate(string lastActivityDate)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
 
             var result = api.GetNoteByLastActivityDate(lastActivityDate, out errorMsg);
@@ -85,13 +99,20 @@ namespace AutotaskWebAPI.Controllers
         }
 
         [HttpPost]
-        public long Post([FromBody] NoteDetails details)
+        public HttpResponseMessage Post([FromBody] NoteDetails details)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             try
             {
                 if (details == null)
                 {
-                    return -3;
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Bad Request: Note details passed are null or invalid");
                 }
 
                 AutotaskAPI api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"],
@@ -104,16 +125,16 @@ namespace AutotaskWebAPI.Controllers
 
                 if (note != null)
                 {
-                    return note.id;
+                    return Request.CreateResponse(HttpStatusCode.OK, note.id);
                 }
                 else
                 {
-                    return -1;
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Could not create note due to internal server error");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return -2;
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
     }

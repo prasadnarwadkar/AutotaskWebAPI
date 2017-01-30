@@ -9,16 +9,8 @@ using System.Web.Http;
 
 namespace AutotaskWebAPI.Controllers
 {
-    public class AccountController : ApiController
+    public class AccountController : BaseApiController
     {
-        private AutotaskAPI api = null;
-
-        public AccountController()
-        {
-            api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"], 
-                                    ConfigurationManager.AppSettings["APIPassword"]);
-        }
-
         /// <summary>
         /// Get account by name.
         /// </summary>
@@ -27,6 +19,13 @@ namespace AutotaskWebAPI.Controllers
         [Route("api/account/GetByName/{name}")]
         public HttpResponseMessage GetByName(string name)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
 
             var result = api.GetAccountByName(name, out errorMsg);
@@ -46,6 +45,13 @@ namespace AutotaskWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage GetByLastActivityDate(string lastActivityDate)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
 
             var result = api.GetAccountByLastActivityDate(lastActivityDate, out errorMsg);
@@ -65,6 +71,13 @@ namespace AutotaskWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage GetByNumber(string accountNumber)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
 
             var result = api.GetAccountByNumber(accountNumber, out errorMsg);
@@ -84,6 +97,13 @@ namespace AutotaskWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage GetById(string id)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
             var accountId = -1;
 

@@ -9,19 +9,19 @@ using System.Web.Http;
 
 namespace AutotaskWebAPI.Controllers
 {
-    public class ResourceController : ApiController
+    public class ResourceController : BaseApiController
     {
-        private AutotaskAPI api = null;
-
-        public ResourceController()
-        {
-            api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"], ConfigurationManager.AppSettings["APIPassword"]);
-        }
-
         [Route("api/resource/GetById/{id}")]
         [HttpGet]
         public HttpResponseMessage GetById(string id)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
 
             var result = api.GetResourceById(id, out errorMsg);
@@ -41,6 +41,13 @@ namespace AutotaskWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage GetByName(string firstName, string lastName)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
 
             var result = api.GetResourceByName(firstName, lastName, out errorMsg);
@@ -60,6 +67,13 @@ namespace AutotaskWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage GetByEmail(string email)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
 
             var result = api.GetResourceByEmail(email, out errorMsg);
@@ -79,6 +93,13 @@ namespace AutotaskWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage GetByUsername(string userName)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
 
             var result = api.GetResourceByUsername(userName, out errorMsg);
@@ -98,6 +119,13 @@ namespace AutotaskWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage GetByLocationId(string locationId)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
 
             var result = api.GetResourceByLocationId(locationId, out errorMsg);

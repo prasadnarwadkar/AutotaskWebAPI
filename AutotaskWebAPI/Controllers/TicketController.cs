@@ -9,19 +9,19 @@ using System.Web.Http;
 
 namespace AutotaskWebAPI.Controllers
 {
-    public class TicketController : ApiController
+    public class TicketController : BaseApiController
     {
-        private AutotaskAPI api = null;
-
-        public TicketController()
-        {
-            api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"], ConfigurationManager.AppSettings["APIPassword"]);
-        }
-
         [Route("api/ticket/GetByAccountId/{accountId}")]
         [HttpGet]
         public HttpResponseMessage GetByAccountId(string accountId)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
 
             var result = api.GetTicketByAccountId(accountId, out errorMsg);
@@ -41,6 +41,13 @@ namespace AutotaskWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage GetById(string id)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
 
             var result = api.GetTicketById(id, out errorMsg);
@@ -60,6 +67,13 @@ namespace AutotaskWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage GetByCreatorResourceId(string creatorResourceId)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
 
             var result = api.GetTicketByCreatorResourceId(creatorResourceId, out errorMsg);
@@ -79,6 +93,13 @@ namespace AutotaskWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage GetByLastActivityDate(string lastActivityDate)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
 
             var result = api.GetTicketByLastActivityDate(lastActivityDate, out errorMsg);
@@ -104,6 +125,13 @@ namespace AutotaskWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage GetByAccountIdAndStatus(string accountId, string status)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
 
             if (string.IsNullOrEmpty(status))
@@ -150,6 +178,13 @@ namespace AutotaskWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage GetByAccountIdAndPriority(string accountId, string priority)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
 
             if (string.IsNullOrEmpty(priority))
@@ -189,6 +224,13 @@ namespace AutotaskWebAPI.Controllers
         [HttpPost]
         public HttpResponseMessage PostTicket([FromBody] TicketDetails details)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             try
             {
                 if (details == null)

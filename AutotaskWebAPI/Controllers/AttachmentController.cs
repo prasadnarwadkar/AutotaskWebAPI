@@ -1,4 +1,5 @@
 ﻿using AutotaskWebAPI.Models;
+using System;
 using System.Configuration;
 using System.Net;
 using System.Net.Http;
@@ -6,19 +7,19 @@ using System.Web.Http;
 
 namespace AutotaskWebAPI.Controllers
 {
-    public class AttachmentController : ApiController
+    public class AttachmentController : BaseApiController
     {
-        private AutotaskAPI api = null;
-
-        public AttachmentController()
-        {
-            api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"], ConfigurationManager.AppSettings["APIPassword"]);
-        }
-
         [Route("api/attachment/GetInfoByParentId/{parentId}")]
         [HttpGet]
         public HttpResponseMessage GetInfoByParentId(string parentId)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
 
             var result = api.GetAttachmentInfoByParentId(parentId, out errorMsg);
@@ -38,6 +39,13 @@ namespace AutotaskWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage GetById(string id)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
 
             int idInt = 0;
@@ -73,6 +81,13 @@ namespace AutotaskWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage GetInfoByAttachDate(string attachDate)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
 
             var result = api.GetAttachmentInfoByAttachDate(attachDate, out errorMsg);
@@ -92,6 +107,13 @@ namespace AutotaskWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage GetInfoByParentIdAndAttachDate(string parentId, string attachDate)
         {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
             string errorMsg = string.Empty;
 
             var result = api.GetAttachmentInfoByParentIdAndAttachDate(parentId,
