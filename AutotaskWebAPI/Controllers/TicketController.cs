@@ -221,6 +221,7 @@ namespace AutotaskWebAPI.Controllers
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Priority or account id passed is not an integer.");
         }
 
+        [Route("api/ticket/PostTicket")]
         [HttpPost]
         public HttpResponseMessage PostTicket([FromBody] TicketDetails details)
         {
@@ -237,9 +238,6 @@ namespace AutotaskWebAPI.Controllers
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "No ticket details are passed");
                 }
-
-                AutotaskAPI api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"],
-                                                            ConfigurationManager.AppSettings["APIPassword"]);
 
                 string errorMsg = string.Empty;
 

@@ -98,6 +98,7 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        [Route("api/note/Post")]
         [HttpPost]
         public HttpResponseMessage Post([FromBody] NoteDetails details)
         {
@@ -114,9 +115,6 @@ namespace AutotaskWebAPI.Controllers
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Bad Request: Note details passed are null or invalid");
                 }
-
-                AutotaskAPI api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"],
-                                                            ConfigurationManager.AppSettings["APIPassword"]);
 
                 TicketNote note = api.CreateTicketNote(Convert.ToInt32(details.TicketId), 
                                             details.Title.ToString(),
