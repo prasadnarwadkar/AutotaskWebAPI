@@ -1204,7 +1204,7 @@ namespace AutotaskWebAPI.Models
         }
 
         /// <summary>
-        /// Get resource by name. Uses 'like' operator to match passed
+        /// Get resource by name. Uses 'beginswith' operator to match passed
         /// first name and last name.
         /// </summary>
         /// <param name="firstName"></param>
@@ -1224,10 +1224,10 @@ namespace AutotaskWebAPI.Models
             strResource.Append("<queryxml version=\"1.0\">");
             strResource.Append("<entity>Resource</entity>");
             strResource.Append("<query>");
-            strResource.Append("<condition><field>FirstName<expression op=\"Like\">");
+            strResource.Append("<condition><field>FirstName<expression op=\"beginswith\">");
             strResource.Append(firstName);
             strResource.Append("</expression></field></condition>");
-            strResource.Append("<condition><field>LastName<expression op=\"Like\">");
+            strResource.Append("<condition><field>LastName<expression op=\"beginswith\">");
             strResource.Append(lastName);
             strResource.Append("</expression></field></condition>");
             strResource.Append("</query></queryxml>");

@@ -18,7 +18,7 @@ namespace AutotaskWebAPI.Controllers
             api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"], ConfigurationManager.AppSettings["APIPassword"]);
         }
 
-        // GET api/ticket/GetByAccountId?accountId={}
+        [Route("api/ticket/GetByAccountId/{accountId}")]
         [HttpGet]
         public HttpResponseMessage GetByAccountId(string accountId)
         {
@@ -37,7 +37,7 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
-        // GET api/ticket/GetById?id={}
+        [Route("api/ticket/GetById/{id}")]
         [HttpGet]
         public HttpResponseMessage GetById(string id)
         {
@@ -56,7 +56,7 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
-        // GET api/ticket/GetByCreatorResourceId?creatorResourceId={}
+        [Route("api/ticket/GetByCreatorResourceId/{creatorResourceId}")]
         [HttpGet]
         public HttpResponseMessage GetByCreatorResourceId(string creatorResourceId)
         {
@@ -75,6 +75,7 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        [Route("api/ticket/GetByLastActivityDate/{lastActivityDate}")]
         [HttpGet]
         public HttpResponseMessage GetByLastActivityDate(string lastActivityDate)
         {
@@ -92,15 +93,14 @@ namespace AutotaskWebAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
         }
-
-
+        
+        [Route("api/ticket/GetByAccountIdAndStatus/{accountId}/{status}")]
         /// <summary>
         /// Get tickets by status. e.g. Status of 8 means "In Progress".
         /// </summary>
         /// <param name="accountId">Account id to which the ticket(s) belong.</param>
         /// <param name="status">Status as an integer passed as string. e.g. "8".</param>
         /// <returns>List of tickets.</returns>
-        // GET api/ticket/GetByAccountIdAndStatus?accountId={}&status={}
         [HttpGet]
         public HttpResponseMessage GetByAccountIdAndStatus(string accountId, string status)
         {
@@ -146,7 +146,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="accountId">Account id to which the ticket(s) belong.</param>
         /// <param name="priority">Priority as an integer passed as string. e.g. "6".</param>
         /// <returns>List of tickets.</returns>
-        // GET api/ticket/GetByAccountIdAndPriority?accountId={}&priority={}
+        [Route("api/ticket/GetByAccountIdAndPriority/{accountId}/{priority}")]
         [HttpGet]
         public HttpResponseMessage GetByAccountIdAndPriority(string accountId, string priority)
         {

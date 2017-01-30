@@ -18,7 +18,7 @@ namespace AutotaskWebAPI.Controllers
             api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"], ConfigurationManager.AppSettings["APIPassword"]);
         }
 
-        // GET api/resource/GetById?id={}
+        [Route("api/resource/GetById/{id}")]
         [HttpGet]
         public HttpResponseMessage GetById(string id)
         {
@@ -37,7 +37,7 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
-        // GET api/resource/GetByName?firstName={}&lastName={}
+        [Route("api/resource/GetByName/{firstName}/{lastName}")]
         [HttpGet]
         public HttpResponseMessage GetByName(string firstName, string lastName)
         {
@@ -56,7 +56,7 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
-        // GET api/resource/GetByEmail?email={}
+        [Route("api/resource/GetByEmail/{email}")]
         [HttpGet]
         public HttpResponseMessage GetByEmail(string email)
         {
@@ -75,7 +75,7 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
-        // GET api/resource/GetByUsername?userName={}
+        [Route("api/resource/GetByUsername/{userName}")]
         [HttpGet]
         public HttpResponseMessage GetByUsername(string userName)
         {
@@ -94,7 +94,7 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
-        // GET api/resource/GetByLocationId?locationId={}
+        [Route("api/resource/GetByLocationId/{locationId}")]
         [HttpGet]
         public HttpResponseMessage GetByLocationId(string locationId)
         {

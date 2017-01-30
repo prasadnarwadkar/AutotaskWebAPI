@@ -15,7 +15,7 @@ namespace AutotaskWebAPI.Controllers
             api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"], ConfigurationManager.AppSettings["APIPassword"]);
         }
 
-        // GET api/attachment/GetInfoByParentId?parentId={}
+        [Route("api/attachment/GetInfoByParentId/{parentId}")]
         [HttpGet]
         public HttpResponseMessage GetInfoByParentId(string parentId)
         {
@@ -34,7 +34,7 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
-        // GET api/attachment/GetById?id={}
+        [Route("api/attachment/GetById/{id}")]
         [HttpGet]
         public HttpResponseMessage GetById(string id)
         {
@@ -69,7 +69,7 @@ namespace AutotaskWebAPI.Controllers
             }            
         }
 
-        // GET api/attachment/GetInfoByAttachDate?attachDate={}
+        [Route("api/attachment/GetInfoByAttachDate/{attachDate}")]
         [HttpGet]
         public HttpResponseMessage GetInfoByAttachDate(string attachDate)
         {
@@ -88,7 +88,7 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
-        // GET api/attachment/GetInfoByParentIdAndAttachDate?parentId={}&attachDate={}
+        [Route("api/attachment/GetInfoByParentIdAndAttachDate/{parentId}/{attachDate}")]
         [HttpGet]
         public HttpResponseMessage GetInfoByParentIdAndAttachDate(string parentId, string attachDate)
         {

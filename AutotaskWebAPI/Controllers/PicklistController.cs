@@ -18,7 +18,7 @@ namespace AutotaskWebAPI.Controllers
             api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"], ConfigurationManager.AppSettings["APIPassword"]);
         }
 
-        // GET api/picklist/GetLabel?entityType={}&fieldName={}&valueToSearch={}
+        [Route("api/picklist/GetLabel/{entityType}/{fieldName}/{valueToSearch}")]
         [HttpGet]
         public HttpResponseMessage GetLabel(string entityType, string fieldName,
                                         string valueToSearch)
