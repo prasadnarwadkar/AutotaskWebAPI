@@ -22,6 +22,7 @@ namespace AutotaskWebAPI.Controllers
             {
                 api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"],
                                         ConfigurationManager.AppSettings["APIPassword"]);
+                apiInitialized = true;
             }
             catch (ArgumentException)
             {

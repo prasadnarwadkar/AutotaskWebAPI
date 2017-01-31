@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test Page</title>
+	<meta charset="utf-8" itemscope="" itemtype="http://schema.org/WebPage"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        function submitAccountSearch()
+        {
+            $("#loadingText").html("Loading...");
+            $("#loadingText").show();
+            $("#accountTableBody").html('');
+
+            //var urlToInvoke = 'api/account/getbyname/' + $("#accountNameTextBox").val(); // works
+            
+            //works with Access-Control-Allow-Origin header set from server (web.config)
+            // var urlToInvoke = 'http://localhost/autotaskwebapi/api/account/getbyname/' + $("#accountNameTextBox").val(); 
+            
+            var urlToInvoke = 'http://autotaskwebapi.us-west-2.elasticbeanstalk.com/api/account/getbyname/' + $("#accountNameTextBox").val();
+
+            $.ajax({
+                url: urlToInvoke,
+                method: 'get',
+                
+                success: function (list) {
+                    var accountTableBodyHtml = "";
+
+                    $.each(list, function (index, value) {
+                        // Each value is an account.
+                        accountTableBodyHtml += '<tr>';
+                        accountTableBodyHtml += '<td>' + value.accountNameField + '</td>';
+                        accountTableBodyHtml += '<td>' + value.accountNumberField + '</td>';
+                        accountTableBodyHtml += '<td>' + value.idField + '</td>';
+                        accountTableBodyHtml += '</tr>';
+                    });
+
+                    $("#accountTableBody").html(accountTableBodyHtml);
+                    $("#loadingText").hide();
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $("#loadingText").html(JSON.parse(XMLHttpRequest.responseText).Message);
+                    $("#loadingText").show();
+
+                    console.log(textStatus + " " + errorThrown);
+                }
+            });
+
+        }
+
+        $(document).ready(function () {
+            console.log('document ready...');
+            $("#loadingText").hide();
+        });
+    </script>
+</head>
+<body>
+    <label for="accountNameTextBox">Account Name:</label>
+    <input id="accountNameTextBox" type="text" maxlength="50" />
+    <input type="button" id="submitButton" title="Search" value="Search" onclick="submitAccountSearch();"/>
+    <label id="loadingText">Loading...</label>
+    <hr />
+    <table>
+        <thead>
+            <tr>
+                <th>Account Name</th>
+                <th>Account Number</th>
+                <th>Account ID</th>
+            </tr>
+        </thead>
+        <tbody id="accountTableBody">
+            
+        </tbody>
+    </table>
+</body>
+</html>

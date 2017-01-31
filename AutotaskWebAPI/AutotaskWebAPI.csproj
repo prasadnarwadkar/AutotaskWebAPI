@@ -223,8 +223,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="APITest.html" />
     <Content Include="Global.asax" />
     <None Include="Properties\PublishProfiles\custom.pubxml" />
+    <None Include="Properties\PublishProfiles\localiis.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
