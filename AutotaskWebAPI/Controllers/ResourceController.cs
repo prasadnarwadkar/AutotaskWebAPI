@@ -24,7 +24,7 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            var result = api.GetResourceById(id, out errorMsg);
+            var result = resourcesApi.GetResourceById(id, out errorMsg);
 
             if (errorMsg.Length > 0)
             {
@@ -50,7 +50,7 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            var result = api.GetResourceByName(firstName, lastName, out errorMsg);
+            var result = resourcesApi.GetResourceByName(firstName, lastName, out errorMsg);
 
             if (errorMsg.Length > 0)
             {
@@ -76,7 +76,7 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            var result = api.GetResourceByEmail(email, out errorMsg);
+            var result = resourcesApi.GetResourceByEmail(email, out errorMsg);
 
             if (errorMsg.Length > 0)
             {
@@ -102,7 +102,7 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            var result = api.GetResourceByUsername(userName, out errorMsg);
+            var result = resourcesApi.GetResourceByUsername(userName, out errorMsg);
 
             if (errorMsg.Length > 0)
             {
@@ -128,7 +128,7 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            var result = api.GetResourceByLocationId(locationId, out errorMsg);
+            var result = resourcesApi.GetResourceByLocationId(locationId, out errorMsg);
 
             if (errorMsg.Length > 0)
             {

@@ -34,7 +34,7 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            var result = api.GetNoteByTicketId(ticketId, out errorMsg);
+            var result = notesApi.GetNoteByTicketId(ticketId, out errorMsg);
 
             if (errorMsg.Length > 0)
             {
@@ -59,7 +59,7 @@ namespace AutotaskWebAPI.Controllers
             }
 
             string errorMsg = string.Empty;
-            var result = api.GetNoteById(id, out errorMsg);
+            var result = notesApi.GetNoteById(id, out errorMsg);
 
             if (errorMsg.Length > 0)
             {
@@ -85,7 +85,7 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            var result = api.GetNoteByLastActivityDate(lastActivityDate, out errorMsg);
+            var result = notesApi.GetNoteByLastActivityDate(lastActivityDate, out errorMsg);
 
             if (errorMsg.Length > 0)
             {
@@ -116,7 +116,7 @@ namespace AutotaskWebAPI.Controllers
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Bad Request: Note details passed are null or invalid");
                 }
 
-                TicketNote note = api.CreateTicketNote(Convert.ToInt32(details.TicketId), 
+                TicketNote note = notesApi.CreateTicketNote(Convert.ToInt32(details.TicketId), 
                                             details.Title.ToString(),
                                             details.Description.ToString(), Convert.ToInt32(details.CreatorResourceId),
                                             Convert.ToInt32(details.NoteType), Convert.ToInt32(details.Publish));

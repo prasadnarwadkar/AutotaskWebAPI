@@ -28,7 +28,7 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            var result = api.GetAccountByName(name, out errorMsg);
+            var result = accountsApi.GetAccountByName(name, out errorMsg);
 
             if (errorMsg.Length > 0)
             {
@@ -54,7 +54,7 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            var result = api.GetAccountByLastActivityDate(lastActivityDate, out errorMsg);
+            var result = accountsApi.GetAccountByLastActivityDate(lastActivityDate, out errorMsg);
 
             if (errorMsg.Length > 0)
             {
@@ -80,7 +80,7 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            var result = api.GetAccountByNumber(accountNumber, out errorMsg);
+            var result = accountsApi.GetAccountByNumber(accountNumber, out errorMsg);
 
             if (errorMsg.Length > 0)
             {
@@ -111,7 +111,7 @@ namespace AutotaskWebAPI.Controllers
 
             if (parseResult)
             {
-                var result = api.GetAccountById(id, out errorMsg);
+                var result = accountsApi.GetAccountById(id, out errorMsg);
 
                 if (errorMsg.Length > 0)
                 {

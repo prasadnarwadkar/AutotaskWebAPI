@@ -22,7 +22,7 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            var result = api.GetAttachmentInfoByParentId(parentId, out errorMsg);
+            var result = attachmentsApi.GetAttachmentInfoByParentId(parentId, out errorMsg);
 
             if (errorMsg.Length > 0)
             {
@@ -54,7 +54,7 @@ namespace AutotaskWebAPI.Controllers
 
             if (parseResult)
             {
-                var result = api.GetAttachmentById(idInt, out errorMsg);
+                var result = attachmentsApi.GetAttachmentById(idInt, out errorMsg);
 
                 if (errorMsg.Length > 0)
                 {
@@ -90,7 +90,7 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            var result = api.GetAttachmentInfoByAttachDate(attachDate, out errorMsg);
+            var result = attachmentsApi.GetAttachmentInfoByAttachDate(attachDate, out errorMsg);
 
             if (errorMsg.Length > 0)
             {
@@ -116,7 +116,7 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            var result = api.GetAttachmentInfoByParentIdAndAttachDate(parentId,
+            var result = attachmentsApi.GetAttachmentInfoByParentIdAndAttachDate(parentId,
                                                                     attachDate, 
                                                                     out errorMsg);
 

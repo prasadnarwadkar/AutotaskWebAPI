@@ -15,6 +15,11 @@ namespace AutotaskWebAPI.Controllers
     {
         protected AutotaskAPI api = null;
         protected bool apiInitialized = false;
+        protected ResourcesAPI resourcesApi = null;
+        protected TicketsAPI ticketsApi = null;
+        protected AccountsAPI accountsApi = null;
+        protected NotesAPI notesApi = null;
+        protected AttachmentsAPI attachmentsApi = null;
 
         public BaseApiController()
         {
@@ -23,6 +28,11 @@ namespace AutotaskWebAPI.Controllers
                 api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"],
                                         ConfigurationManager.AppSettings["APIPassword"]);
                 apiInitialized = true;
+                resourcesApi = new ResourcesAPI(api);
+                ticketsApi = new TicketsAPI(api);
+                accountsApi = new AccountsAPI(api);
+                notesApi = new NotesAPI(api);
+                attachmentsApi = new AttachmentsAPI(api);
             }
             catch (ArgumentException)
             {

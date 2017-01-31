@@ -24,7 +24,7 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            var result = api.GetTicketByAccountId(accountId, out errorMsg);
+            var result = ticketsApi.GetTicketByAccountId(accountId, out errorMsg);
 
             if (errorMsg.Length > 0)
             {
@@ -50,7 +50,7 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            var result = api.GetTicketById(id, out errorMsg);
+            var result = ticketsApi.GetTicketById(id, out errorMsg);
 
             if (errorMsg.Length > 0)
             {
@@ -76,7 +76,7 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            var result = api.GetTicketByCreatorResourceId(creatorResourceId, out errorMsg);
+            var result = ticketsApi.GetTicketByCreatorResourceId(creatorResourceId, out errorMsg);
 
             if (errorMsg.Length > 0)
             {
@@ -102,7 +102,7 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            var result = api.GetTicketByLastActivityDate(lastActivityDate, out errorMsg);
+            var result = ticketsApi.GetTicketByLastActivityDate(lastActivityDate, out errorMsg);
 
             if (errorMsg.Length > 0)
             {
@@ -151,7 +151,7 @@ namespace AutotaskWebAPI.Controllers
 
                 if (parseResult)
                 {
-                    var result = api.GetTicketByAccountIdAndStatus(accountId, statusInt, out errorMsg);
+                    var result = ticketsApi.GetTicketByAccountIdAndStatus(accountId, statusInt, out errorMsg);
 
                     if (errorMsg.Length > 0)
                     {
@@ -204,7 +204,7 @@ namespace AutotaskWebAPI.Controllers
 
                 if (parseResult)
                 {
-                    var result = api.GetTicketByAccountIdAndPriority(accountId, priorityInt, out errorMsg);
+                    var result = ticketsApi.GetTicketByAccountIdAndPriority(accountId, priorityInt, out errorMsg);
 
                     if (errorMsg.Length > 0)
                     {
@@ -241,7 +241,7 @@ namespace AutotaskWebAPI.Controllers
 
                 string errorMsg = string.Empty;
 
-                Ticket ticket = api.CreateTicket(details.AccountID, details.DueDateTime,
+                Ticket ticket = ticketsApi.CreateTicket(details.AccountID, details.DueDateTime,
                                                 details.Title, details.Description,
                                                 details.CreatorResourceID, details.Priority,
                                                 details.Status, details.AssignedResourceID,
