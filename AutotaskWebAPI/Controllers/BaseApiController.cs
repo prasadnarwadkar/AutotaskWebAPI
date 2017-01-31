@@ -33,7 +33,14 @@ namespace AutotaskWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage NotInitialized()
         {
-            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "API is not initialized. It needs valid API username and password. Please update web.config appSettings keys.");
+            if (!apiInitialized)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "API is not initialized. It needs valid API username and password. Please update web.config appSettings keys.");
+            }
+            else
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.OK, "Please specify action and parameters.");
+            }
         }
     }
 }
