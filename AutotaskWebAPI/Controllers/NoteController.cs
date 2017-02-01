@@ -98,9 +98,9 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
-        [Route("api/note/Post")]
+        [Route("api/note/PostTicketNote")]
         [HttpPost]
-        public HttpResponseMessage Post([FromBody] NoteDetails details)
+        public HttpResponseMessage PostTicketNote([FromBody] NoteDetails details)
         {
             if (!apiInitialized)
             {

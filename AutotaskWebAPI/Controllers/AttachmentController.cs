@@ -1,8 +1,10 @@
-﻿using AutotaskWebAPI.Models;
+﻿using AutotaskWebAPI.Autotask.Net.Webservices;
+using AutotaskWebAPI.Models;
 using System;
 using System.Configuration;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace AutotaskWebAPI.Controllers
@@ -130,5 +132,64 @@ namespace AutotaskWebAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
         }
+
+        // POST api/ticketattachment/post/
+        // Body:
+        // Form-data
+        // File1: file chosen by user from client side.
+        // name: file name
+        // TicketId: parent ticket id.
+        [Route("api/attachment/PostTicketAttachment")]
+        [HttpPost]
+        public HttpResponseMessage PostTicketAttachment()
+        {
+            if (HttpContext.Current.Request != null)
+            {
+                // Get the uploaded file from the Files collection
+                if (HttpContext.Current.Request.Files != null
+                    && HttpContext.Current.Request.Files.Count > 0)
+                {
+                    var httpPostedFile = HttpContext.Current.Request.Files[0];
+
+                    if (httpPostedFile != null)
+                    {
+                        Attachment attachment = new Attachment();
+                        attachment.Info = new AttachmentInfo();
+
+                        // Parent type for a ticket parent is 4.
+                        attachment.Info.ParentType = 4;
+
+                        attachment.Info.FullPath = HttpContext.Current.Request.Form["name"];
+                        attachment.Info.ParentID = HttpContext.Current.Request.Form["TicketId"];
+                        attachment.Info.Publish = 1;
+                        attachment.Info.Title = HttpContext.Current.Request.Form["name"];
+                        attachment.Info.Type = "FILE_ATTACHMENT";
+                        byte[] buffer = new byte[httpPostedFile.ContentLength];
+
+                        httpPostedFile.InputStream.Read(buffer, 0, httpPostedFile.ContentLength);
+                        attachment.Data = buffer;
+
+                        AutotaskAPI api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"],
+                                                        ConfigurationManager.AppSettings["APIPassword"]);
+
+                        string errorMsg = string.Empty;
+
+                        long id = attachmentsApi.CreateAttachment(attachment, out errorMsg);
+
+                        if (id > 0)
+                        {
+                            return Request.CreateResponse(HttpStatusCode.Created, id);
+                        }
+                        else
+                        {
+                            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMsg);
+                        }
+                    }
+                }
+            }
+
+            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "No files were attached.");
+        }
+
     }
 }

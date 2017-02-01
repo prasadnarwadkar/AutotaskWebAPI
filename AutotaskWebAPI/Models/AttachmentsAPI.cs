@@ -169,9 +169,27 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
-        public long CreateAttachment(Attachment attachment)
+        public long CreateAttachment(Attachment attachment, out string errorMsg)
         {
-            return api._atwsServices.CreateAttachment(attachment);
+            errorMsg = string.Empty;
+
+            try
+            {
+                return api._atwsServices.CreateAttachment(attachment);
+            }
+            catch (SoapException ex)
+            {
+                errorMsg = ex.Message;
+
+                return -1;
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+
+                return -1;
+            }
+
         }
     }
 }
