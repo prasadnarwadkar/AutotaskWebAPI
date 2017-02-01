@@ -17,14 +17,107 @@ namespace AutotaskWebAPI.Models
         }
 
         /// <summary>
+        /// Get role by id.
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <param name="errorMsg"></param>
+        /// <returns></returns>
+        public RoleDto GetRoleById(string roleId, out string errorMsg)
+        {
+            string ret = string.Empty;
+            errorMsg = string.Empty;
+
+            // Query
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>Role</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<field>id<expression op=\"equals\">");
+            strResource.Append(roleId);
+            strResource.Append("</expression></field>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = api._atwsServices.query(strResource.ToString());
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+            {
+                var role = (Role)respResource.EntityResults[0];
+
+                return new RoleDto {
+                    Id = role.id,
+                    Description = role.Description.ToString(),
+                    Name = role.Name.ToString()
+                };
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Get all roles.
+        /// </summary>
+        /// <param name="errorMsg"></param>
+        /// <returns></returns>
+        public List<RoleDto> GetAllRoles(out string errorMsg)
+        {
+            List<RoleDto> list = new List<RoleDto>();
+
+            string ret = string.Empty;
+            errorMsg = string.Empty;
+
+            // Query
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>Role</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<field>id<expression op=\"greaterthan\">");
+            strResource.Append(0);
+            strResource.Append("</expression></field>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = api._atwsServices.query(strResource.ToString());
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+            {
+                foreach (Entity entity in respResource.EntityResults)
+                {
+                    var role = (Role)entity;
+
+                    list.Add(new RoleDto
+                    {
+                        Id = role.id,
+                        Description = role.Description.ToString(),
+                        Name = role.Name.ToString()
+                    });
+                }
+
+                return list;
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
+
+                return list;
+            }
+
+            return list;           
+        }
+
+        /// <summary>
         /// Get resource role by resource id.
         /// </summary>
         /// <param name="resourceID"></param>
         /// <param name="errorMsg"></param>
         /// <returns></returns>
-        public List<ResourceRole> GetRoleByResourceId(string resourceID, out string errorMsg)
+        public List<ResourceRoleDto> GetRoleByResourceId(string resourceID, out string errorMsg)
         {
-            List<ResourceRole> list = new List<ResourceRole>();
+            List<ResourceRoleDto> list = new List<ResourceRoleDto>();
 
             string ret = string.Empty;
             errorMsg = string.Empty;
@@ -45,7 +138,22 @@ namespace AutotaskWebAPI.Models
             {
                 foreach (Entity entity in respResource.EntityResults)
                 {
-                    list.Add((ResourceRole)entity);
+                    var resourceRole = (ResourceRole)entity;
+
+                    if (!string.IsNullOrEmpty(resourceRole.RoleID.ToString()))
+                    {
+                        var role = GetRoleById(resourceRole.RoleID.ToString(), out errorMsg);
+
+                        if (role != null)
+                        {
+                            list.Add(new ResourceRoleDto {
+                                ResourceId = Convert.ToInt32(resourceID),
+                                RoleDescription = role.Description,
+                                RoleId = role.Id,
+                                RoleName = role.Name
+                            });
+                        }
+                    }
                 }
             }
             else if (respResource.Errors != null &&

@@ -141,9 +141,9 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
-        [Route("api/resource/GetRoleIdByResourceId/{resourceId}")]
+        [Route("api/resource/GetRoleByResourceId/{resourceId}")]
         [HttpGet]
-        public HttpResponseMessage GetRoleIdByResourceId(string resourceId)
+        public HttpResponseMessage GetRoleByResourceId(string resourceId)
         {
             if (!apiInitialized)
             {
@@ -155,6 +155,58 @@ namespace AutotaskWebAPI.Controllers
             string errorMsg = string.Empty;
 
             var result = resourceRolesApi.GetRoleByResourceId(resourceId, out errorMsg);
+
+            if (errorMsg.Length > 0)
+            {
+                // There is an error.
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+        }
+
+        [Route("api/resource/GetRoleById/{roleId}")]
+        [HttpGet]
+        public HttpResponseMessage GetRoleById(string roleId)
+        {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
+            string errorMsg = string.Empty;
+
+            var result = resourceRolesApi.GetRoleById(roleId, out errorMsg);
+
+            if (errorMsg.Length > 0)
+            {
+                // There is an error.
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+        }
+
+        [Route("api/resource/GetAllRoles")]
+        [HttpGet]
+        public HttpResponseMessage GetAllRoles()
+        {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
+            string errorMsg = string.Empty;
+
+            var result = resourceRolesApi.GetAllRoles(out errorMsg);
 
             if (errorMsg.Length > 0)
             {
