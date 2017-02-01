@@ -27,6 +27,11 @@ namespace AutotaskWebAPI.Models
             // Time to create the Task.
             Task task = new Task();
 
+            if (projectId < 1)
+            {
+                throw new ArgumentException("Project ID sent is invalid.");
+            }
+
             // Bare-minimum number of fields needed to create the task.
             task.ProjectID = projectId;
             task.Status = status;

@@ -260,6 +260,10 @@ namespace AutotaskWebAPI.Controllers
                     return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
                 }
             }
+            catch (ArgumentException ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
             catch (Exception ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
