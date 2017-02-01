@@ -194,6 +194,7 @@
     <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\NoteController.cs" />
     <Compile Include="Controllers\PicklistController.cs" />
+    <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\ResourceController.cs" />
     <Compile Include="Controllers\TicketController.cs" />
     <Compile Include="Models\AccountsAPI.cs" />
@@ -212,6 +213,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\InvoiceDto.cs" />
     <Compile Include="Models\ResourceRolesAPI.cs" />
+    <Compile Include="Models\ContactsAPI.cs" />
     <Compile Include="Models\TicketsAPI.cs" />
     <Compile Include="Models\ResourcesAPI.cs" />
     <Compile Include="Models\TicketNoteDto.cs" />

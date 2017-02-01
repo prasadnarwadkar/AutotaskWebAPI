@@ -21,6 +21,7 @@ namespace AutotaskWebAPI.Controllers
         protected NotesAPI notesApi = null;
         protected AttachmentsAPI attachmentsApi = null;
         protected ResourceRolesAPI resourceRolesApi = null;
+        protected ContactsAPI contactsApi = null;
 
         public BaseApiController()
         {
@@ -35,6 +36,7 @@ namespace AutotaskWebAPI.Controllers
                 notesApi = new NotesAPI(api);
                 attachmentsApi = new AttachmentsAPI(api);
                 resourceRolesApi = new ResourceRolesAPI(api);
+                contactsApi = new ContactsAPI(api);
             }
             catch (ArgumentException)
             {
