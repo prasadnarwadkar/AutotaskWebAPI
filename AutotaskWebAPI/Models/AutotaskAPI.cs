@@ -120,6 +120,36 @@ namespace AutotaskWebAPI.Models
             }
         }
 
+        public PickListValue[] GetPickListLabelsByField(string entityType, string fieldName,
+                                                out string errorMsg)
+        {
+            errorMsg = string.Empty;
+
+            try
+            {
+                var fields = this._atwsServices.GetFieldInfo(entityType);
+
+                return AutotaskAPI.PickListLabelsFromField(fields, fieldName);
+            }
+
+            catch (SoapException ex)
+            {
+                errorMsg = ex.Message;
+
+                // This is sort of fatal exception. The entity name or field name or 
+                // both are incorrect and might not exist.
+                return null;
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+
+                // This is sort of fatal exception. The entity name or field name or 
+                // both are incorrect and might not exist.
+                return null;
+            }
+        }
+
         /// <summary>
         /// Used to find a specific Field in an array based on the name
         /// </summary>
@@ -154,6 +184,26 @@ namespace AutotaskWebAPI.Models
             }
 
             return strRet;
+        }
+
+        /// <summary>
+        /// Returns the labels of a picklist field
+        /// </summary>
+        /// <param name="fields">entity fields</param>
+        /// <param name="strField">picklick to choose from</param>
+        /// <returns>picklist label</returns>
+        protected static PickListValue[] PickListLabelsFromField(Field[] fields, string strField)
+        {
+            string strRet = string.Empty;
+
+            Field fldFieldToFind = FindField(fields, strField);
+
+            if (fldFieldToFind == null)
+            {
+                throw new Exception("Could not get the " + strField + " field from the collection");
+            }
+
+            return fldFieldToFind.PicklistValues;
         }
 
         /// <summary>

@@ -211,6 +211,7 @@
     <Compile Include="Models\AutotaskAPI.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\InvoiceDto.cs" />
+    <Compile Include="Models\ResourceRolesAPI.cs" />
     <Compile Include="Models\TicketsAPI.cs" />
     <Compile Include="Models\ResourcesAPI.cs" />
     <Compile Include="Models\TicketNoteDto.cs" />

@@ -37,5 +37,31 @@ namespace AutotaskWebAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
         }
+
+        [Route("api/picklist/GetLabels/{entityType}/{fieldName}")]
+        [HttpGet]
+        public HttpResponseMessage GetLabels(string entityType, string fieldName)
+        {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
+            string errorMsg = string.Empty;
+
+            var result = api.GetPickListLabelsByField(entityType, fieldName, out errorMsg);
+
+            if (errorMsg.Length > 0)
+            {
+                // There is an error.
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+        }
     }
 }

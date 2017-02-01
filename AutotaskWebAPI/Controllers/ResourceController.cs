@@ -140,5 +140,31 @@ namespace AutotaskWebAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
         }
+
+        [Route("api/resource/GetRoleIdByResourceId/{resourceId}")]
+        [HttpGet]
+        public HttpResponseMessage GetRoleIdByResourceId(string resourceId)
+        {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
+            string errorMsg = string.Empty;
+
+            var result = resourceRolesApi.GetRoleByResourceId(resourceId, out errorMsg);
+
+            if (errorMsg.Length > 0)
+            {
+                // There is an error.
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+        }
     }
 }
