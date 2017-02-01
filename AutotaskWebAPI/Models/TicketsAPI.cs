@@ -16,6 +16,89 @@ namespace AutotaskWebAPI.Models
             api = apiInstance;
         }
 
+        public long UpdateTicket(TicketUpdateDetails ticketToUpdate, out string errorMsg)
+        {
+            try
+            {
+                errorMsg = string.Empty;
+
+                if (ticketToUpdate == null)
+                {
+                    throw new ArgumentNullException("Ticket to Update is null.");
+                }
+
+                if (ticketToUpdate.ID < 1)
+                {
+                    throw new ArgumentException("Id of the ticket to update is invalid.");
+                }
+
+                var tickets = GetTicketById(ticketToUpdate.ID.ToString(), out errorMsg);
+
+                if (errorMsg.Length == 0)
+                {
+                    var ticket = tickets[0];
+
+                    ticket.AccountID = ticketToUpdate.AccountID;
+                    ticket.AllocationCodeID = ticketToUpdate.AllocationCodeID;
+                    ticket.AssignedResourceID = ticketToUpdate.AssignedResourceID;
+                    ticket.AssignedResourceRoleID = ticketToUpdate.AssignedResourceRoleID;
+                    ticket.ContactID = ticketToUpdate.ContactID;
+                    ticket.ContractID = ticketToUpdate.ContractID;
+                    ticket.Description = ticketToUpdate.Description;
+                    ticket.DueDateTime = ticketToUpdate.DueDateTime;
+                    ticket.EstimatedHours = ticketToUpdate.EstimatedHours;
+                    ticket.IssueType = ticketToUpdate.IssueType;
+                    ticket.OpportunityId = ticketToUpdate.OpportunityId;
+                    ticket.QueueID = ticketToUpdate.QueueID;
+                    ticket.Resolution = ticketToUpdate.Resolution;
+                    ticket.ProblemTicketId = ticketToUpdate.ProblemTicketId;
+                    ticket.PurchaseOrderNumber = ticketToUpdate.PurchaseOrderNumber;
+                    ticket.ServiceLevelAgreementID = ticketToUpdate.ServiceLevelAgreementID;
+                    ticket.Source = ticketToUpdate.Source;
+                    ticket.Status = ticketToUpdate.Status;
+                    ticket.SubIssueType = ticketToUpdate.SubIssueType;
+                    ticket.TicketType = ticketToUpdate.TicketType;
+                    ticket.Title = ticketToUpdate.Title;
+
+                    ticket.InstalledProductID = ticketToUpdate.InstalledProductID;
+                    ticket.ChangeApprovalBoard = ticketToUpdate.ChangeApprovalBoard;
+                    ticket.ChangeApprovalStatus = ticketToUpdate.ChangeApprovalStatus;
+                    ticket.ChangeApprovalType = ticketToUpdate.ChangeApprovalType;
+                    ticket.ChangeInfoField1 = ticketToUpdate.ChangeInfoField1;
+                    ticket.ChangeInfoField2 = ticketToUpdate.ChangeInfoField2;
+                    ticket.ChangeInfoField3 = ticketToUpdate.ChangeInfoField3;
+                    ticket.ChangeInfoField4 = ticketToUpdate.ChangeInfoField4;
+                    ticket.ChangeInfoField5 = ticketToUpdate.ChangeInfoField5;
+
+                    ticket.Priority = ticketToUpdate.Priority;
+                    ticket.ContractServiceID = ticketToUpdate.ContractServiceID;
+                    ticket.ContractServiceBundleID = ticketToUpdate.ContractServiceBundleID;
+
+                    Entity[] entityArray = new Entity[] { ticket };
+                    ATWSResponse respUpdate = api._atwsServices.update(entityArray);
+
+                    if (respUpdate.ReturnCode > 0 && respUpdate.EntityResults.Length > 0)
+                    {
+                        return ((Ticket)respUpdate.EntityResults[0]).id;
+                    }
+                    else if (respUpdate.Errors != null &&
+                            respUpdate.Errors.Length > 0)
+                    {
+                        errorMsg = respUpdate.Errors[0].Message;
+
+                        return 0;
+                    }
+                }
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                return 0;
+            }
+        }
+
         public Ticket CreateTicket(long accountId, string dueDateTime,
                                                             string title,
                                         string description, long creatorResourceID,

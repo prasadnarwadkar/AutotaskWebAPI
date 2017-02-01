@@ -262,5 +262,47 @@ namespace AutotaskWebAPI.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        [Route("api/ticket/UpdateTicket")]
+        [HttpPost]
+        public HttpResponseMessage UpdateTicket([FromBody] TicketUpdateDetails details)
+        {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
+            try
+            {
+                if (details == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "No ticket details are passed");
+                }
+
+                string errorMsg = string.Empty;
+
+                var id = ticketsApi.UpdateTicket(details, out errorMsg);
+
+                if (id > 0)
+                {
+                    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Accepted, id);
+                    return response;
+                }
+                else
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
     }
 }
