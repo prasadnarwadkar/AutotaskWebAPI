@@ -196,9 +196,11 @@
     <Compile Include="Controllers\PicklistController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\ResourceController.cs" />
+    <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Controllers\TicketController.cs" />
     <Compile Include="Models\AccountsAPI.cs" />
     <Compile Include="Models\AttachmentsAPI.cs" />
+    <Compile Include="Models\DtoModels.cs" />
     <Compile Include="Models\InvoicesAPI.cs" />
     <Compile Include="Models\NotesAPI.cs" />
     <Compile Include="Models\ResourceDetails.cs" />
@@ -215,6 +217,7 @@
     <Compile Include="Models\ResourceRoleDto.cs" />
     <Compile Include="Models\ResourceRolesAPI.cs" />
     <Compile Include="Models\ContactsAPI.cs" />
+    <Compile Include="Models\TasksAPI.cs" />
     <Compile Include="Models\TicketsAPI.cs" />
     <Compile Include="Models\ResourcesAPI.cs" />
     <Compile Include="Models\TicketNoteDto.cs" />

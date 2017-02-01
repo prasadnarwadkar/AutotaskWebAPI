@@ -22,6 +22,7 @@ namespace AutotaskWebAPI.Controllers
         protected AttachmentsAPI attachmentsApi = null;
         protected ResourceRolesAPI resourceRolesApi = null;
         protected ContactsAPI contactsApi = null;
+        protected TasksAPI tasksApi = null;
 
         public BaseApiController()
         {
@@ -29,7 +30,9 @@ namespace AutotaskWebAPI.Controllers
             {
                 api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"],
                                         ConfigurationManager.AppSettings["APIPassword"]);
+
                 apiInitialized = true;
+
                 resourcesApi = new ResourcesAPI(api);
                 ticketsApi = new TicketsAPI(api);
                 accountsApi = new AccountsAPI(api);
@@ -37,6 +40,7 @@ namespace AutotaskWebAPI.Controllers
                 attachmentsApi = new AttachmentsAPI(api);
                 resourceRolesApi = new ResourceRolesAPI(api);
                 contactsApi = new ContactsAPI(api);
+                tasksApi = new TasksAPI(api);
             }
             catch (ArgumentException)
             {
