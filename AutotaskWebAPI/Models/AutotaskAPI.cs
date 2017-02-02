@@ -12,8 +12,11 @@ namespace AutotaskWebAPI.Models
     /// <summary>
     /// Public Class AutotaskAPI.
     /// </summary>
-    public class AutotaskAPI
+    public class AutotaskAPI : IDisposable
 	{
+        /// <summary>
+        /// Autotask SOAP API client.
+        /// </summary>
 		public ATWS _atwsServices = null;
         private int utcOffsetInMins = Convert.ToInt32(ConfigurationManager.AppSettings["utcOffsetInMins"]);
         private string _webServiceBaseAPIURL = ConfigurationManager.AppSettings["APIServiceURLZoneInfo"];
@@ -67,7 +70,23 @@ namespace AutotaskWebAPI.Models
             {
                 throw new Exception("Error with getZoneInfo()- error: " + ex.Message);
             }
-        }       
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // dispose managed resources
+                _atwsServices.Dispose();
+            }
+            // free native resources
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         /// <summary>
         /// Get pick list label given its value.

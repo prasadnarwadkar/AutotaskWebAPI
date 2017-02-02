@@ -1,6 +1,7 @@
 ﻿using AutotaskWebAPI.Autotask.Net.Webservices;
 using AutotaskWebAPI.Models;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Schema;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -91,6 +92,11 @@ namespace AutotaskWebAPI.Controllers
 
                 if (details["EntityType"] != null)
                 {
+                    if (details["EntityObj"] == null)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "EntityObj key and value is not sent in JSON body. It is required for creating an entity.");
+                    }
+
                     switch (details["EntityType"].ToString())
                     {
                         case "Task":
@@ -167,6 +173,11 @@ namespace AutotaskWebAPI.Controllers
 
                 if (details["EntityType"] != null)
                 {
+                    if (details["EntityObj"] == null)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "EntityObj key and value is not sent in JSON body. It is required for updating an entity.");
+                    }
+
                     switch (details["EntityType"].ToString())
                     {
                         case "Task":

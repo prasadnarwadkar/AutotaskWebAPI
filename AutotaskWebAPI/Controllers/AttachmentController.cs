@@ -211,7 +211,7 @@ namespace AutotaskWebAPI.Controllers
                         }
                         else
                         {
-                            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMsg);
+                            return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
                         }
                     }
                 }
