@@ -1,10 +1,58 @@
-﻿using System;
+﻿using AutotaskWebAPI.Autotask.Net.Webservices;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
 namespace AutotaskWebAPI.Models
 {
+    /// <summary>
+    /// Generic entity details.
+    /// </summary>
+    public class EntityDetails
+    {
+        /// <summary>
+        /// This can contain any entity, Ticket, TicketNote, Task etc.
+        /// </summary>
+        public Entity EntityObj { get; set; }
+    }
+
+    /// <summary>
+    /// Details of a TicketNote to create it.
+    /// </summary>
+    public class NoteDetails
+    {
+        /// <summary>
+        /// Ticket id. Parent of the note.
+        /// </summary>
+        public long TicketId { get; set; }
+
+        /// <summary>
+        /// Note creator resource id.
+        /// </summary>
+        public long CreatorResourceId { get; set; }
+
+        /// <summary>
+        /// Note title
+        /// </summary>
+        public string Title { get; set; }
+
+        /// <summary>
+        /// Note description.
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
+        /// Note type
+        /// </summary>
+        public long NoteType { get; set; }
+
+        /// <summary>
+        /// Publish the note?. Set 1 to publish.
+        /// </summary>
+        public long Publish { get; set; }
+    }
+
     /// <summary>
     /// Ticket details required to update it.
     /// </summary>

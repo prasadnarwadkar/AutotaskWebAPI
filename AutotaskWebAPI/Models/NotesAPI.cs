@@ -128,11 +128,22 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
+        /// <summary>
+        /// Create a ticket note.
+        /// </summary>
+        /// <param name="ticketId"></param>
+        /// <param name="title"></param>
+        /// <param name="description"></param>
+        /// <param name="creatorResourceID"></param>
+        /// <param name="noteType"></param>
+        /// <param name="publish"></param>
+        /// <param name="errorMsg"></param>
+        /// <returns>Created Ticket Note</returns>
         public TicketNote CreateTicketNote(long ticketId, string title,
                                         string description, long creatorResourceID,
-                                        long noteType, long publish)
+                                        long noteType, long publish, out string errorMsg)
         {
-            TicketNote retNote = null;
+            errorMsg = string.Empty;
 
             // Time to create the Note.
             TicketNote noteAct = new TicketNote();
@@ -147,19 +158,20 @@ namespace AutotaskWebAPI.Models
             Entity[] entNote = new Entity[] { noteAct };
 
             ATWSResponse respNote = api._atwsServices.create(entNote);
+
             if (respNote.ReturnCode > 0 && respNote.EntityResults.Length > 0)
             {
-                retNote = (TicketNote)respNote.EntityResults[0];
+                return (TicketNote)respNote.EntityResults[0];
             }
-            else
+            else if (respNote.Errors != null &&
+                    respNote.Errors.Length > 0)
             {
-                if (respNote.EntityReturnInfoResults.Length > 0)
-                {
-                    throw new Exception("Could not create the Contact: " + respNote.EntityReturnInfoResults[0].Message);
-                }
+                errorMsg = respNote.Errors[0].Message;
+
+                return null;
             }
 
-            return retNote;
+            return null;
         }
     }
 

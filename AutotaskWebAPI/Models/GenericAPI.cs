@@ -60,7 +60,78 @@ namespace AutotaskWebAPI.Models
 
             return list;
         }
+
+        public Entity UpdateEntity(Entity entityToUpdate, out string errorMsg)
+        {
+            try
+            {
+                errorMsg = string.Empty;
+
+                if (entityToUpdate == null)
+                {
+                    throw new ArgumentNullException("Entity to Update is null.");
+                }
+
+                if (entityToUpdate.id < 1)
+                {
+                    throw new ArgumentException("Id of the entity to update is invalid.");
+                }
+
+                if (errorMsg.Length == 0)
+                {
+                    Entity[] entityArray = new Entity[] { entityToUpdate };
+                    ATWSResponse respUpdate = api._atwsServices.update(entityArray);
+
+                    if (respUpdate.ReturnCode > 0 && respUpdate.EntityResults.Length > 0)
+                    {
+                        return respUpdate.EntityResults[0];
+                    }
+                    else if (respUpdate.Errors != null &&
+                            respUpdate.Errors.Length > 0)
+                    {
+                        errorMsg = respUpdate.Errors[0].Message;
+
+                        return null;
+                    }
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                return null;
+            }
+        }
+
+        public Entity CreateEntity(Entity entityToCreate, out string errorMsg)
+        {
+            errorMsg = string.Empty;
+
+            if (entityToCreate == null)
+            {
+                throw new ArgumentNullException("Entity to create is null.");
+            }
+
+            Entity[] entityArray = new Entity[] { entityToCreate };
+
+            ATWSResponse response = api._atwsServices.create(entityArray);
+
+            if (response.ReturnCode > 0 && response.EntityResults.Length > 0)
+            {
+                return response.EntityResults[0];
+            }
+            else
+            {
+                if (response != null && response.Errors != null
+                    && response.Errors.Length > 0)
+                {
+                    errorMsg = response.Errors[0].Message;
+                    return null;
+                }
+            }
+
+            return null;
+        }
     }
-
-
 }

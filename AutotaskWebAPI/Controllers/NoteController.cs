@@ -10,42 +10,6 @@ using System.Web.Http;
 namespace AutotaskWebAPI.Controllers
 {
     /// <summary>
-    /// Details of a TicketNote to create it.
-    /// </summary>
-    public class NoteDetails
-    {
-        /// <summary>
-        /// Ticket id. Parent of the note.
-        /// </summary>
-        public long TicketId { get; set; }
-
-        /// <summary>
-        /// Note creator resource id.
-        /// </summary>
-        public long CreatorResourceId { get; set; }
-
-        /// <summary>
-        /// Note title
-        /// </summary>
-        public string Title { get; set; }
-
-        /// <summary>
-        /// Note description.
-        /// </summary>
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Note type
-        /// </summary>
-        public long NoteType { get; set; }
-
-        /// <summary>
-        /// Publish the note?. Set 1 to publish.
-        /// </summary>
-        public long Publish { get; set; }
-    }
-
-    /// <summary>
     /// Provides API for TicketNote entity in Autotask.
     /// </summary>
     public class NoteController : BaseApiController
@@ -166,10 +130,13 @@ namespace AutotaskWebAPI.Controllers
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Bad Request: Note details passed are null or invalid");
                 }
 
+                string errorMsg = string.Empty;
+
                 TicketNote note = notesApi.CreateTicketNote(Convert.ToInt32(details.TicketId), 
                                             details.Title.ToString(),
                                             details.Description.ToString(), Convert.ToInt32(details.CreatorResourceId),
-                                            Convert.ToInt32(details.NoteType), Convert.ToInt32(details.Publish));
+                                            Convert.ToInt32(details.NoteType), Convert.ToInt32(details.Publish),
+                                            out errorMsg);
 
                 if (note != null)
                 {
@@ -177,7 +144,7 @@ namespace AutotaskWebAPI.Controllers
                 }
                 else
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Could not create note due to internal server error");
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
                 }
             }
             catch (Exception ex)
