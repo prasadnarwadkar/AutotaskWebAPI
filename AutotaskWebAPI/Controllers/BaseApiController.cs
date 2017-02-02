@@ -23,6 +23,7 @@ namespace AutotaskWebAPI.Controllers
         protected ResourceRolesAPI resourceRolesApi = null;
         protected ContactsAPI contactsApi = null;
         protected TasksAPI tasksApi = null;
+        protected ContractsAPI contractsApi = null;
 
         public BaseApiController()
         {
@@ -41,6 +42,7 @@ namespace AutotaskWebAPI.Controllers
                 resourceRolesApi = new ResourceRolesAPI(api);
                 contactsApi = new ContactsAPI(api);
                 tasksApi = new TasksAPI(api);
+                contractsApi = new ContractsAPI(api);
             }
             catch (ArgumentException)
             {
