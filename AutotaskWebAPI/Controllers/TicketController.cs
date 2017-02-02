@@ -9,8 +9,16 @@ using System.Web.Http;
 
 namespace AutotaskWebAPI.Controllers
 {
+    /// <summary>
+    /// Provides API for Ticket entity in Autotask.
+    /// </summary>
     public class TicketController : BaseApiController
     {
+        /// <summary>
+        /// Get Ticket(s) by account id.
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
         [Route("api/ticket/GetByAccountId/{accountId}")]
         [HttpGet]
         public HttpResponseMessage GetByAccountId(string accountId)
@@ -37,6 +45,11 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get Ticket by its id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Route("api/ticket/GetById/{id}")]
         [HttpGet]
         public HttpResponseMessage GetById(string id)
@@ -63,6 +76,11 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get Ticket(s) by creator resource id.
+        /// </summary>
+        /// <param name="creatorResourceId">Id of the resource who created the Ticket(s).</param>
+        /// <returns></returns>
         [Route("api/ticket/GetByCreatorResourceId/{creatorResourceId}")]
         [HttpGet]
         public HttpResponseMessage GetByCreatorResourceId(string creatorResourceId)
@@ -89,6 +107,11 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get Ticket(s) which have activity in them after the date passed-in as argument.
+        /// </summary>
+        /// <param name="lastActivityDate"></param>
+        /// <returns></returns>
         [Route("api/ticket/GetByLastActivityDate/{lastActivityDate}")]
         [HttpGet]
         public HttpResponseMessage GetByLastActivityDate(string lastActivityDate)
@@ -114,14 +137,14 @@ namespace AutotaskWebAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
         }
-        
-        [Route("api/ticket/GetByAccountIdAndStatus/{accountId}/{status}")]
+
         /// <summary>
         /// Get tickets by status. e.g. Status of 8 means "In Progress".
         /// </summary>
         /// <param name="accountId">Account id to which the ticket(s) belong.</param>
         /// <param name="status">Status as an integer passed as string. e.g. "8".</param>
         /// <returns>List of tickets.</returns>
+        [Route("api/ticket/GetByAccountIdAndStatus/{accountId}/{status}")]
         [HttpGet]
         public HttpResponseMessage GetByAccountIdAndStatus(string accountId, string status)
         {
@@ -221,6 +244,11 @@ namespace AutotaskWebAPI.Controllers
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Priority or account id passed is not an integer.");
         }
 
+        /// <summary>
+        /// Create a Ticket in Autotask.
+        /// </summary>
+        /// <param name="details">Details of Ticket to create.</param>
+        /// <returns></returns>
         [Route("api/ticket/PostTicket")]
         [HttpPost]
         public HttpResponseMessage PostTicket([FromBody] TicketDetails details)
@@ -263,6 +291,11 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Update a ticket in Autotask.
+        /// </summary>
+        /// <param name="details">Details of Ticket to update.</param>
+        /// <returns></returns>
         [Route("api/ticket/UpdateTicket")]
         [HttpPost]
         public HttpResponseMessage UpdateTicket([FromBody] TicketUpdateDetails details)

@@ -9,13 +9,16 @@ using System.Web.Http;
 
 namespace AutotaskWebAPI.Controllers
 {
+    /// <summary>
+    /// Provides API for Account entity in Autotask.
+    /// </summary>
     public class AccountController : BaseApiController
     {
         /// <summary>
         /// Get account by name.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="name">Account name begins with</param>
+        /// <returns>All accounts whose names begin with passed name.</returns>
         [Route("api/account/GetByName/{name}")]
         public HttpResponseMessage GetByName(string name)
         {
@@ -41,6 +44,11 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get account(s) given date of last activity in the account.
+        /// </summary>
+        /// <param name="lastActivityDate">Date in the format YYYY-MM-DD. e.g. 2017-01-12</param>
+        /// <returns></returns>
         [Route("api/account/GetByLastActivityDate/{lastActivityDate}")]
         [HttpGet]
         public HttpResponseMessage GetByLastActivityDate(string lastActivityDate)
@@ -67,6 +75,11 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get account(s) given an account number.
+        /// </summary>
+        /// <param name="accountNumber">Account Number</param>
+        /// <returns></returns>
         [Route("api/account/GetByNumber/{accountNumber}")]
         [HttpGet]
         public HttpResponseMessage GetByNumber(string accountNumber)
@@ -93,6 +106,11 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get account(s) given an account id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Route("api/account/GetById/{id}")]
         [HttpGet]
         public HttpResponseMessage GetById(string id)

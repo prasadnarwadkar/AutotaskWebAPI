@@ -9,8 +9,16 @@ using System.Web.Http;
 
 namespace AutotaskWebAPI.Controllers
 {
+    /// <summary>
+    /// Provides API for Contract entity in Autotask.
+    /// </summary>
     public class ContractController : BaseApiController
     {
+        /// <summary>
+        /// Get a Contract by its id.
+        /// </summary>
+        /// <param name="id">Contract id</param>
+        /// <returns>Contract</returns>
         [Route("api/contract/GetById/{id}")]
         [HttpGet]
         public HttpResponseMessage GetById(string id)
@@ -37,6 +45,11 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get a Contract by its opportunity id.
+        /// </summary>
+        /// <param name="opportunityId"></param>
+        /// <returns>Contract(s)</returns>
         [Route("api/contract/GetByOpportunityId/{opportunityId}")]
         [HttpGet]
         public HttpResponseMessage GetByOpportunityId(string opportunityId)
@@ -63,6 +76,11 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get contract given its contact id.
+        /// </summary>
+        /// <param name="contactId">Contact id</param>
+        /// <returns>Contract(s)</returns>
         [Route("api/contract/GetByContactId/{contactId}")]
         [HttpGet]
         public HttpResponseMessage GetByContactId(string contactId)
@@ -89,6 +107,11 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get a Contract by its account id.
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
         [Route("api/contract/GetByAccountId/{accountId}")]
         [HttpGet]
         public HttpResponseMessage GetByAccountId(string accountId)

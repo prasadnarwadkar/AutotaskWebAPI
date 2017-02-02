@@ -9,8 +9,16 @@ using System.Web.Http;
 
 namespace AutotaskWebAPI.Controllers
 {
+    /// <summary>
+    /// Provides API for Attachments in Autotask.
+    /// </summary>
     public class AttachmentController : BaseApiController
     {
+        /// <summary>
+        /// Get attachment(s) by parent id. A parent could be a Ticket for example.
+        /// </summary>
+        /// <param name="parentId"></param>
+        /// <returns></returns>
         [Route("api/attachment/GetInfoByParentId/{parentId}")]
         [HttpGet]
         public HttpResponseMessage GetInfoByParentId(string parentId)
@@ -37,6 +45,11 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get attachment by id.
+        /// </summary>
+        /// <param name="id">attachment id</param>
+        /// <returns></returns>
         [Route("api/attachment/GetById/{id}")]
         [HttpGet]
         public HttpResponseMessage GetById(string id)
@@ -79,6 +92,11 @@ namespace AutotaskWebAPI.Controllers
             }            
         }
 
+        /// <summary>
+        /// Get attachment(s) by date.
+        /// </summary>
+        /// <param name="attachDate">Date Format: YYYY-MM-DD</param>
+        /// <returns>All attachments attached to their parents respectively after given date.</returns>
         [Route("api/attachment/GetInfoByAttachDate/{attachDate}")]
         [HttpGet]
         public HttpResponseMessage GetInfoByAttachDate(string attachDate)
@@ -105,6 +123,13 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get attachment(s) by date and parent id. 
+        /// A parent could be a Ticket for example.
+        /// </summary>
+        /// <param name="parentId"></param>
+        /// <param name="attachDate"></param>
+        /// <returns>All attachments attached to their parents respectively after given date.</returns>
         [Route("api/attachment/GetInfoByParentIdAndAttachDate/{parentId}/{attachDate}")]
         [HttpGet]
         public HttpResponseMessage GetInfoByParentIdAndAttachDate(string parentId, string attachDate)
@@ -133,12 +158,16 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
-        // POST api/ticketattachment/post/
-        // Body:
-        // Form-data
-        // File1: file chosen by user from client side.
-        // name: file name
-        // TicketId: parent ticket id.
+        /// <summary>
+        /// Create an attachment.
+        /// POST api/ticketattachment/post/
+        /// Body:
+        /// Form-data
+        /// File1: file chosen by user from client side.
+        /// name: file name
+        /// TicketId: parent ticket id.
+        /// </summary>
+        /// <returns></returns>
         [Route("api/attachment/PostTicketAttachment")]
         [HttpPost]
         public HttpResponseMessage PostTicketAttachment()

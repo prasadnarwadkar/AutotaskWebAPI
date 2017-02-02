@@ -9,8 +9,19 @@ using System.Web.Http;
 
 namespace AutotaskWebAPI.Controllers
 {
+    /// <summary>
+    /// Provides API for Picklist in Autotask.
+    /// </summary>
     public class PicklistController : BaseApiController
     {
+        /// <summary>
+        /// Get a picklist label given an entity name, field name and 
+        /// value to search.
+        /// </summary>
+        /// <param name="entityType">e.g. Ticket</param>
+        /// <param name="fieldName">e.g. Status</param>
+        /// <param name="valueToSearch">e.g. 8</param>
+        /// <returns></returns>
         [Route("api/picklist/GetLabel/{entityType}/{fieldName}/{valueToSearch}")]
         [HttpGet]
         public HttpResponseMessage GetLabel(string entityType, string fieldName,
@@ -38,6 +49,12 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get all picklist labels given an entity name and field name.
+        /// </summary>
+        /// <param name="entityType">Ticket</param>
+        /// <param name="fieldName">Status</param>
+        /// <returns>All status labels to display which represent integer values.</returns>
         [Route("api/picklist/GetLabels/{entityType}/{fieldName}")]
         [HttpGet]
         public HttpResponseMessage GetLabels(string entityType, string fieldName)

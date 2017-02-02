@@ -54,8 +54,8 @@ namespace AutotaskWebAPI.Models
         /// <summary>
         /// Get account by id
         /// </summary>
-        /// <param name="num"></param>
-        /// <param name="errorMsg"></param>
+        /// <param name="id">Account id</param>
+        /// <param name="errorMsg">Error message from API</param>
         /// <returns></returns>
         public List<Account> GetAccountById(string id, out string errorMsg)
         {
@@ -93,7 +93,7 @@ namespace AutotaskWebAPI.Models
         }
 
         /// <summary>
-        /// Get account given its name. Uses Like search.
+        /// Get account given its name. Uses BeginsWith search.
         /// </summary>
         /// <param name="accountName"></param>
         /// <param name="errorMsg"></param>

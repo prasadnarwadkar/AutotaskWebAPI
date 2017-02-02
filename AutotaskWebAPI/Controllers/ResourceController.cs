@@ -9,8 +9,16 @@ using System.Web.Http;
 
 namespace AutotaskWebAPI.Controllers
 {
+    /// <summary>
+    /// Provides API for Resource entity in Autotask.
+    /// </summary>
     public class ResourceController : BaseApiController
     {
+        /// <summary>
+        /// Get a resource by its id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Route("api/resource/GetById/{id}")]
         [HttpGet]
         public HttpResponseMessage GetById(string id)
@@ -37,6 +45,13 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get Resource(s) by first name and last name.
+        /// Uses 'beginswith' search.
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <returns></returns>
         [Route("api/resource/GetByName/{firstName}/{lastName}")]
         [HttpGet]
         public HttpResponseMessage GetByName(string firstName, string lastName)
@@ -63,6 +78,12 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get a resource given email address.
+        /// Uses exact match to given email address.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         [Route("api/resource/GetByEmail/{email}")]
         [HttpGet]
         public HttpResponseMessage GetByEmail(string email)
@@ -89,6 +110,12 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get a resource given username.
+        /// Uses exact match to given username.
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
         [Route("api/resource/GetByUsername/{userName}")]
         [HttpGet]
         public HttpResponseMessage GetByUsername(string userName)
@@ -115,6 +142,11 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get a resource given location id.
+        /// </summary>
+        /// <param name="locationId"></param>
+        /// <returns></returns>
         [Route("api/resource/GetByLocationId/{locationId}")]
         [HttpGet]
         public HttpResponseMessage GetByLocationId(string locationId)
@@ -141,6 +173,11 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get roles of a resource given a resource id.
+        /// </summary>
+        /// <param name="resourceId"></param>
+        /// <returns>List of roles for a resource.</returns>
         [Route("api/resource/GetRoleByResourceId/{resourceId}")]
         [HttpGet]
         public HttpResponseMessage GetRoleByResourceId(string resourceId)
@@ -167,6 +204,11 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get role name, and description given its id.
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <returns>Role details object.</returns>
         [Route("api/resource/GetRoleById/{roleId}")]
         [HttpGet]
         public HttpResponseMessage GetRoleById(string roleId)
@@ -193,6 +235,11 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get role details of all roles.
+        /// </summary>
+        /// <returns>List of all Role details objects. Each details object has Role id, name
+        /// and description.</returns>
         [Route("api/resource/GetAllRoles")]
         [HttpGet]
         public HttpResponseMessage GetAllRoles()

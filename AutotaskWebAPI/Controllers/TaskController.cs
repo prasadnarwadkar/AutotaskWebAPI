@@ -9,11 +9,19 @@ using System.Web.Http;
 
 namespace AutotaskWebAPI.Controllers
 {
+    /// <summary>
+    /// Provides API for a Task entity in Autotask.
+    /// </summary>
     public class TaskController : BaseApiController
     {
-        [Route("api/task/GetByProjectId/{accountId}")]
+        /// <summary>
+        /// Get Task(s) given project id.
+        /// </summary>
+        /// <param name="projectId">Project id</param>
+        /// <returns>All Task(s) with project id matching passed-in project id.</returns>
+        [Route("api/task/GetByProjectId/{projectId}")]
         [HttpGet]
-        public HttpResponseMessage GetByProjectId(string accountId)
+        public HttpResponseMessage GetByProjectId(string projectId)
         {
             if (!apiInitialized)
             {
@@ -24,7 +32,7 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            var result = tasksApi.GetTaskByProjectId(accountId, out errorMsg);
+            var result = tasksApi.GetTaskByProjectId(projectId, out errorMsg);
 
             if (errorMsg.Length > 0)
             {
@@ -37,6 +45,11 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get Task given its id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Route("api/task/GetById/{id}")]
         [HttpGet]
         public HttpResponseMessage GetById(string id)
@@ -63,6 +76,11 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get Task(s) given its creator resource id.
+        /// </summary>
+        /// <param name="creatorResourceId"></param>
+        /// <returns>All Task(s) with creator resource id matching passed-in creator resource id.</returns>
         [Route("api/task/GetByCreatorResourceId/{creatorResourceId}")]
         [HttpGet]
         public HttpResponseMessage GetByCreatorResourceId(string creatorResourceId)
@@ -89,6 +107,12 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get Task(s) which have last activity date that occurs after 
+        /// passed-in date.
+        /// </summary>
+        /// <param name="lastActivityDate">Date after which there is activity in the returned tasks.</param>
+        /// <returns></returns>
         [Route("api/task/GetByLastActivityDate/{lastActivityDate}")]
         [HttpGet]
         public HttpResponseMessage GetByLastActivityDate(string lastActivityDate)
@@ -115,15 +139,15 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
-        [Route("api/task/GetByProjectIdAndStatus/{accountId}/{status}")]
         /// <summary>
         /// Get tasks by status. e.g. Status of 8 means "In Progress".
         /// </summary>
-        /// <param name="accountId">Project id to which the task(s) belong.</param>
+        /// <param name="projectId">Project id to which the task(s) belong.</param>
         /// <param name="status">Status as an integer passed as string. e.g. "8".</param>
         /// <returns>List of tasks.</returns>
+        [Route("api/task/GetByProjectIdAndStatus/{projectId}/{status}")]
         [HttpGet]
-        public HttpResponseMessage GetByProjectIdAndStatus(string accountId, string status)
+        public HttpResponseMessage GetByProjectIdAndStatus(string projectId, string status)
         {
             if (!apiInitialized)
             {
@@ -145,13 +169,13 @@ namespace AutotaskWebAPI.Controllers
 
             if (parseResult)
             {
-                int accountIdInt = -1;
+                int projectIdInt = -1;
 
-                parseResult = int.TryParse(accountId, out accountIdInt);
+                parseResult = int.TryParse(projectId, out projectIdInt);
 
                 if (parseResult)
                 {
-                    var result = tasksApi.GetTaskByProjectIdAndStatus(accountId, statusInt, out errorMsg);
+                    var result = tasksApi.GetTaskByProjectIdAndStatus(projectId, statusInt, out errorMsg);
 
                     if (errorMsg.Length > 0)
                     {
@@ -171,12 +195,12 @@ namespace AutotaskWebAPI.Controllers
         /// <summary>
         /// Get tasks by account id and priority. e.g. Priority of 6 means "Normal".
         /// </summary>
-        /// <param name="accountId">Project id to which the task(s) belong.</param>
+        /// <param name="projectId">Project id to which the task(s) belong.</param>
         /// <param name="priority">Priority as an integer passed as string. e.g. "6".</param>
         /// <returns>List of tasks.</returns>
-        [Route("api/task/GetByProjectIdAndPriority/{accountId}/{priority}")]
+        [Route("api/task/GetByProjectIdAndPriority/{projectId}/{priority}")]
         [HttpGet]
-        public HttpResponseMessage GetByProjectIdAndPriority(string accountId, string priority)
+        public HttpResponseMessage GetByProjectIdAndPriority(string projectId, string priority)
         {
             if (!apiInitialized)
             {
@@ -198,13 +222,13 @@ namespace AutotaskWebAPI.Controllers
 
             if (parseResult)
             {
-                int accountIdInt = -1;
+                int projectIdInt = -1;
 
-                parseResult = int.TryParse(accountId, out accountIdInt);
+                parseResult = int.TryParse(projectId, out projectIdInt);
 
                 if (parseResult)
                 {
-                    var result = tasksApi.GetTaskByProjectIdAndPriority(accountId, priorityInt, out errorMsg);
+                    var result = tasksApi.GetTaskByProjectIdAndPriority(projectId, priorityInt, out errorMsg);
 
                     if (errorMsg.Length > 0)
                     {
@@ -221,6 +245,11 @@ namespace AutotaskWebAPI.Controllers
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Priority or account id passed is not an integer.");
         }
 
+        /// <summary>
+        /// Create a Task in Autotask.
+        /// </summary>
+        /// <param name="details"></param>
+        /// <returns></returns>
         [Route("api/task/PostTask")]
         [HttpPost]
         public HttpResponseMessage PostTask([FromBody] TaskDetails details)

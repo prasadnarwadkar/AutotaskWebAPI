@@ -5,6 +5,9 @@ using System.Web;
 
 namespace AutotaskWebAPI.Models
 {
+    /// <summary>
+    /// Ticket details required to update it.
+    /// </summary>
     public class TicketUpdateDetails
     {
         public long ID
@@ -209,6 +212,9 @@ namespace AutotaskWebAPI.Models
         }
     }
 
+    /// <summary>
+    /// Ticket details required to create it.
+    /// </summary>
     public class TicketDetails
     {
         public long AccountID { get; set; }
@@ -223,6 +229,9 @@ namespace AutotaskWebAPI.Models
         public int Priority { get; set; }
     }
 
+    /// <summary>
+    /// Task details required to create it.
+    /// </summary>
     public class TaskDetails
     {
         public long ProjectID { get; set; }

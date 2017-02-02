@@ -9,18 +9,52 @@ using System.Web.Http;
 
 namespace AutotaskWebAPI.Controllers
 {
+    /// <summary>
+    /// Details of a TicketNote to create it.
+    /// </summary>
     public class NoteDetails
     {
+        /// <summary>
+        /// Ticket id. Parent of the note.
+        /// </summary>
         public long TicketId { get; set; }
+
+        /// <summary>
+        /// Note creator resource id.
+        /// </summary>
         public long CreatorResourceId { get; set; }
+
+        /// <summary>
+        /// Note title
+        /// </summary>
         public string Title { get; set; }
+
+        /// <summary>
+        /// Note description.
+        /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        /// Note type
+        /// </summary>
         public long NoteType { get; set; }
+
+        /// <summary>
+        /// Publish the note?. Set 1 to publish.
+        /// </summary>
         public long Publish { get; set; }
     }
 
+    /// <summary>
+    /// Provides API for TicketNote entity in Autotask.
+    /// </summary>
     public class NoteController : BaseApiController
     {
+        /// <summary>
+        /// Get a TicketNote by its parent id (ticket id).
+        /// </summary>
+        /// <param name="ticketId"></param>
+        /// <returns></returns>
         [Route("api/note/GetByTicketId/{ticketId}")]
         [HttpGet]
         public HttpResponseMessage GetByTicketId(string ticketId)
@@ -47,6 +81,11 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get a TicketNote by its id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Route("api/note/GetById/{id}")]
         [HttpGet]
         public HttpResponseMessage GetById(string id)
@@ -72,6 +111,12 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get notes which have last activity dates that occur after
+        /// the passed-in date.
+        /// </summary>
+        /// <param name="lastActivityDate"></param>
+        /// <returns></returns>
         [Route("api/note/GetByLastActivityDate/{lastActivityDate}")]
         [HttpGet]
         public HttpResponseMessage GetByLastActivityDate(string lastActivityDate)
@@ -98,6 +143,11 @@ namespace AutotaskWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Create a ticket note.
+        /// </summary>
+        /// <param name="details"></param>
+        /// <returns></returns>
         [Route("api/note/PostTicketNote")]
         [HttpPost]
         public HttpResponseMessage PostTicketNote([FromBody] NoteDetails details)

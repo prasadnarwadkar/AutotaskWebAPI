@@ -24,6 +24,7 @@ namespace AutotaskWebAPI.Controllers
         protected ContactsAPI contactsApi = null;
         protected TasksAPI tasksApi = null;
         protected ContractsAPI contractsApi = null;
+        protected GenericAPI genericApi = null;
 
         public BaseApiController()
         {
@@ -43,6 +44,7 @@ namespace AutotaskWebAPI.Controllers
                 contactsApi = new ContactsAPI(api);
                 tasksApi = new TasksAPI(api);
                 contractsApi = new ContractsAPI(api);
+                genericApi = new GenericAPI(api);
             }
             catch (ArgumentException)
             {

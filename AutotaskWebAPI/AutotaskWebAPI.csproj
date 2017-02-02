@@ -34,6 +34,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\AutotaskWebAPI.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -193,6 +194,7 @@
     <Compile Include="Controllers\AttachmentController.cs" />
     <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\ContractsController.cs" />
+    <Compile Include="Controllers\GenericController.cs" />
     <Compile Include="Controllers\NoteController.cs" />
     <Compile Include="Controllers\PicklistController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
@@ -203,6 +205,7 @@
     <Compile Include="Models\AttachmentsAPI.cs" />
     <Compile Include="Models\ContractsAPI.cs" />
     <Compile Include="Models\DtoModels.cs" />
+    <Compile Include="Models\GenericAPI.cs" />
     <Compile Include="Models\InvoicesAPI.cs" />
     <Compile Include="Models\NotesAPI.cs" />
     <Compile Include="Models\ResourceDetails.cs" />
