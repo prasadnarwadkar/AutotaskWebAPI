@@ -106,9 +106,12 @@ At present `Account`, `Ticket`, `Contact`, `Contract`, `Resource`, `TicketNote`,
 At present, everything in basic mode of API usage is supported. In the near future, I have planned to support more business rules handled in Web API rather than facing errors from Autotask SOAP API and propagating them back to Web API.
 
 # More Advanced Examples
+
 ## jQuery
+
 ### Post a ticket attachment
-File is taken from input control of file type. `TicketId` is parent id taken from query string. You could ask user to populate it in a text field as well. The `url` is relative in the following example. However, since the Web API enables CORS from server side, you may deploy the Web API anywhere (e.g. your on-premise IIS, cloud hosting providers such as AWS, Azure etc.) and use that URL.
+
+Attachment file is taken from input control of file type. `TicketId` is parent id taken from query string. You could ask user to populate it in a text field as well. The `url` is relative in the following example. However, since the Web API enables CORS from server side, you may deploy the Web API anywhere (e.g. your on-premise IIS, cloud hosting providers such as AWS, Azure etc.) and use that URL.
 
        function createNewAttachment()
         {
@@ -137,8 +140,11 @@ File is taken from input control of file type. `TicketId` is parent id taken fro
             });
         }
 
+
 ## Postman
+
 ### Post a ticket attachment
+
        POST /api/attachment/PostAttachment HTTP/1.1
        Host: localhost:56786
        Cache-Control: no-cache
