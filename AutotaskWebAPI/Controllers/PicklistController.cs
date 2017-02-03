@@ -25,7 +25,7 @@ namespace AutotaskWebAPI.Controllers
         [Route("api/picklist/GetLabel/{entityType}/{fieldName}/{valueToSearch}")]
         [HttpGet]
         public HttpResponseMessage GetLabel(string entityType, string fieldName,
-                                        object valueToSearch)
+                                        string valueToSearch)
         {
             if (!apiInitialized)
             {

@@ -28,7 +28,7 @@ namespace AutotaskWebAPI.Controllers
         /// <returns></returns>
         [Route("api/generic/GetByEntityNameFieldNameAndValue/{entityName}/{fieldName}/{fieldValue}")]
         public HttpResponseMessage GetByEntityNameFieldNameAndValue(string entityName, string fieldName, 
-                                                                    object fieldValue)
+                                                                    string fieldValue)
         {
             if (!apiInitialized)
             {
