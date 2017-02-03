@@ -1,20 +1,20 @@
 # AutotaskWebAPI
-ASP.NET Web API which wraps Autotask (AT) SOAP API. It helps developers use the Web API from any client (HTML5 web app, AngularJS web app, desktop client and so forth). It is RESTful.
+ASP.NET Web API which wraps Autotask (AT) SOAP API. It helps developers use the Web API from any client (HTML5 web app, AngularJS web app, desktop client and so forth). It is RESTful. Using the SOAP API directly is tedious and needs wrapping code in clients like JavaScript/jQuery, web apps and desktop apps. This ASP.NET Web API fulfils this need. 
 
 # Benefits
 I believe that the API will serve as an important toolset to create dashboards, both desktop and web-based for your Autotask account whereby your employees and clients can easily work with Autotask entities directly from your dashboard rather than navigating into Autotask portal. 
 Your clients can log on to your dashboard using your own login mechanism and then they can use your dashboard functions to work with Autotask entities such as Accounts, Tickets, Contacts, Contracts, Ticket notes, attachments and invoices.
 
 # Usage
-This Web API is in development and will be updated regularly. However, at any given point in time, read me will be updated to reflect changes done. At present, it supports Tickets, Accounts, and Ticket Notes.
+This Web API is ready for use in production. However, it will be updated regularly with new features. Of course, at any given point in time, read me will be updated to reflect changes done.
 
 ## Namespaces used
 Two prominent namespaces used are `AutotaskWebAPI.Autotask.Net.Webservices` and `System.Web.Http`.
 
-Namespace `AutotaskWebAPI.Autotask.Net.Webservices` refers to [AT Web Services](https://www.autotask.net/help/Content/AdminSetup/2ExtensionsIntegrations/APIs/WebServicesAPI.htm). Please check the VS solutions demonstrating .NET code to query SOAP based AT API.
+Namespace `AutotaskWebAPI.Autotask.Net.Webservices` refers to [AT Web Services](https://www.autotask.net/help/Content/AdminSetup/2ExtensionsIntegrations/APIs/WebServicesAPI.htm). Please check the Visual Studio solutions demonstrating .NET code to query SOAP based AT API.
 
 ## Configuration
-All you need is two keys in appSettings (web.config) with values as per your Autotask Account.
+All you need is two keys in appSettings (web.config) with values as per your Autotask Account. Your Autotask API username must be enabled for API access in order to use this ASP.NET Web API and underlying SOAP API.
 
 ```
 <add key="APIUsername" value="" />
@@ -88,10 +88,74 @@ This will return attachment byte array content which can be consumed at client s
 
 ## About passing dates to the API methods
 
-You might want to get entities by their last activity date or last modified date. When you send a date in such a case, the API methods return entities with last activity date or last modified date which is after the date argument. For example, if you send a date argument such as ‘2016-12-22’ to an API endpoint such as ` {base url}/api/ticket/GetByLastActivityDate/2016-12-22`, it returns tickets which have last activity date that is “after” 22nd Dec’16. 
+You might want to get entities by their last activity date or last modified date. When you send a date in such a case, the API methods return entities with last activity date or last modified date which is after the date argument. 
+
+For example, if you send a date argument such as ‘2016-12-22’ to an API endpoint such as ` {base url}/api/ticket/GetByLastActivityDate/2016-12-22`, it returns tickets which have last activity date that is “after” 22nd Dec’16. Always send dates to Web API operations that require dates in the format 'YYYY-MM-DD'.
 
 # Error handling
 Error handling is quite extensive in this API. I have used error messages from AT SOAP API which are quite user-friendly. For example, while creating a ticket, you must pass both assigned resource id and assigned resource role id together or else there will be an error which the message properly indicates. Please check the error message in the http response in case of an error. If there is no error, the response contains JSON object containing all data you requested. Sometimes you might get an empty list of entities which is alright if the parameters do not match any of the entities in the AT database. If there is no error, your query is deemed to have worked.
 
 # Tools
 You may want to use Postman (Chrome extension) to test the API. Any other RESTful API testing tool can also be used, even Fiddler can be used. I have used Postman and found it suitable for my purposes. This Web API uses Swagger spec to document the API endpoints. This makes it easy to try the API and create client-side code to consume them in your dashboards, intranet web apps and so forth.
+
+# Current Status
+At present `Account`, `Ticket`, `Contact`, `Contract`, `Resource`, `TicketNote`, `Attachment` and `Picklist` entities are supported with their own controllers. All other entities are supported using a Generic controller which allows getting any entity by its name, a field name and field value.
+
+# Roadmap
+
+At present, everything in basic mode of API usage is supported. In the near future, I have planned to support more business rules handled in Web API rather than facing errors from Autotask SOAP API and propagating them back to Web API.
+
+# More Advanced Examples
+
+## jQuery
+
+### Post a ticket attachment
+
+Attachment file is taken from input control of file type. `TicketId` is parent id taken from query string. You could ask user to populate it in a text field as well. The `url` is relative in the following example. However, since the Web API enables CORS from server side, you may deploy the Web API anywhere (e.g. your on-premise IIS, cloud hosting providers such as AWS, Azure etc.) and use that URL.
+
+       function createNewAttachment()
+        {
+            console.log('Posting the attachment...');
+            var formData = new FormData();
+            var attachedFile = $('#chosenFile')[0];
+            formData.append("attachedFile", attachedFile.files[0]);
+            console.log(attachedFile.files[0].name);
+            formData.append('name', attachedFile.files[0].name);
+            formData.append('TicketId', queries.id);
+
+            $.ajax({
+                url: 'api/attachment/PostAttachment',
+                type: 'POST',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                complete: function (data) {
+                    console.log(data.statusCode);
+                    $("#attachmentCreationResult").html("Attachement posted successfully!!!");
+                },
+                error: function (response) {
+                    console.log(response.responseText);
+                }
+            });
+        }
+
+
+## Postman
+
+### Post a ticket attachment
+
+       POST /api/attachment/PostAttachment HTTP/1.1
+       Host: localhost:56786
+       Cache-Control: no-cache
+       Content-Type: multipart/form-data; 
+       Content-Disposition: form-data; name="file1"; filename="file.txt"
+       Content-Type: 
+       Content-Disposition: form-data; name="TicketId"
+       0
+       Content-Disposition: form-data; name="name"
+       file.txt
+
+# Reference
+
+Please always refer to [AT Web Services](https://www.autotask.net/help/Content/AdminSetup/2ExtensionsIntegrations/APIs/WebServicesAPI.htm). This page has links to download a PDF guide which explains all business rules of querying an entity, creating an entity and udpating an entity. Whenever you receive errors from Web API, they are meaningful errors thrown by Autotask SOAP API and explain what went wrong. In these cases of errors, it makes sense to refer to the PDF guide.
