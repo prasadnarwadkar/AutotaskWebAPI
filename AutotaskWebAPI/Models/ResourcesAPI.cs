@@ -98,7 +98,7 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
-        public List<Resource> GetResourceById(string id, out string errorMsg)
+        public List<Resource> GetResourceById(long id, out string errorMsg)
         {
             List<Resource> list = new List<Resource>();
 
@@ -142,7 +142,7 @@ namespace AutotaskWebAPI.Models
         /// <param name="locationId">Location id of the resource</param>
         /// <param name="errorMsg"></param>
         /// <returns></returns>
-        public List<Resource> GetResourceByLocationId(string locationId,
+        public List<Resource> GetResourceByLocationId(long locationId,
                                                     out string errorMsg)
         {
             List<Resource> list = new List<Resource>();

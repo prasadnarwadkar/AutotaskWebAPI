@@ -21,7 +21,7 @@ namespace AutotaskWebAPI.Controllers
         /// <returns></returns>
         [Route("api/ticket/GetByAccountId/{accountId}")]
         [HttpGet]
-        public HttpResponseMessage GetByAccountId(string accountId)
+        public HttpResponseMessage GetByAccountId(long accountId)
         {
             if (!apiInitialized)
             {
@@ -52,7 +52,7 @@ namespace AutotaskWebAPI.Controllers
         /// <returns></returns>
         [Route("api/ticket/GetById/{id}")]
         [HttpGet]
-        public HttpResponseMessage GetById(string id)
+        public HttpResponseMessage GetById(long id)
         {
             if (!apiInitialized)
             {
@@ -83,7 +83,7 @@ namespace AutotaskWebAPI.Controllers
         /// <returns></returns>
         [Route("api/ticket/GetByCreatorResourceId/{creatorResourceId}")]
         [HttpGet]
-        public HttpResponseMessage GetByCreatorResourceId(string creatorResourceId)
+        public HttpResponseMessage GetByCreatorResourceId(long creatorResourceId)
         {
             if (!apiInitialized)
             {
@@ -146,7 +146,7 @@ namespace AutotaskWebAPI.Controllers
         /// <returns>List of tickets.</returns>
         [Route("api/ticket/GetByAccountIdAndStatus/{accountId}/{status}")]
         [HttpGet]
-        public HttpResponseMessage GetByAccountIdAndStatus(string accountId, string status)
+        public HttpResponseMessage GetByAccountIdAndStatus(long accountId, long status)
         {
             if (!apiInitialized)
             {
@@ -157,49 +157,28 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            if (string.IsNullOrEmpty(status))
+            var result = ticketsApi.GetByAccountIdAndStatus(accountId, status, out errorMsg);
+
+            if (errorMsg.Length > 0)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Status cannot be null or empty. Please pass the status as an integer. e.g. '8'");
+                // There is an error.
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
             }
-
-            int statusInt = 0;
-
-            bool parseResult = int.TryParse(status, out statusInt);
-
-            if (parseResult)
+            else
             {
-                int accountIdInt = -1;
-
-                parseResult = int.TryParse(accountId, out accountIdInt);
-
-                if (parseResult)
-                {
-                    var result = ticketsApi.GetTicketByAccountIdAndStatus(accountId, statusInt, out errorMsg);
-
-                    if (errorMsg.Length > 0)
-                    {
-                        // There is an error.
-                        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
-                    }
-                    else
-                    {
-                        return Request.CreateResponse(HttpStatusCode.OK, result);
-                    }
-                }
+                return Request.CreateResponse(HttpStatusCode.OK, result);
             }
-
-            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Status or account id passed is not an integer.");
         }
 
         /// <summary>
         /// Get tickets by account id and priority. e.g. Priority of 6 means "Normal".
         /// </summary>
         /// <param name="accountId">Account id to which the ticket(s) belong.</param>
-        /// <param name="priority">Priority as an integer passed as string. e.g. "6".</param>
+        /// <param name="priority">Priority as an integer e.g. 6.</param>
         /// <returns>List of tickets.</returns>
         [Route("api/ticket/GetByAccountIdAndPriority/{accountId}/{priority}")]
         [HttpGet]
-        public HttpResponseMessage GetByAccountIdAndPriority(string accountId, string priority)
+        public HttpResponseMessage GetByAccountIdAndPriority(long accountId, long priority)
         {
             if (!apiInitialized)
             {
@@ -210,38 +189,17 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            if (string.IsNullOrEmpty(priority))
+            var result = ticketsApi.GetByAccountIdAndPriority(accountId, priority, out errorMsg);
+
+            if (errorMsg.Length > 0)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Priority cannot be null or empty. Please pass the priority as an integer. e.g. '6'");
+                // There is an error.
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
             }
-
-            int priorityInt = 0;
-
-            bool parseResult = int.TryParse(priority, out priorityInt);
-
-            if (parseResult)
+            else
             {
-                int accountIdInt = -1;
-
-                parseResult = int.TryParse(accountId, out accountIdInt);
-
-                if (parseResult)
-                {
-                    var result = ticketsApi.GetTicketByAccountIdAndPriority(accountId, priorityInt, out errorMsg);
-
-                    if (errorMsg.Length > 0)
-                    {
-                        // There is an error.
-                        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
-                    }
-                    else
-                    {
-                        return Request.CreateResponse(HttpStatusCode.OK, result);
-                    }
-                }
+                return Request.CreateResponse(HttpStatusCode.OK, result);
             }
-
-            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Priority or account id passed is not an integer.");
         }
 
         /// <summary>

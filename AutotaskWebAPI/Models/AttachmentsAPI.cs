@@ -51,37 +51,34 @@ namespace AutotaskWebAPI.Models
         /// </summary>
         /// <param name="parentId"></param>
         /// <returns></returns>
-        public List<AttachmentInfo> GetAttachmentInfoByParentId(string parentId,
+        public List<AttachmentInfo> GetAttachmentInfoByParentId(long parentId,
                                                                 out string errorMsg)
         {
             List<AttachmentInfo> list = new List<AttachmentInfo>();
             errorMsg = string.Empty;
 
-            if (parentId.Length > 0)
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>AttachmentInfo</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<field>ParentID<expression op=\"equals\">");
+            strResource.Append(parentId);
+            strResource.Append("</expression></field>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = api._atwsServices.query(strResource.ToString());
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
             {
-                StringBuilder strResource = new StringBuilder();
-                strResource.Append("<queryxml version=\"1.0\">");
-                strResource.Append("<entity>AttachmentInfo</entity>");
-                strResource.Append("<query>");
-                strResource.Append("<field>ParentID<expression op=\"equals\">");
-                strResource.Append(parentId);
-                strResource.Append("</expression></field>");
-                strResource.Append("</query></queryxml>");
-
-                ATWSResponse respResource = api._atwsServices.query(strResource.ToString());
-
-                if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+                foreach (Entity entity in respResource.EntityResults)
                 {
-                    foreach (Entity entity in respResource.EntityResults)
-                    {
-                        list.Add((AttachmentInfo)entity);
-                    }
+                    list.Add((AttachmentInfo)entity);
                 }
-                else if (respResource.Errors != null &&
-                    respResource.Errors.Length > 0)
-                {
-                    errorMsg = respResource.Errors[0].Message;
-                }
+            }
+            else if (respResource.Errors != null &&
+                respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
             }
 
             return list;
@@ -129,7 +126,7 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
-        public List<AttachmentInfo> GetAttachmentInfoByParentIdAndAttachDate(string parentId,
+        public List<AttachmentInfo> GetAttachmentInfoByParentIdAndAttachDate(long parentId,
                                                                 string attachDate,
                                                                 out string errorMsg)
         {

@@ -22,7 +22,7 @@ namespace AutotaskWebAPI.Models
         /// <param name="ticketId"></param>
         /// <param name="errorMsg">Out parameter to set error from AT SOAP API.</param>
         /// <returns></returns>
-        public List<TicketNote> GetNoteByTicketId(string ticketId, out string errorMsg)
+        public List<TicketNote> GetNoteByTicketId(long ticketId, out string errorMsg)
         {
             List<TicketNote> list = new List<TicketNote>();
 
@@ -93,7 +93,7 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
-        public List<TicketNote> GetNoteById(string id, out string errorMsg)
+        public List<TicketNote> GetNoteById(long id, out string errorMsg)
         {
             List<TicketNote> list = new List<TicketNote>();
 

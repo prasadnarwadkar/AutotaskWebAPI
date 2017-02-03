@@ -21,7 +21,7 @@ namespace AutotaskWebAPI.Controllers
         /// <returns></returns>
         [Route("api/attachment/GetInfoByParentId/{parentId}")]
         [HttpGet]
-        public HttpResponseMessage GetInfoByParentId(string parentId)
+        public HttpResponseMessage GetInfoByParentId(long parentId)
         {
             if (!apiInitialized)
             {
@@ -52,7 +52,7 @@ namespace AutotaskWebAPI.Controllers
         /// <returns></returns>
         [Route("api/attachment/GetById/{id}")]
         [HttpGet]
-        public HttpResponseMessage GetById(string id)
+        public HttpResponseMessage GetById(long id)
         {
             if (!apiInitialized)
             {
@@ -63,33 +63,22 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            int idInt = 0;
+            var result = attachmentsApi.GetAttachmentById(id, out errorMsg);
 
-            bool parseResult = int.TryParse(id, out idInt);
-
-            if (parseResult)
+            if (errorMsg.Length > 0)
             {
-                var result = attachmentsApi.GetAttachmentById(idInt, out errorMsg);
-
-                if (errorMsg.Length > 0)
-                {
-                    // There is an error.
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
-                }
-                else
-                {
-                    var response = Request.CreateResponse(HttpStatusCode.OK);
-                    response.Content = new ByteArrayContent(result.Data, 0, result.Data.Length - 1);
-                    response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
-                    response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(result.Info.ContentType.ToString());
-
-                    return response;
-                }
+                // There is an error.
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
             }
             else
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, "Passed id is not an integer.");
-            }            
+                var response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Content = new ByteArrayContent(result.Data, 0, result.Data.Length - 1);
+                response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+                response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(result.Info.ContentType.ToString());
+
+                return response;
+            }
         }
 
         /// <summary>
@@ -132,7 +121,7 @@ namespace AutotaskWebAPI.Controllers
         /// <returns>All attachments attached to their parents respectively after given date.</returns>
         [Route("api/attachment/GetInfoByParentIdAndAttachDate/{parentId}/{attachDate}")]
         [HttpGet]
-        public HttpResponseMessage GetInfoByParentIdAndAttachDate(string parentId, string attachDate)
+        public HttpResponseMessage GetInfoByParentIdAndAttachDate(long parentId, string attachDate)
         {
             if (!apiInitialized)
             {
@@ -160,7 +149,7 @@ namespace AutotaskWebAPI.Controllers
 
         /// <summary>
         /// Create an attachment.
-        /// POST api/ticketattachment/post/
+        /// POST api/attachment/PostTicketAttachment
         /// Body:
         /// Form-data
         /// File1: file chosen by user from client side.

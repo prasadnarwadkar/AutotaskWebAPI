@@ -21,7 +21,7 @@ namespace AutotaskWebAPI.Controllers
         /// <returns></returns>
         [Route("api/resource/GetById/{id}")]
         [HttpGet]
-        public HttpResponseMessage GetById(string id)
+        public HttpResponseMessage GetById(long id)
         {
             if (!apiInitialized)
             {
@@ -149,7 +149,7 @@ namespace AutotaskWebAPI.Controllers
         /// <returns></returns>
         [Route("api/resource/GetByLocationId/{locationId}")]
         [HttpGet]
-        public HttpResponseMessage GetByLocationId(string locationId)
+        public HttpResponseMessage GetByLocationId(long locationId)
         {
             if (!apiInitialized)
             {
@@ -180,7 +180,7 @@ namespace AutotaskWebAPI.Controllers
         /// <returns>List of roles for a resource.</returns>
         [Route("api/resource/GetRoleByResourceId/{resourceId}")]
         [HttpGet]
-        public HttpResponseMessage GetRoleByResourceId(string resourceId)
+        public HttpResponseMessage GetRoleByResourceId(long resourceId)
         {
             if (!apiInitialized)
             {
@@ -211,7 +211,7 @@ namespace AutotaskWebAPI.Controllers
         /// <returns>Role details object.</returns>
         [Route("api/resource/GetRoleById/{roleId}")]
         [HttpGet]
-        public HttpResponseMessage GetRoleById(string roleId)
+        public HttpResponseMessage GetRoleById(long roleId)
         {
             if (!apiInitialized)
             {

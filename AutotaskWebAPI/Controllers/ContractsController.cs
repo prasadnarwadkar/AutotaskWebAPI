@@ -21,7 +21,7 @@ namespace AutotaskWebAPI.Controllers
         /// <returns>Contract</returns>
         [Route("api/contract/GetById/{id}")]
         [HttpGet]
-        public HttpResponseMessage GetById(string id)
+        public HttpResponseMessage GetById(long id)
         {
             if (!apiInitialized)
             {
@@ -52,7 +52,7 @@ namespace AutotaskWebAPI.Controllers
         /// <returns>Contract(s)</returns>
         [Route("api/contract/GetByOpportunityId/{opportunityId}")]
         [HttpGet]
-        public HttpResponseMessage GetByOpportunityId(string opportunityId)
+        public HttpResponseMessage GetByOpportunityId(long opportunityId)
         {
             if (!apiInitialized)
             {
@@ -83,7 +83,7 @@ namespace AutotaskWebAPI.Controllers
         /// <returns>Contract(s)</returns>
         [Route("api/contract/GetByContactId/{contactId}")]
         [HttpGet]
-        public HttpResponseMessage GetByContactId(string contactId)
+        public HttpResponseMessage GetByContactId(long contactId)
         {
             if (!apiInitialized)
             {
@@ -114,7 +114,7 @@ namespace AutotaskWebAPI.Controllers
         /// <returns></returns>
         [Route("api/contract/GetByAccountId/{accountId}")]
         [HttpGet]
-        public HttpResponseMessage GetByAccountId(string accountId)
+        public HttpResponseMessage GetByAccountId(long accountId)
         {
             if (!apiInitialized)
             {

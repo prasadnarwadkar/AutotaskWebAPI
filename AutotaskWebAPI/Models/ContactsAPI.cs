@@ -57,7 +57,7 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
-        public List<Contact> GetContactById(string id, out string errorMsg)
+        public List<Contact> GetContactById(long id, out string errorMsg)
         {
             List<Contact> list = new List<Contact>();
 
@@ -92,7 +92,7 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
-        public List<Contact> GetContactByAccountId(string accountId, out string errorMsg)
+        public List<Contact> GetContactByAccountId(long accountId, out string errorMsg)
         {
             List<Contact> list = new List<Contact>();
 

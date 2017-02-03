@@ -21,7 +21,7 @@ namespace AutotaskWebAPI.Controllers
         /// <returns>Contact</returns>
         [Route("api/contact/GetById/{id}")]
         [HttpGet]
-        public HttpResponseMessage GetById(string id)
+        public HttpResponseMessage GetById(long id)
         {
             if (!apiInitialized)
             {
@@ -117,7 +117,7 @@ namespace AutotaskWebAPI.Controllers
         /// <returns>Contact(s)</returns>
         [Route("api/contact/GetByAccountId/{accountId}")]
         [HttpGet]
-        public HttpResponseMessage GetByAccountId(string accountId)
+        public HttpResponseMessage GetByAccountId(long accountId)
         {
             if (!apiInitialized)
             {

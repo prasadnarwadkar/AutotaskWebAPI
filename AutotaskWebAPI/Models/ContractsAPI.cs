@@ -16,7 +16,7 @@ namespace AutotaskWebAPI.Models
             api = apiInstance;
         }
 
-        public List<Contract> GetContractById(string id, out string errorMsg)
+        public List<Contract> GetContractById(long id, out string errorMsg)
         {
             List<Contract> list = new List<Contract>();
 
@@ -51,7 +51,7 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
-        public List<Contract> GetContractByAccountId(string accountId, out string errorMsg)
+        public List<Contract> GetContractByAccountId(long accountId, out string errorMsg)
         {
             List<Contract> list = new List<Contract>();
 
@@ -86,7 +86,7 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
-        public List<Contract> GetContractByContactId(string contactId, out string errorMsg)
+        public List<Contract> GetContractByContactId(long contactId, out string errorMsg)
         {
             List<Contract> list = new List<Contract>();
 
@@ -121,7 +121,7 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
-        public List<Contract> GetContractByOpportunityId(string opportunityId, out string errorMsg)
+        public List<Contract> GetContractByOpportunityId(long opportunityId, out string errorMsg)
         {
             List<Contract> list = new List<Contract>();
 

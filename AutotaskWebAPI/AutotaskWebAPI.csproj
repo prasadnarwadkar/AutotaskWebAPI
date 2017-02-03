@@ -79,6 +79,10 @@
       <HintPath>..\packages\NJsonSchema.CodeGeneration.7.7.6231.35505\lib\portable45-net45+win8+wp8+wpa81\NJsonSchema.CodeGeneration.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NSwag.Annotations, Version=8.8.6231.36138, Culture=neutral, PublicKeyToken=c2d88086e098d109, processorArchitecture=MSIL">
+      <HintPath>..\packages\NSwag.Annotations.8.8.6231.36138\lib\portable45-net45+win8+wp8+wpa81\NSwag.Annotations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NSwag.AspNet.Owin, Version=8.8.6231.36138, Culture=neutral, PublicKeyToken=c2d88086e098d109, processorArchitecture=MSIL">
       <HintPath>..\packages\NSwag.AspNet.Owin.8.8.6231.36138\lib\net45\NSwag.AspNet.Owin.dll</HintPath>
       <Private>True</Private>

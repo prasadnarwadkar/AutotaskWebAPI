@@ -47,7 +47,7 @@ namespace AutotaskWebAPI.Controllers
         /// <summary>
         /// Get account(s) given date of last activity in the account.
         /// </summary>
-        /// <param name="lastActivityDate">Date in the format YYYY-MM-DD. e.g. 2017-01-12</param>
+        /// <param name="lastActivityDate">Date string in the format YYYY-MM-DD. e.g. 2017-01-12</param>
         /// <returns></returns>
         [Route("api/account/GetByLastActivityDate/{lastActivityDate}")]
         [HttpGet]
@@ -113,7 +113,7 @@ namespace AutotaskWebAPI.Controllers
         /// <returns></returns>
         [Route("api/account/GetById/{id}")]
         [HttpGet]
-        public HttpResponseMessage GetById(string id)
+        public HttpResponseMessage GetById(int id)
         {
             if (!apiInitialized)
             {
@@ -123,26 +123,17 @@ namespace AutotaskWebAPI.Controllers
             }
 
             string errorMsg = string.Empty;
-            var accountId = -1;
+            var result = accountsApi.GetAccountById(id, out errorMsg);
 
-            bool parseResult = int.TryParse(id, out accountId);
-
-            if (parseResult)
+            if (errorMsg.Length > 0)
             {
-                var result = accountsApi.GetAccountById(id, out errorMsg);
-
-                if (errorMsg.Length > 0)
-                {
-                    // There is an error.
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
-                }
-                else
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK, result);
-                }
+                // There is an error.
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
             }
-
-            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "id passed is not an integer.");
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
         }
     }
 }

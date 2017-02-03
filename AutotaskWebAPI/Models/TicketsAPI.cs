@@ -32,7 +32,7 @@ namespace AutotaskWebAPI.Models
                     throw new ArgumentException("Id of the ticket to update is invalid.");
                 }
 
-                var tickets = GetTicketById(ticketToUpdate.ID.ToString(), out errorMsg);
+                var tickets = GetTicketById(ticketToUpdate.ID, out errorMsg);
 
                 if (errorMsg.Length == 0)
                 {
@@ -143,7 +143,7 @@ namespace AutotaskWebAPI.Models
             return null;
         }
 
-        public List<Ticket> GetTicketByAccountIdAndPriority(string accountId, long priority, out string errorMsg)
+        public List<Ticket> GetByAccountIdAndPriority(long accountId, long priority, out string errorMsg)
         {
             List<Ticket> list = new List<Ticket>();
 
@@ -181,7 +181,7 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
-        public List<Ticket> GetTicketByAccountId(string accountId, out string errorMsg)
+        public List<Ticket> GetTicketByAccountId(long accountId, out string errorMsg)
         {
             List<Ticket> list = new List<Ticket>();
 
@@ -216,7 +216,7 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
-        public List<Ticket> GetTicketByAccountIdAndStatus(string accountId, long status, out string errorMsg)
+        public List<Ticket> GetByAccountIdAndStatus(long accountId, long status, out string errorMsg)
         {
             List<Ticket> list = new List<Ticket>();
 
@@ -254,7 +254,7 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
-        public List<Ticket> GetTicketByCreatorResourceId(string creatorResourceId, out string errorMsg)
+        public List<Ticket> GetTicketByCreatorResourceId(long creatorResourceId, out string errorMsg)
         {
             List<Ticket> list = new List<Ticket>();
 
@@ -289,7 +289,7 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
-        public List<Ticket> GetTicketById(string id, out string errorMsg)
+        public List<Ticket> GetTicketById(long id, out string errorMsg)
         {
             List<Ticket> list = new List<Ticket>();
 

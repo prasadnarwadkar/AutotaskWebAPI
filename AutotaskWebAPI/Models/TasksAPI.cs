@@ -70,7 +70,7 @@ namespace AutotaskWebAPI.Models
             return null;
         }
 
-        public List<Task> GetTaskByProjectIdAndPriority(string projectId, long priority, out string errorMsg)
+        public List<Task> GetByProjectIdAndPriority(long projectId, long priority, out string errorMsg)
         {
             List<Task> list = new List<Task>();
 
@@ -108,7 +108,7 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
-        public List<Task> GetTaskByProjectId(string projectId, out string errorMsg)
+        public List<Task> GetTaskByProjectId(long projectId, out string errorMsg)
         {
             List<Task> list = new List<Task>();
 
@@ -143,7 +143,7 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
-        public List<Task> GetTaskByProjectIdAndStatus(string projectId, long status, out string errorMsg)
+        public List<Task> GetByProjectIdAndStatus(long projectId, long status, out string errorMsg)
         {
             List<Task> list = new List<Task>();
 
@@ -181,7 +181,7 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
-        public List<Task> GetTaskByCreatorResourceId(string creatorResourceId, out string errorMsg)
+        public List<Task> GetTaskByCreatorResourceId(long creatorResourceId, out string errorMsg)
         {
             List<Task> list = new List<Task>();
 
@@ -216,7 +216,7 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
-        public List<Task> GetTaskById(string id, out string errorMsg)
+        public List<Task> GetTaskById(long id, out string errorMsg)
         {
             List<Task> list = new List<Task>();
 

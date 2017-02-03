@@ -22,7 +22,7 @@ namespace AutotaskWebAPI.Models
         private string _webServiceBaseAPIURL = ConfigurationManager.AppSettings["APIServiceURLZoneInfo"];
         
 		/// <summary>
-		/// Public Constuctor.
+		/// Public Constructor.
 		/// </summary>
 		public AutotaskAPI(string user, string pass)
 		{
@@ -170,7 +170,7 @@ namespace AutotaskWebAPI.Models
         /// Returns the label of a picklist when the value is sent
         /// </summary>
         /// <param name="fields">entity fields</param>
-        /// <param name="strField">picklick to choose from</param>
+        /// <param name="strField">picklist to choose from</param>
         /// <param name="strPickListValue">value ("id") of picklist</param>
         /// <returns>picklist label</returns>
         protected static string PickListLabelFromValue(Field[] fields, string strField, string strPickListValue)
@@ -195,7 +195,7 @@ namespace AutotaskWebAPI.Models
         /// Returns the labels of a picklist field
         /// </summary>
         /// <param name="fields">entity fields</param>
-        /// <param name="strField">picklick to choose from</param>
+        /// <param name="strField">picklist to choose from</param>
         /// <returns>picklist label</returns>
         protected static PickListValue[] PickListLabelsFromField(Field[] fields, string strField)
         {

@@ -1,4 +1,5 @@
 ﻿using AutotaskWebAPI.Models;
+using NSwag.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -11,6 +12,7 @@ using System.Web.Http.Description;
 
 namespace AutotaskWebAPI.Controllers
 {
+    
     public class BaseApiController : ApiController
     {
         protected AutotaskAPI api = null;

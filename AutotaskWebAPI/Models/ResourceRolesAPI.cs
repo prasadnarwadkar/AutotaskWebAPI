@@ -22,7 +22,7 @@ namespace AutotaskWebAPI.Models
         /// <param name="roleId"></param>
         /// <param name="errorMsg"></param>
         /// <returns></returns>
-        public RoleDto GetRoleById(string roleId, out string errorMsg)
+        public RoleDto GetRoleById(long roleId, out string errorMsg)
         {
             string ret = string.Empty;
             errorMsg = string.Empty;
@@ -115,7 +115,7 @@ namespace AutotaskWebAPI.Models
         /// <param name="resourceID"></param>
         /// <param name="errorMsg"></param>
         /// <returns></returns>
-        public List<ResourceRoleDto> GetRoleByResourceId(string resourceID, out string errorMsg)
+        public List<ResourceRoleDto> GetRoleByResourceId(long resourceID, out string errorMsg)
         {
             List<ResourceRoleDto> list = new List<ResourceRoleDto>();
 
@@ -140,9 +140,10 @@ namespace AutotaskWebAPI.Models
                 {
                     var resourceRole = (ResourceRole)entity;
 
-                    if (!string.IsNullOrEmpty(resourceRole.RoleID.ToString()))
+                    if (resourceRole.RoleID != null &&
+                        !string.IsNullOrEmpty(resourceRole.RoleID.ToString()))
                     {
-                        var role = GetRoleById(resourceRole.RoleID.ToString(), out errorMsg);
+                        var role = GetRoleById(Convert.ToInt32(resourceRole.RoleID), out errorMsg);
 
                         if (role != null)
                         {

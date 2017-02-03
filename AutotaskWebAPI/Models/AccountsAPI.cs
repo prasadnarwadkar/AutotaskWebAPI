@@ -57,7 +57,7 @@ namespace AutotaskWebAPI.Models
         /// <param name="id">Account id</param>
         /// <param name="errorMsg">Error message from API</param>
         /// <returns></returns>
-        public List<Account> GetAccountById(string id, out string errorMsg)
+        public List<Account> GetAccountById(long id, out string errorMsg)
         {
             List<Account> list = new List<Account>();
 

@@ -24,11 +24,11 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="entityName">Name of the entity e.g. Ticket</param>
         /// <param name="fieldName">Field name. e.g. id</param>
-        /// <param name="fieldValue">Field value e.g. 12345</param>
+        /// <param name="fieldValue">Field value e.g. 12345. If you pass a date, it should be in the format 'YYYY-MM-DD'.</param>
         /// <returns></returns>
         [Route("api/generic/GetByEntityNameFieldNameAndValue/{entityName}/{fieldName}/{fieldValue}")]
         public HttpResponseMessage GetByEntityNameFieldNameAndValue(string entityName, string fieldName, 
-                                                                    string fieldValue)
+                                                                    object fieldValue)
         {
             if (!apiInitialized)
             {
@@ -37,9 +37,24 @@ namespace AutotaskWebAPI.Controllers
                 return response;
             }
 
+            if (string.IsNullOrEmpty(entityName))
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Entity Name is null or empty.");
+            }
+
+            if (string.IsNullOrEmpty(fieldName))
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Field Name is null or empty.");
+            }
+
+            if (fieldValue == null)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Field Value is null or empty.");
+            }
+
             string errorMsg = string.Empty;
 
-            var result = genericApi.GetEntityByFieldEquals(entityName, fieldName, fieldValue, out errorMsg);
+            var result = genericApi.GetEntityByFieldEquals(entityName, fieldName, fieldValue.ToString(), out errorMsg);
 
             if (errorMsg.Length > 0)
             {
