@@ -1,5 +1,6 @@
 ﻿using AutotaskWebAPI.Autotask.Net.Webservices;
 using AutotaskWebAPI.Models;
+using NSwag.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,6 +21,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [Route("api/resource/GetById/{id}")]
+        [SwaggerResponse(typeof(Resource))]
         [HttpGet]
         public HttpResponseMessage GetById(long id)
         {
@@ -53,6 +55,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="lastName"></param>
         /// <returns></returns>
         [Route("api/resource/GetByName/{firstName}/{lastName}")]
+        [SwaggerResponse(typeof(List<Resource>))]
         [HttpGet]
         public HttpResponseMessage GetByName(string firstName, string lastName)
         {
@@ -84,7 +87,8 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        [Route("api/resource/GetByEmail/{email}")]
+        [Route("api/resource/GetByEmail")]
+        [SwaggerResponse(typeof(List<Resource>))]
         [HttpGet]
         public HttpResponseMessage GetByEmail(string email)
         {
@@ -117,6 +121,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="userName"></param>
         /// <returns></returns>
         [Route("api/resource/GetByUsername/{userName}")]
+        [SwaggerResponse(typeof(List<Resource>))]
         [HttpGet]
         public HttpResponseMessage GetByUsername(string userName)
         {
@@ -148,6 +153,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="locationId"></param>
         /// <returns></returns>
         [Route("api/resource/GetByLocationId/{locationId}")]
+        [SwaggerResponse(typeof(List<Resource>))]
         [HttpGet]
         public HttpResponseMessage GetByLocationId(long locationId)
         {
@@ -179,6 +185,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="resourceId"></param>
         /// <returns>List of roles for a resource.</returns>
         [Route("api/resource/GetRoleByResourceId/{resourceId}")]
+        [SwaggerResponse(typeof(List<ResourceRoleDto>))]
         [HttpGet]
         public HttpResponseMessage GetRoleByResourceId(long resourceId)
         {
@@ -210,6 +217,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="roleId"></param>
         /// <returns>Role details object.</returns>
         [Route("api/resource/GetRoleById/{roleId}")]
+        [SwaggerResponse(typeof(RoleDto))]
         [HttpGet]
         public HttpResponseMessage GetRoleById(long roleId)
         {
@@ -241,6 +249,7 @@ namespace AutotaskWebAPI.Controllers
         /// <returns>List of all Role details objects. Each details object has Role id, name
         /// and description.</returns>
         [Route("api/resource/GetAllRoles")]
+        [SwaggerResponse(typeof(List<RoleDto>))]
         [HttpGet]
         public HttpResponseMessage GetAllRoles()
         {

@@ -32,12 +32,10 @@ namespace AutotaskWebAPI.Models
                     throw new ArgumentException("Id of the ticket to update is invalid.");
                 }
 
-                var tickets = GetTicketById(ticketToUpdate.ID, out errorMsg);
+                var ticket = GetTicketById(ticketToUpdate.ID, out errorMsg);
 
                 if (errorMsg.Length == 0)
                 {
-                    var ticket = tickets[0];
-
                     ticket.AccountID = ticketToUpdate.AccountID;
                     ticket.AllocationCodeID = ticketToUpdate.AllocationCodeID;
                     ticket.AssignedResourceID = ticketToUpdate.AssignedResourceID;
@@ -289,10 +287,8 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
-        public List<Ticket> GetTicketById(long id, out string errorMsg)
+        public Ticket GetTicketById(long id, out string errorMsg)
         {
-            List<Ticket> list = new List<Ticket>();
-
             string ret = string.Empty;
             errorMsg = string.Empty;
 
@@ -310,18 +306,17 @@ namespace AutotaskWebAPI.Models
 
             if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
             {
-                foreach (Entity entity in respResource.EntityResults)
-                {
-                    list.Add((Ticket)entity);
-                }
+                return (Ticket)respResource.EntityResults[0];
             }
             else if (respResource.Errors != null &&
                     respResource.Errors.Length > 0)
             {
                 errorMsg = respResource.Errors[0].Message;
+
+                return null;
             }
 
-            return list;
+            return null;
         }
 
         public List<Ticket> GetTicketByLastActivityDate(string lastActivityDate, out string errorMsg)

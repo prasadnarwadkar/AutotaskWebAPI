@@ -1,5 +1,6 @@
 ﻿using AutotaskWebAPI.Autotask.Net.Webservices;
 using AutotaskWebAPI.Models;
+using NSwag.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -15,11 +16,12 @@ namespace AutotaskWebAPI.Controllers
     public class NoteController : BaseApiController
     {
         /// <summary>
-        /// Get a TicketNote by its parent id (ticket id).
+        /// Get TicketNote(s) given parent id (ticket id).
         /// </summary>
         /// <param name="ticketId"></param>
         /// <returns></returns>
         [Route("api/note/GetByTicketId/{ticketId}")]
+        [SwaggerResponse(typeof(List<TicketNote>))]
         [HttpGet]
         public HttpResponseMessage GetByTicketId(long ticketId)
         {
@@ -51,6 +53,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [Route("api/note/GetById/{id}")]
+        [SwaggerResponse(typeof(TicketNote))]
         [HttpGet]
         public HttpResponseMessage GetById(long id)
         {
@@ -82,6 +85,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="lastActivityDate">Date in the format YYYY-MM-DD</param>
         /// <returns>Returns all notes which have activity in them after the given date.</returns>
         [Route("api/note/GetByLastActivityDate/{lastActivityDate}")]
+        [SwaggerResponse(typeof(List<TicketNote>))]
         [HttpGet]
         public HttpResponseMessage GetByLastActivityDate(string lastActivityDate)
         {
@@ -111,8 +115,9 @@ namespace AutotaskWebAPI.Controllers
         /// Create a ticket note.
         /// </summary>
         /// <param name="details"></param>
-        /// <returns></returns>
+        /// <returns>Returns id of the created note.</returns>
         [Route("api/note/PostTicketNote")]
+        [SwaggerResponse(typeof(Int32))]
         [HttpPost]
         public HttpResponseMessage PostTicketNote([FromBody] NoteDetails details)
         {

@@ -57,10 +57,8 @@ namespace AutotaskWebAPI.Models
         /// <param name="id">Account id</param>
         /// <param name="errorMsg">Error message from API</param>
         /// <returns></returns>
-        public List<Account> GetAccountById(long id, out string errorMsg)
+        public Account GetAccountById(long id, out string errorMsg)
         {
-            List<Account> list = new List<Account>();
-
             string ret = string.Empty;
             errorMsg = string.Empty;
 
@@ -78,18 +76,17 @@ namespace AutotaskWebAPI.Models
 
             if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
             {
-                foreach (Entity entity in respResource.EntityResults)
-                {
-                    list.Add((Account)entity);
-                }
+                return (Account)respResource.EntityResults[0];
             }
             else if (respResource.Errors != null &&
                     respResource.Errors.Length > 0)
             {
                 errorMsg = respResource.Errors[0].Message;
+
+                return null;
             }
 
-            return list;
+            return null;
         }
 
         /// <summary>

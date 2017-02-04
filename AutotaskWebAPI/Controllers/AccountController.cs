@@ -1,4 +1,6 @@
-﻿using AutotaskWebAPI.Models;
+﻿using AutotaskWebAPI.Autotask.Net.Webservices;
+using AutotaskWebAPI.Models;
+using NSwag.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,9 +19,10 @@ namespace AutotaskWebAPI.Controllers
         /// <summary>
         /// Get account by name.
         /// </summary>
-        /// <param name="name">Account name begins with</param>
+        /// <param name="name">Account name begins with this parameter.</param>
         /// <returns>All accounts whose names begin with passed name.</returns>
         [Route("api/account/GetByName/{name}")]
+        [SwaggerResponse(typeof(List<Account>))]
         public HttpResponseMessage GetByName(string name)
         {
             if (!apiInitialized)
@@ -50,6 +53,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="lastActivityDate">Date string in the format YYYY-MM-DD. e.g. 2017-01-12</param>
         /// <returns></returns>
         [Route("api/account/GetByLastActivityDate/{lastActivityDate}")]
+        [SwaggerResponse(typeof(List<Account>))]
         [HttpGet]
         public HttpResponseMessage GetByLastActivityDate(string lastActivityDate)
         {
@@ -76,11 +80,12 @@ namespace AutotaskWebAPI.Controllers
         }
 
         /// <summary>
-        /// Get account(s) given an account number.
+        /// Get account(s) given an account number. Uses 'Like' search.
         /// </summary>
         /// <param name="accountNumber">Account Number</param>
         /// <returns></returns>
         [Route("api/account/GetByNumber/{accountNumber}")]
+        [SwaggerResponse(typeof(List<Account>))]
         [HttpGet]
         public HttpResponseMessage GetByNumber(string accountNumber)
         {
@@ -107,11 +112,12 @@ namespace AutotaskWebAPI.Controllers
         }
 
         /// <summary>
-        /// Get account(s) given an account id.
+        /// Get account given its id. Uses exact match to the passed id.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [Route("api/account/GetById/{id}")]
+        [SwaggerResponse(typeof(Account))]
         [HttpGet]
         public HttpResponseMessage GetById(int id)
         {

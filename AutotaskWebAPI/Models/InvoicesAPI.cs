@@ -16,9 +16,9 @@ namespace AutotaskWebAPI.Models
             api = apiInstance;
         }
 
-        public Autotask.Net.Webservices.Invoice FindInvoiceById(string invoiceId)
+        public Invoice FindInvoiceById(string invoiceId)
         {
-            Autotask.Net.Webservices.Invoice invoice = null;
+            Invoice invoice = null;
 
             if (invoiceId.Length > 0)
             {
@@ -36,7 +36,7 @@ namespace AutotaskWebAPI.Models
 
                 if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
                 {
-                    invoice = (Autotask.Net.Webservices.Invoice)respResource.EntityResults[0];
+                    invoice = (Invoice)respResource.EntityResults[0];
                 }
             }
 
@@ -45,7 +45,7 @@ namespace AutotaskWebAPI.Models
 
         public bool UpdateInvoice(string invoiceId)
         {
-            Autotask.Net.Webservices.Invoice retInvoice = null;
+            Invoice retInvoice = null;
 
             retInvoice = FindInvoiceById(invoiceId);
 
@@ -60,7 +60,7 @@ namespace AutotaskWebAPI.Models
             }
             if (respUpdate.ReturnCode > 0 && respUpdate.EntityResults.Length > 0)
             {
-                retInvoice = (Autotask.Net.Webservices.Invoice)respUpdate.EntityResults[0];
+                retInvoice = (Invoice)respUpdate.EntityResults[0];
             }
 
             return true;

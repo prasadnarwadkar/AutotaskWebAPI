@@ -110,7 +110,7 @@ namespace AutotaskWebAPI.Models.Tests
 
             string errorMsg = string.Empty;
 
-            var contract = testInstance.GetContractByOpportunityId(-1, out errorMsg);
+            var contract = testInstance.GetContractByOpportunityId(29712482, out errorMsg);
 
             Assert.IsTrue(errorMsg.Length == 0);
         }

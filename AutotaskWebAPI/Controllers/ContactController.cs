@@ -1,5 +1,6 @@
 ﻿using AutotaskWebAPI.Autotask.Net.Webservices;
 using AutotaskWebAPI.Models;
+using NSwag.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,6 +21,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="id">Contact id</param>
         /// <returns>Contact</returns>
         [Route("api/contact/GetById/{id}")]
+        [SwaggerResponse(typeof(Contact))]
         [HttpGet]
         public HttpResponseMessage GetById(long id)
         {
@@ -53,6 +55,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="lastName">Contact last name</param>
         /// <returns>Contact(s)</returns>
         [Route("api/contact/GetByName/{firstName}/{lastName}")]
+        [SwaggerResponse(typeof(List<Contact>))]
         [HttpGet]
         public HttpResponseMessage GetByName(string firstName, string lastName)
         {
@@ -84,7 +87,8 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        [Route("api/contact/GetByEmail/{email}")]
+        [Route("api/contact/GetByEmail")]
+        [SwaggerResponse(typeof(List<Contact>))]
         [HttpGet]
         public HttpResponseMessage GetByEmail(string email)
         {
@@ -116,6 +120,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="accountId"></param>
         /// <returns>Contact(s)</returns>
         [Route("api/contact/GetByAccountId/{accountId}")]
+        [SwaggerResponse(typeof(List<Contact>))]
         [HttpGet]
         public HttpResponseMessage GetByAccountId(long accountId)
         {

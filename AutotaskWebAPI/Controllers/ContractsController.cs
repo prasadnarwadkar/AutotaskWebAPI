@@ -1,5 +1,6 @@
 ﻿using AutotaskWebAPI.Autotask.Net.Webservices;
 using AutotaskWebAPI.Models;
+using NSwag.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,6 +21,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="id">Contract id</param>
         /// <returns>Contract</returns>
         [Route("api/contract/GetById/{id}")]
+        [SwaggerResponse(typeof(Contract))]
         [HttpGet]
         public HttpResponseMessage GetById(long id)
         {
@@ -46,11 +48,12 @@ namespace AutotaskWebAPI.Controllers
         }
 
         /// <summary>
-        /// Get a Contract by its opportunity id.
+        /// Get Contract(s) given an opportunity id.
         /// </summary>
         /// <param name="opportunityId"></param>
         /// <returns>Contract(s)</returns>
         [Route("api/contract/GetByOpportunityId/{opportunityId}")]
+        [SwaggerResponse(typeof(List<Contract>))]
         [HttpGet]
         public HttpResponseMessage GetByOpportunityId(long opportunityId)
         {
@@ -77,11 +80,12 @@ namespace AutotaskWebAPI.Controllers
         }
 
         /// <summary>
-        /// Get contract given its contact id.
+        /// Get contract(s) given a contact id.
         /// </summary>
         /// <param name="contactId">Contact id</param>
         /// <returns>Contract(s)</returns>
         [Route("api/contract/GetByContactId/{contactId}")]
+        [SwaggerResponse(typeof(List<Contract>))]
         [HttpGet]
         public HttpResponseMessage GetByContactId(long contactId)
         {
@@ -108,11 +112,12 @@ namespace AutotaskWebAPI.Controllers
         }
 
         /// <summary>
-        /// Get a Contract by its account id.
+        /// Get contract(s) given an account id.
         /// </summary>
         /// <param name="accountId"></param>
         /// <returns></returns>
         [Route("api/contract/GetByAccountId/{accountId}")]
+        [SwaggerResponse(typeof(List<Contract>))]
         [HttpGet]
         public HttpResponseMessage GetByAccountId(long accountId)
         {

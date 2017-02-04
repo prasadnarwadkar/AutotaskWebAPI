@@ -57,10 +57,8 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
-        public List<Contact> GetContactById(long id, out string errorMsg)
+        public Contact GetContactById(long id, out string errorMsg)
         {
-            List<Contact> list = new List<Contact>();
-
             string ret = string.Empty;
             errorMsg = string.Empty;
 
@@ -78,18 +76,17 @@ namespace AutotaskWebAPI.Models
 
             if (respContact.ReturnCode > 0 && respContact.EntityResults.Length > 0)
             {
-                foreach (Entity entity in respContact.EntityResults)
-                {
-                    list.Add((Contact)entity);
-                }
+                return (Contact)respContact.EntityResults[0];
             }
             else if (respContact.Errors != null &&
                     respContact.Errors.Length > 0)
             {
                 errorMsg = respContact.Errors[0].Message;
+
+                return null;
             }
 
-            return list;
+            return null;
         }
 
         public List<Contact> GetContactByAccountId(long accountId, out string errorMsg)

@@ -93,10 +93,8 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
-        public List<TicketNote> GetNoteById(long id, out string errorMsg)
+        public TicketNote GetNoteById(long id, out string errorMsg)
         {
-            List<TicketNote> list = new List<TicketNote>();
-
             string ret = string.Empty;
             errorMsg = string.Empty;
 
@@ -114,18 +112,17 @@ namespace AutotaskWebAPI.Models
 
             if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
             {
-                foreach (Entity entity in respResource.EntityResults)
-                {
-                    list.Add((TicketNote)entity);
-                }
+                return (TicketNote)respResource.EntityResults[0];
             }
             else if (respResource.Errors != null &&
                     respResource.Errors.Length > 0)
             {
                 errorMsg = respResource.Errors[0].Message;
+
+                return null;
             }
 
-            return list;
+            return null;
         }
 
         /// <summary>

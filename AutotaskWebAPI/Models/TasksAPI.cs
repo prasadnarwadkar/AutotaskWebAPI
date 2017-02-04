@@ -216,10 +216,8 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
-        public List<Task> GetTaskById(long id, out string errorMsg)
+        public Task GetTaskById(long id, out string errorMsg)
         {
-            List<Task> list = new List<Task>();
-
             string ret = string.Empty;
             errorMsg = string.Empty;
 
@@ -237,18 +235,17 @@ namespace AutotaskWebAPI.Models
 
             if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
             {
-                foreach (Entity entity in respResource.EntityResults)
-                {
-                    list.Add((Task)entity);
-                }
+                return (Task)respResource.EntityResults[0];
             }
             else if (respResource.Errors != null &&
                     respResource.Errors.Length > 0)
             {
                 errorMsg = respResource.Errors[0].Message;
+
+                return null;
             }
 
-            return list;
+            return null;
         }
 
         public List<Task> GetTaskByLastActivityDate(string lastActivityDateTime, out string errorMsg)

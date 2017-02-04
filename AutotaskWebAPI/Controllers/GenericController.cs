@@ -2,6 +2,7 @@
 using AutotaskWebAPI.Models;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
+using NSwag.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -26,7 +27,9 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="fieldName">Field name. e.g. id</param>
         /// <param name="fieldValue">Field value e.g. 12345. If you pass a date, it should be in the format 'YYYY-MM-DD'.</param>
         /// <returns></returns>
-        [Route("api/generic/GetByEntityNameFieldNameAndValue/{entityName}/{fieldName}/{fieldValue}")]
+        [Route("api/generic/GetByEntityNameFieldNameAndValue")]
+        [SwaggerResponse(typeof(List<Entity>))]
+        [HttpGet]
         public HttpResponseMessage GetByEntityNameFieldNameAndValue(string entityName, string fieldName, 
                                                                     string fieldValue)
         {

@@ -16,10 +16,8 @@ namespace AutotaskWebAPI.Models
             api = apiInstance;
         }
 
-        public List<Contract> GetContractById(long id, out string errorMsg)
+        public Contract GetContractById(long id, out string errorMsg)
         {
-            List<Contract> list = new List<Contract>();
-
             string ret = string.Empty;
             errorMsg = string.Empty;
 
@@ -39,16 +37,18 @@ namespace AutotaskWebAPI.Models
             {
                 foreach (Entity entity in respContract.EntityResults)
                 {
-                    list.Add((Contract)entity);
+                     return (Contract)respContract.EntityResults[0];
                 }
             }
             else if (respContract.Errors != null &&
                     respContract.Errors.Length > 0)
             {
                 errorMsg = respContract.Errors[0].Message;
+
+                return null;
             }
 
-            return list;
+            return null;
         }
 
         public List<Contract> GetContractByAccountId(long accountId, out string errorMsg)
