@@ -70,9 +70,10 @@ namespace AutotaskWebAPI.Controllers
         /// <summary>
         /// Get all picklist labels given an entity name and field name.
         /// </summary>
-        /// <param name="entityType">Ticket</param>
-        /// <param name="fieldName">Status</param>
-        /// <returns>All status labels to display which represent integer values.</returns>
+        /// <param name="entityType">e.g. Ticket</param>
+        /// <param name="fieldName">e.g. Status</param>
+        /// <returns>All Picklist labels that represent integer values respectively 
+        /// for a given field.</returns>
         [Route("api/picklist/GetLabels/{entityType}/{fieldName}")]
         [SwaggerResponse(typeof(PickListValue[]))]
         [HttpGet]
