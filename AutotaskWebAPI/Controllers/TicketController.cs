@@ -1,5 +1,6 @@
 ﻿using AutotaskWebAPI.Autotask.Net.Webservices;
 using AutotaskWebAPI.Models;
+using NSwag.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,6 +21,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="accountId"></param>
         /// <returns></returns>
         [Route("api/ticket/GetByAccountId/{accountId}")]
+        [SwaggerResponse(typeof(List<Ticket>))]
         [HttpGet]
         public HttpResponseMessage GetByAccountId(long accountId)
         {
@@ -51,6 +53,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [Route("api/ticket/GetById/{id}")]
+        [SwaggerResponse(typeof(Ticket))]
         [HttpGet]
         public HttpResponseMessage GetById(long id)
         {
@@ -82,6 +85,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="creatorResourceId">Id of the resource who created the Ticket(s).</param>
         /// <returns></returns>
         [Route("api/ticket/GetByCreatorResourceId/{creatorResourceId}")]
+        [SwaggerResponse(typeof(List<Ticket>))]
         [HttpGet]
         public HttpResponseMessage GetByCreatorResourceId(long creatorResourceId)
         {
@@ -113,6 +117,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="lastActivityDate"></param>
         /// <returns></returns>
         [Route("api/ticket/GetByLastActivityDate/{lastActivityDate}")]
+        [SwaggerResponse(typeof(List<Ticket>))]
         [HttpGet]
         public HttpResponseMessage GetByLastActivityDate(string lastActivityDate)
         {
@@ -139,12 +144,13 @@ namespace AutotaskWebAPI.Controllers
         }
 
         /// <summary>
-        /// Get tickets by status. e.g. Status of 8 means "In Progress".
+        /// Get tickets by account id and status. e.g. Status of 8 means "In Progress".
         /// </summary>
         /// <param name="accountId">Account id to which the ticket(s) belong.</param>
         /// <param name="status">Status as an integer passed as string. e.g. "8".</param>
         /// <returns>List of tickets.</returns>
         [Route("api/ticket/GetByAccountIdAndStatus/{accountId}/{status}")]
+        [SwaggerResponse(typeof(List<Ticket>))]
         [HttpGet]
         public HttpResponseMessage GetByAccountIdAndStatus(long accountId, long status)
         {
@@ -177,6 +183,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="priority">Priority as an integer e.g. 6.</param>
         /// <returns>List of tickets.</returns>
         [Route("api/ticket/GetByAccountIdAndPriority/{accountId}/{priority}")]
+        [SwaggerResponse(typeof(List<Ticket>))]
         [HttpGet]
         public HttpResponseMessage GetByAccountIdAndPriority(long accountId, long priority)
         {
@@ -206,8 +213,9 @@ namespace AutotaskWebAPI.Controllers
         /// Create a Ticket in Autotask.
         /// </summary>
         /// <param name="details">Details of Ticket to create.</param>
-        /// <returns></returns>
+        /// <returns>id of created ticket</returns>
         [Route("api/ticket/PostTicket")]
+        [SwaggerResponse(typeof(Int32))]
         [HttpPost]
         public HttpResponseMessage PostTicket([FromBody] TicketDetails details)
         {
@@ -253,8 +261,9 @@ namespace AutotaskWebAPI.Controllers
         /// Update a ticket in Autotask.
         /// </summary>
         /// <param name="details">Details of Ticket to update.</param>
-        /// <returns></returns>
+        /// <returns>id of updated ticket</returns>
         [Route("api/ticket/UpdateTicket")]
+        [SwaggerResponse(typeof(Int32))]
         [HttpPost]
         public HttpResponseMessage UpdateTicket([FromBody] TicketUpdateDetails details)
         {

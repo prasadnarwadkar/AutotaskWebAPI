@@ -1,4 +1,6 @@
-﻿using AutotaskWebAPI.Models;
+﻿using AutotaskWebAPI.Autotask.Net.Webservices;
+using AutotaskWebAPI.Models;
+using NSwag.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -23,6 +25,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="valueToSearch">String representation of an object value. e.g. "8"</param>
         /// <returns></returns>
         [Route("api/picklist/GetLabel/{entityType}/{fieldName}/{valueToSearch}")]
+        [SwaggerResponse(typeof(String))]
         [HttpGet]
         public HttpResponseMessage GetLabel(string entityType, string fieldName,
                                         string valueToSearch)
@@ -71,6 +74,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="fieldName">Status</param>
         /// <returns>All status labels to display which represent integer values.</returns>
         [Route("api/picklist/GetLabels/{entityType}/{fieldName}")]
+        [SwaggerResponse(typeof(PickListValue[]))]
         [HttpGet]
         public HttpResponseMessage GetLabels(string entityType, string fieldName)
         {

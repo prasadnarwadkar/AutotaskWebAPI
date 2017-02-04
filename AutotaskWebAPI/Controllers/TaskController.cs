@@ -1,5 +1,6 @@
 ﻿using AutotaskWebAPI.Autotask.Net.Webservices;
 using AutotaskWebAPI.Models;
+using NSwag.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,6 +21,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="projectId">Project id</param>
         /// <returns>All Task(s) with project id matching passed-in project id.</returns>
         [Route("api/task/GetByProjectId/{projectId}")]
+        [SwaggerResponse(typeof(List<Task>))]
         [HttpGet]
         public HttpResponseMessage GetByProjectId(long projectId)
         {
@@ -51,6 +53,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [Route("api/task/GetById/{id}")]
+        [SwaggerResponse(typeof(Task))]
         [HttpGet]
         public HttpResponseMessage GetById(long id)
         {
@@ -82,6 +85,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="creatorResourceId"></param>
         /// <returns>All Task(s) with creator resource id matching passed-in creator resource id.</returns>
         [Route("api/task/GetByCreatorResourceId/{creatorResourceId}")]
+        [SwaggerResponse(typeof(List<Task>))]
         [HttpGet]
         public HttpResponseMessage GetByCreatorResourceId(long creatorResourceId)
         {
@@ -114,6 +118,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="lastActivityDate">Date after which there is activity in the returned tasks.</param>
         /// <returns></returns>
         [Route("api/task/GetByLastActivityDate/{lastActivityDate}")]
+        [SwaggerResponse(typeof(List<Task>))]
         [HttpGet]
         public HttpResponseMessage GetByLastActivityDate(string lastActivityDate)
         {
@@ -146,6 +151,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="status">Status as an integer e.g. 8.</param>
         /// <returns>List of tasks.</returns>
         [Route("api/task/GetByProjectIdAndStatus/{projectId}/{status}")]
+        [SwaggerResponse(typeof(List<Task>))]
         [HttpGet]
         public HttpResponseMessage GetByProjectIdAndStatus(long projectId, long status)
         {
@@ -178,6 +184,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="priority">Priority as an integer e.g. 6.</param>
         /// <returns>List of tasks.</returns>
         [Route("api/task/GetByProjectIdAndPriority/{projectId}/{priority}")]
+        [SwaggerResponse(typeof(List<Task>))]
         [HttpGet]
         public HttpResponseMessage GetByProjectIdAndPriority(long projectId, long priority)
         {
@@ -207,8 +214,9 @@ namespace AutotaskWebAPI.Controllers
         /// Create a Task in Autotask.
         /// </summary>
         /// <param name="details"></param>
-        /// <returns></returns>
+        /// <returns>id of the created task</returns>
         [Route("api/task/PostTask")]
+        [SwaggerResponse(typeof(Int32))]
         [HttpPost]
         public HttpResponseMessage PostTask([FromBody] TaskDetails details)
         {
