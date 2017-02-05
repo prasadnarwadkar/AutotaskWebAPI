@@ -22,9 +22,13 @@ All you need is two keys in appSettings (web.config) with values as per your Aut
 ```
 
 ## Request Authorization header
+
 If the web.config keys for API username and password are left blank, you may still invoke the Web API by sending an auth header with every request.
+
 ###### Example of setting an auth header from .NET console app
+
 ```
+
 using System;
 using System.Net;
 using System.Net.Http;
@@ -88,9 +92,13 @@ namespace BasicAuthentication.Client
         }
     }
 }
+
 ```
+
 ###### Example of setting an auth header from jQuery
+
 ```
+
 function submitAccountSearch()
         {
             var userName = $("#apiUsername").val();
@@ -146,6 +154,7 @@ function submitAccountSearch()
             });
 
         }
+        
 ```
 
 ## Testing the Web API
@@ -236,10 +245,11 @@ At present, everything in basic mode of API usage is supported. In the near futu
 
 ## jQuery
 
-### Post a ticket attachment
+###### Post a ticket attachment
 
 Attachment file is taken from input control of file type. `TicketId` is parent id taken from query string. You could ask user to populate it in a text field as well. The `url` is relative in the following example. However, since the Web API enables CORS from server side, you may deploy the Web API anywhere (e.g. your on-premise IIS, cloud hosting providers such as AWS, Azure etc.) and use that URL.
 
+```
        function createNewAttachment()
         {
             console.log('Posting the attachment...');
@@ -267,11 +277,13 @@ Attachment file is taken from input control of file type. `TicketId` is parent i
             });
         }
 
+```
 
 ## Postman
 
-### Post a ticket attachment
+###### Post a ticket attachment
 
+```
        POST /api/attachment/PostAttachment HTTP/1.1
        Host: localhost:56786
        Cache-Control: no-cache
@@ -282,6 +294,7 @@ Attachment file is taken from input control of file type. `TicketId` is parent i
        0
        Content-Disposition: form-data; name="name"
        file.txt
+```
 
 # Reference
 
