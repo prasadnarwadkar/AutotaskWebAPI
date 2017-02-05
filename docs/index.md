@@ -41,7 +41,7 @@ namespace BasicAuthentication.Client
 {
     class Program
     {       
-        const string ApiOpEndPoint = "http://serverName/api/account/GetByName/my%20account";
+        const string ApiOpEndPoint = "http://serverName/api/account/GetByName/test";
 
         static void Main()
         {
@@ -60,15 +60,17 @@ namespace BasicAuthentication.Client
         }
 
         static async Task<string> TryRequestAsync(HttpClient client, 
-                                                  AuthenticationHeaderValue authorization)
+                             AuthenticationHeaderValue authorization)
         {
-            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiOpEndPoint))
+            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, 
+                                                ApiOpEndPoint))
             {
                 request.Headers.Authorization = authorization;
 
                 using (HttpResponseMessage response = await client.SendAsync(request))
                 {
-                    Console.WriteLine("{0} {1}", (int)response.StatusCode, response.ReasonPhrase);
+                    Console.WriteLine("{0} {1}", (int)response.StatusCode, 
+                                                response.ReasonPhrase);
 
                     if (response.StatusCode != HttpStatusCode.OK)
                     {
@@ -138,19 +140,20 @@ function submitAccountSearch()
         var accountTableBodyHtml = "";
 
         $.each(list, function (index, value) {
-            // Each value is an account.
-            accountTableBodyHtml += '<tr>';
-            accountTableBodyHtml += '<td>' + value.accountNameField + '</td>';
-            accountTableBodyHtml += '<td>' + value.accountNumberField + '</td>';
-            accountTableBodyHtml += '<td>' + value.idField + '</td>';
-            accountTableBodyHtml += '</tr>';
+        // Each value is an account.
+        accountTableBodyHtml += '<tr>';
+        accountTableBodyHtml += '<td>' + value.accountNameField + '</td>';
+        accountTableBodyHtml += '<td>' + value.accountNumberField + '</td>';
+        accountTableBodyHtml += '<td>' + value.idField + '</td>';
+        accountTableBodyHtml += '</tr>';
         });
 
         $("#accountTableBody").html(accountTableBodyHtml);
         $("#loadingText").hide();
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            $("#loadingText").html(JSON.parse(XMLHttpRequest.responseText).Message);
+            var error = JSON.parse(XMLHttpRequest.responseText).Message;
+            $("#loadingText").html(error);
             $("#loadingText").show();
 
             console.log(textStatus + " " + errorThrown);
@@ -256,32 +259,32 @@ At present, everything in basic mode of API usage is supported. In the near futu
 Attachment file is taken from input control of file type. `TicketId` is parent id taken from query string. You could ask user to populate it in a text field as well. The `url` is relative in the following example. However, since the Web API enables CORS from server side, you may deploy the Web API anywhere (e.g. your on-premise IIS, cloud hosting providers such as AWS, Azure etc.) and use that URL.
 
 ```
-       function createNewAttachment()
-        {
-            console.log('Posting the attachment...');
-            var formData = new FormData();
-            var attachedFile = $('#chosenFile')[0];
-            formData.append("attachedFile", attachedFile.files[0]);
-            console.log(attachedFile.files[0].name);
-            formData.append('name', attachedFile.files[0].name);
-            formData.append('TicketId', queries.id);
+function createNewAttachment()
+{
+    console.log('Posting the attachment...');
+    var formData = new FormData();
+    var attachedFile = $('#chosenFile')[0];
+    formData.append("attachedFile", attachedFile.files[0]);
+    console.log(attachedFile.files[0].name);
+    formData.append('name', attachedFile.files[0].name);
+    formData.append('TicketId', queries.id);
 
-            $.ajax({
-                url: 'api/attachment/PostAttachment',
-                type: 'POST',
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                complete: function (data) {
-                    console.log(data.statusCode);
-                    $("#attachmentCreationResult").html("Attachement posted successfully!!!");
-                },
-                error: function (response) {
-                    console.log(response.responseText);
-                }
-            });
+    $.ajax({
+        url: 'api/attachment/PostAttachment',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        complete: function (data) {
+            console.log(data.statusCode);
+            $("#attachmentCreationResult").html("Attachement posted successfully!!!");
+        },
+        error: function (response) {
+            console.log(response.responseText);
         }
+    });
+}
 
 ```
 
@@ -290,16 +293,16 @@ Attachment file is taken from input control of file type. `TicketId` is parent i
 ###### Post a ticket attachment
 
 ```
-       POST /api/attachment/PostAttachment HTTP/1.1
-       Host: localhost:56786
-       Cache-Control: no-cache
-       Content-Type: multipart/form-data; 
-       Content-Disposition: form-data; name="file1"; filename="file.txt"
-       Content-Type: 
-       Content-Disposition: form-data; name="TicketId"
-       0
-       Content-Disposition: form-data; name="name"
-       file.txt
+POST /api/attachment/PostAttachment HTTP/1.1
+Host: localhost:56786
+Cache-Control: no-cache
+Content-Type: multipart/form-data; 
+Content-Disposition: form-data; name="file1"; filename="file.txt"
+Content-Type: 
+Content-Disposition: form-data; name="TicketId"
+0
+Content-Disposition: form-data; name="name"
+file.txt
 ```
 
 # Reference
