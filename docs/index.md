@@ -41,7 +41,7 @@ namespace BasicAuthentication.Client
 {
     class Program
     {       
-        const string ApiOpEndPoint = "http://serverName/appName/api/account/GetByName/my%20account";
+        const string ApiOpEndPoint = "http://serverName/api/account/GetByName/my%20account";
 
         static void Main()
         {
@@ -52,13 +52,15 @@ namespace BasicAuthentication.Client
         {
             using (HttpClient client = new HttpClient())
             {
-                Console.WriteLine("Sending request to Autotask ASP.NET Web API with basic auth header...");
+                Console.WriteLine("Sending request with basic auth header...");
                 Console.WriteLine("Response is: ");
-                Console.WriteLine(await TryRequestAsync(client, CreateBasicCredentials("myUserName", "myPassword")));
+                Console.WriteLine(await TryRequestAsync(client, 
+                                  CreateBasicCredentials("myUserName", "myPassword")));
             }
         }
 
-        static async Task<string> TryRequestAsync(HttpClient client, AuthenticationHeaderValue authorization)
+        static async Task<string> TryRequestAsync(HttpClient client, 
+                                                  AuthenticationHeaderValue authorization)
         {
             using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiOpEndPoint))
             {
@@ -81,7 +83,8 @@ namespace BasicAuthentication.Client
             }
         }
 
-        static AuthenticationHeaderValue CreateBasicCredentials(string userName, string password)
+        static AuthenticationHeaderValue CreateBasicCredentials(string userName, 
+                                                                string password)
         {
             string toEncode = userName + ":" + password;
             
@@ -101,65 +104,65 @@ namespace BasicAuthentication.Client
 ```
 
 function submitAccountSearch()
-        {
-            var userName = $("#apiUsername").val();
+{
+    var userName = $("#apiUsername").val();
 
-            if (userName.length == 0)
-            {
-                alert("Please enter user name");
-                return;
-            }
+    if (userName.length == 0)
+    {
+        alert("Please enter user name");
+        return;
+    }
 
-            var passWord = $("#apiPassword").val();
+    var passWord = $("#apiPassword").val();
 
-            if (passWord.length == 0) {
-                alert("Please enter password");
-                return;
-            }
+    if (passWord.length == 0) {
+        alert("Please enter password");
+        return;
+    }
 
-            var authHeader = createBasicAuthHeader(userName, passWord);
-            var headers = {};
-            headers.Authorization = authHeader;
+    var authHeader = createBasicAuthHeader(userName, passWord);
+    var headers = {};
+    headers.Authorization = authHeader;
 
-            $("#loadingText").html("Loading...");
+    $("#loadingText").html("Loading...");
+    $("#loadingText").show();
+    $("#accountTableBody").html('');
+
+    var urlToInvoke = 'api/account/getbyname/' + $("#accountNameTextBox").val();
+
+    $.ajax({
+        url: urlToInvoke,
+        method: 'get',
+        headers: headers,
+        success: function (list) {
+        var accountTableBodyHtml = "";
+
+        $.each(list, function (index, value) {
+            // Each value is an account.
+            accountTableBodyHtml += '<tr>';
+            accountTableBodyHtml += '<td>' + value.accountNameField + '</td>';
+            accountTableBodyHtml += '<td>' + value.accountNumberField + '</td>';
+            accountTableBodyHtml += '<td>' + value.idField + '</td>';
+            accountTableBodyHtml += '</tr>';
+        });
+
+        $("#accountTableBody").html(accountTableBodyHtml);
+        $("#loadingText").hide();
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            $("#loadingText").html(JSON.parse(XMLHttpRequest.responseText).Message);
             $("#loadingText").show();
-            $("#accountTableBody").html('');
 
-            var urlToInvoke = 'api/account/getbyname/' + $("#accountNameTextBox").val(); // works
-
-            $.ajax({
-                url: urlToInvoke,
-                method: 'get',
-                headers: headers,
-                success: function (list) {
-                    var accountTableBodyHtml = "";
-
-                    $.each(list, function (index, value) {
-                        // Each value is an account.
-                        accountTableBodyHtml += '<tr>';
-                        accountTableBodyHtml += '<td>' + value.accountNameField + '</td>';
-                        accountTableBodyHtml += '<td>' + value.accountNumberField + '</td>';
-                        accountTableBodyHtml += '<td>' + value.idField + '</td>';
-                        accountTableBodyHtml += '</tr>';
-                    });
-
-                    $("#accountTableBody").html(accountTableBodyHtml);
-                    $("#loadingText").hide();
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    $("#loadingText").html(JSON.parse(XMLHttpRequest.responseText).Message);
-                    $("#loadingText").show();
-
-                    console.log(textStatus + " " + errorThrown);
-                }
-            });
-
+            console.log(textStatus + " " + errorThrown);
         }
+    });
+
+}
         
 ```
 
 ## Testing the Web API
-This Web API is documented using [Swagger spec] (http://autotaskwebapi.us-west-2.elasticbeanstalk.com/swagger). It lists all APIs with details of operations, requests, and response types.
+This Web API is documented with [Swagger.](http://autotaskwebapi.us-west-2.elasticbeanstalk.com/swagger/) It lists all APIs with details of operations, requests, and response types.
 
 ## Example: Querying Tickets by account id and status
 
