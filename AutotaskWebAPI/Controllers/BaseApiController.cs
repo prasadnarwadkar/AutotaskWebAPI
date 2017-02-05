@@ -14,7 +14,6 @@ using System.Web.Http.Description;
 
 namespace AutotaskWebAPI.Controllers
 {
-    
     public class BaseApiController : ApiController
     {
         protected AutotaskAPI api = null;
