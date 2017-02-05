@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test Page</title>
+	<meta charset="utf-8" itemscope="" itemtype="http://schema.org/WebPage"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        function createBasicAuthHeader(user, password) {
+            var token = user + ":" + password;
+
+            var hash = btoa(token);
+
+            return "Basic " + hash;
+        }
+
+        function submitAccountSearch()
+        {
+            var userName = $("#apiUsername").val();
+
+            if (userName.length == 0)
+            {
+                alert("Please enter user name");
+                return;
+            }
+
+            var passWord = $("#apiPassword").val();
+
+            if (passWord.length == 0) {
+                alert("Please enter password");
+                return;
+            }
+
+            var authHeader = createBasicAuthHeader(userName, passWord);
+            var headers = {};
+            headers.Authorization = authHeader;
+
+            $("#loadingText").html("Loading...");
+            $("#loadingText").show();
+            $("#accountTableBody").html('');
+
+            var urlToInvoke = 'api/account/getbyname/' + $("#accountNameTextBox").val(); // works
+
+            $.ajax({
+                url: urlToInvoke,
+                method: 'get',
+                headers: headers,
+                success: function (list) {
+                    var accountTableBodyHtml = "";
+
+                    $.each(list, function (index, value) {
+                        // Each value is an account.
+                        accountTableBodyHtml += '<tr>';
+                        accountTableBodyHtml += '<td>' + value.accountNameField + '</td>';
+                        accountTableBodyHtml += '<td>' + value.accountNumberField + '</td>';
+                        accountTableBodyHtml += '<td>' + value.idField + '</td>';
+                        accountTableBodyHtml += '</tr>';
+                    });
+
+                    $("#accountTableBody").html(accountTableBodyHtml);
+                    $("#loadingText").hide();
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $("#loadingText").html(JSON.parse(XMLHttpRequest.responseText).Message);
+                    $("#loadingText").show();
+
+                    console.log(textStatus + " " + errorThrown);
+                }
+            });
+
+        }
+
+        $(document).ready(function () {
+            console.log('document ready...');
+            $("#loadingText").hide();
+        });
+    </script>
+</head>
+<body>
+    <label for="apiUsername">Autotask API Username:</label>
+    <input id="apiUsername" type="text" maxlength="50" />
+    <label for="apiPassword">Autotask API Password:</label>
+    <input id="apiPassword" type="password" maxlength="50" />
+
+    <label for="accountNameTextBox">Account Name:</label>
+    <input id="accountNameTextBox" type="text" maxlength="50" />
+    <input type="button" id="submitButton" title="Search" value="Search" onclick="submitAccountSearch();" />
+    
+   
+    <hr />
+    <label id="loadingText">Loading...</label>
+    <table>
+        <thead>
+            <tr>
+                <th>Account Name</th>
+                <th>Account Number</th>
+                <th>Account ID</th>
+            </tr>
+        </thead>
+        <tbody id="accountTableBody">
+            
+        </tbody>
+    </table>
+</body>
+</html>
