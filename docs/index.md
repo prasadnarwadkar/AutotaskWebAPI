@@ -235,7 +235,7 @@ This will return attachment byte array content which can be consumed at client s
 
 You might want to get entities by their last activity date or last modified date. When you send a date in such a case, the API methods return entities with last activity date or last modified date which is after the date argument. 
 
-For example, if you send a date argument such as ‘2016-12-22’ to an API endpoint such as ` {base url}/api/ticket/GetByLastActivityDate/2016-12-22`, it returns tickets which have last activity date that is “after” 22nd Dec’16. Always send dates to Web API operations that require dates in the format 'YYYY-MM-DD'.
+For example, if you send a date argument such as 2016-12-22 to an API endpoint such as `{base url}/api/ticket/GetByLastActivityDate/2016-12-22`, it returns tickets which have last activity date that is after 22nd Dec 2016. Always send dates to Web API operations that require dates in the format 'YYYY-MM-DD'.
 
 # Error handling
 Error handling is quite extensive in this API. I have used error messages from AT SOAP API which are quite user-friendly. For example, while creating a ticket, you must pass both assigned resource id and assigned resource role id together or else there will be an error which the message properly indicates. Please check the error message in the http response in case of an error. If there is no error, the response contains JSON object containing all data you requested. Sometimes you might get an empty list of entities which is alright if the parameters do not match any of the entities in the AT database. If there is no error, your query is deemed to have worked.
