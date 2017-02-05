@@ -21,8 +21,135 @@ All you need is two keys in appSettings (web.config) with values as per your Aut
 <add key="APIPassword" value="" />
 ```
 
-## Trying the Web API
-This Web API is documented using Swagger spec. It lists all APIs with try it out buttons to help you in trying them. The API requires Autotask API username and password. Currently, on the demo API page, I am not using any credentials. Please contact me if you would like to play with the API with actual credentials of yours.
+## Request Authorization header
+If the web.config keys for API username and password are left blank, you may still invoke the Web API by sending an auth header with every request.
+###### Example of setting an auth header from .NET console app
+```
+using System;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BasicAuthentication.Client
+{
+    class Program
+    {       
+        const string ApiOpEndPoint = "http://serverName/appName/api/account/GetByName/my%20account";
+
+        static void Main()
+        {
+            RunAsync().Wait();
+        }
+
+        static async Task RunAsync()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                Console.WriteLine("Sending request to Autotask ASP.NET Web API with basic auth header...");
+                Console.WriteLine("Response is: ");
+                Console.WriteLine(await TryRequestAsync(client, CreateBasicCredentials("myUserName", "myPassword")));
+            }
+        }
+
+        static async Task<string> TryRequestAsync(HttpClient client, AuthenticationHeaderValue authorization)
+        {
+            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiOpEndPoint))
+            {
+                request.Headers.Authorization = authorization;
+
+                using (HttpResponseMessage response = await client.SendAsync(request))
+                {
+                    Console.WriteLine("{0} {1}", (int)response.StatusCode, response.ReasonPhrase);
+
+                    if (response.StatusCode != HttpStatusCode.OK)
+                    {
+                        return "Status code is not equal to HttpStatusCode.OK";
+                    }
+
+                    Console.WriteLine();
+
+                    return await response.Content.ReadAsStringAsync();
+                    
+                }
+            }
+        }
+
+        static AuthenticationHeaderValue CreateBasicCredentials(string userName, string password)
+        {
+            string toEncode = userName + ":" + password;
+            
+            Encoding encoding = Encoding.GetEncoding("iso-8859-1");
+            byte[] toBase64 = encoding.GetBytes(toEncode);
+            string parameter = Convert.ToBase64String(toBase64);
+
+            return new AuthenticationHeaderValue("Basic", parameter);
+        }
+    }
+}
+```
+###### Example of setting an auth header from jQuery
+```
+function submitAccountSearch()
+        {
+            var userName = $("#apiUsername").val();
+
+            if (userName.length == 0)
+            {
+                alert("Please enter user name");
+                return;
+            }
+
+            var passWord = $("#apiPassword").val();
+
+            if (passWord.length == 0) {
+                alert("Please enter password");
+                return;
+            }
+
+            var authHeader = createBasicAuthHeader(userName, passWord);
+            var headers = {};
+            headers.Authorization = authHeader;
+
+            $("#loadingText").html("Loading...");
+            $("#loadingText").show();
+            $("#accountTableBody").html('');
+
+            var urlToInvoke = 'api/account/getbyname/' + $("#accountNameTextBox").val(); // works
+
+            $.ajax({
+                url: urlToInvoke,
+                method: 'get',
+                headers: headers,
+                success: function (list) {
+                    var accountTableBodyHtml = "";
+
+                    $.each(list, function (index, value) {
+                        // Each value is an account.
+                        accountTableBodyHtml += '<tr>';
+                        accountTableBodyHtml += '<td>' + value.accountNameField + '</td>';
+                        accountTableBodyHtml += '<td>' + value.accountNumberField + '</td>';
+                        accountTableBodyHtml += '<td>' + value.idField + '</td>';
+                        accountTableBodyHtml += '</tr>';
+                    });
+
+                    $("#accountTableBody").html(accountTableBodyHtml);
+                    $("#loadingText").hide();
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $("#loadingText").html(JSON.parse(XMLHttpRequest.responseText).Message);
+                    $("#loadingText").show();
+
+                    console.log(textStatus + " " + errorThrown);
+                }
+            });
+
+        }
+```
+
+## Testing the Web API
+This Web API is documented using [Swagger spec] (http://autotaskwebapi.us-west-2.elasticbeanstalk.com/swagger). It lists all APIs with details of operations, requests, and response types.
 
 ## Example: Querying Tickets by account id and status
 A ticket is always associated with an account. It makes sense to query tickets by account id and to narrow down search, it helps to filter them by status (e.g. Complete, In Progress, Waiting Approval etc.).
