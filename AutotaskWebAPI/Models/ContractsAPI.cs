@@ -31,7 +31,7 @@ namespace AutotaskWebAPI.Models
             strContract.Append("</expression></field>");
             strContract.Append("</query></queryxml>");
 
-            ATWSResponse respContract = api._atwsServices.query(strContract.ToString());
+            ATWSResponse respContract = api._atwsServices.query(strContract.ToString(), out errorMsg);
 
             if (respContract.ReturnCode > 0 && respContract.EntityResults.Length > 0)
             {
@@ -68,7 +68,7 @@ namespace AutotaskWebAPI.Models
             strContract.Append("</expression></field>");
             strContract.Append("</query></queryxml>");
 
-            ATWSResponse respContract = api._atwsServices.query(strContract.ToString());
+            ATWSResponse respContract = api._atwsServices.query(strContract.ToString(), out errorMsg);
 
             if (respContract.ReturnCode > 0 && respContract.EntityResults.Length > 0)
             {
@@ -103,7 +103,7 @@ namespace AutotaskWebAPI.Models
             strContract.Append("</expression></field>");
             strContract.Append("</query></queryxml>");
 
-            ATWSResponse respContract = api._atwsServices.query(strContract.ToString());
+            ATWSResponse respContract = api._atwsServices.query(strContract.ToString(), out errorMsg);
 
             if (respContract.ReturnCode > 0 && respContract.EntityResults.Length > 0)
             {
@@ -138,7 +138,7 @@ namespace AutotaskWebAPI.Models
             strContract.Append("</expression></field>");
             strContract.Append("</query></queryxml>");
 
-            ATWSResponse respContract = api._atwsServices.query(strContract.ToString());
+            ATWSResponse respContract = api._atwsServices.query(strContract.ToString(), out errorMsg);
 
             if (respContract.ReturnCode > 0 && respContract.EntityResults.Length > 0)
             {

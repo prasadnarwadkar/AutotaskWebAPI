@@ -39,7 +39,7 @@ namespace AutotaskWebAPI.Models
             strContact.Append("</expression></field>");
             strContact.Append("</query></queryxml>");
 
-            ATWSResponse respContact = api._atwsServices.query(strContact.ToString());
+            ATWSResponse respContact = api._atwsServices.query(strContact.ToString(), out errorMsg);
 
             if (respContact.ReturnCode > 0 && respContact.EntityResults.Length > 0)
             {
@@ -72,7 +72,7 @@ namespace AutotaskWebAPI.Models
             strContact.Append("</expression></field>");
             strContact.Append("</query></queryxml>");
 
-            ATWSResponse respContact = api._atwsServices.query(strContact.ToString());
+            ATWSResponse respContact = api._atwsServices.query(strContact.ToString(), out errorMsg);
 
             if (respContact.ReturnCode > 0 && respContact.EntityResults.Length > 0)
             {
@@ -106,7 +106,7 @@ namespace AutotaskWebAPI.Models
             strContact.Append("</expression></field>");
             strContact.Append("</query></queryxml>");
 
-            ATWSResponse respContact = api._atwsServices.query(strContact.ToString());
+            ATWSResponse respContact = api._atwsServices.query(strContact.ToString(), out errorMsg);
 
             if (respContact.ReturnCode > 0 && respContact.EntityResults.Length > 0)
             {
@@ -153,7 +153,7 @@ namespace AutotaskWebAPI.Models
             strContact.Append("</expression></field></condition>");
             strContact.Append("</query></queryxml>");
 
-            ATWSResponse respContact = api._atwsServices.query(strContact.ToString());
+            ATWSResponse respContact = api._atwsServices.query(strContact.ToString(), out errorMsg);
 
             if (respContact.ReturnCode > 0 && respContact.EntityResults.Length > 0)
             {

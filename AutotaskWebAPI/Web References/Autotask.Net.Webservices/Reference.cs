@@ -330,10 +330,48 @@ namespace AutotaskWebAPI.Autotask.Net.Webservices {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapHeaderAttribute("AutotaskIntegrationsValue")]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://autotask.net/ATWS/v1_5/query", RequestNamespace="http://autotask.net/ATWS/v1_5/", ResponseNamespace="http://autotask.net/ATWS/v1_5/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public ATWSResponse query(string sXML) {
-            object[] results = this.Invoke("query", new object[] {
+        public ATWSResponse query(string sXML, out string errorMsg) {
+            try
+            {
+                errorMsg = string.Empty;
+                object[] results = this.Invoke("query", new object[] {
                         sXML});
-            return ((ATWSResponse)(results[0]));
+                return ((ATWSResponse)(results[0]));
+            }
+            catch (InvalidOperationException ex)
+            {
+                errorMsg = ex.Message;
+
+                if (ex.Message.Contains("Invalid Username or Password"))
+                {
+                    errorMsg = "Invalid Username or Password. Please check whether 1. web.config appSettings Keys for user name and password are correct. Or 2. you have passed valid auth header with valid credentials.";
+                }
+                
+                ATWSResponse response = new ATWSResponse();
+
+                response.ReturnCode = 0;
+                response.Errors = new ATWSError[1];
+                response.Errors[0] = new ATWSError
+                {
+                    Message = errorMsg
+                };
+
+                return response;
+            }
+            catch (SoapException ex)
+            {
+                errorMsg = ex.Message;
+
+                ATWSResponse response = new ATWSResponse();
+
+                response.ReturnCode = 0;
+                response.Errors = new ATWSError[1];
+                response.Errors[0] = new ATWSError {
+                    Message = ex.Message
+                };
+
+                return response;
+            }
         }
         
         /// <remarks/>
@@ -360,10 +398,50 @@ namespace AutotaskWebAPI.Autotask.Net.Webservices {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapHeaderAttribute("AutotaskIntegrationsValue")]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://autotask.net/ATWS/v1_5/create", RequestNamespace="http://autotask.net/ATWS/v1_5/", ResponseNamespace="http://autotask.net/ATWS/v1_5/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public ATWSResponse create(Entity[] Entities) {
-            object[] results = this.Invoke("create", new object[] {
+        public ATWSResponse create(Entity[] Entities, out string errorMsg) {
+            try
+            {
+                errorMsg = string.Empty;
+
+                object[] results = this.Invoke("create", new object[] {
                         Entities});
-            return ((ATWSResponse)(results[0]));
+                return ((ATWSResponse)(results[0]));
+            }
+            catch (InvalidOperationException ex)
+            {
+                errorMsg = ex.Message;
+
+                if (ex.Message.Contains("Invalid Username or Password"))
+                {
+                    errorMsg = "Invalid Username or Password. Please check whether web.config appSettings Keys for user name and password are correct or you have passed a request with valid auth header containing valid credentials.";
+                }
+
+                ATWSResponse response = new ATWSResponse();
+
+                response.ReturnCode = 0;
+                response.Errors = new ATWSError[1];
+                response.Errors[0] = new ATWSError
+                {
+                    Message = errorMsg
+                };
+
+                return response;
+            }
+            catch (SoapException ex)
+            {
+                errorMsg = ex.Message;
+
+                ATWSResponse response = new ATWSResponse();
+
+                response.ReturnCode = 0;
+                response.Errors = new ATWSError[1];
+                response.Errors[0] = new ATWSError
+                {
+                    Message = ex.Message
+                };
+
+                return response;
+            }
         }
         
         /// <remarks/>
@@ -390,10 +468,49 @@ namespace AutotaskWebAPI.Autotask.Net.Webservices {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapHeaderAttribute("AutotaskIntegrationsValue")]
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://autotask.net/ATWS/v1_5/update", RequestNamespace="http://autotask.net/ATWS/v1_5/", ResponseNamespace="http://autotask.net/ATWS/v1_5/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public ATWSResponse update(Entity[] Entities) {
-            object[] results = this.Invoke("update", new object[] {
+        public ATWSResponse update(Entity[] Entities, out string errorMsg) {
+            try
+            {
+                errorMsg = string.Empty;
+                object[] results = this.Invoke("update", new object[] {
                         Entities});
-            return ((ATWSResponse)(results[0]));
+                return ((ATWSResponse)(results[0]));
+            }
+            catch (InvalidOperationException ex)
+            {
+                errorMsg = ex.Message;
+
+                if (ex.Message.Contains("Invalid Username or Password"))
+                {
+                    errorMsg = "Invalid Username or Password. Please check whether 1. web.config appSettings Keys for user name and password are correct. Or 2. you have passed valid auth header with valid credentials.";
+                }
+
+                ATWSResponse response = new ATWSResponse();
+
+                response.ReturnCode = 0;
+                response.Errors = new ATWSError[1];
+                response.Errors[0] = new ATWSError
+                {
+                    Message = errorMsg
+                };
+
+                return response;
+            }
+            catch (SoapException ex)
+            {
+                errorMsg = ex.Message;
+
+                ATWSResponse response = new ATWSResponse();
+
+                response.ReturnCode = 0;
+                response.Errors = new ATWSError[1];
+                response.Errors[0] = new ATWSError
+                {
+                    Message = errorMsg
+                };
+
+                return response;
+            }
         }
         
         /// <remarks/>
