@@ -105,6 +105,14 @@ namespace BasicAuthentication.Client
 
 ```
 
+function createBasicAuthHeader(user, password) {
+    var token = user + ":" + password;
+
+    var hash = btoa(token);
+
+    return "Basic " + hash;
+    }
+    
 function submitAccountSearch()
 {
     var userName = $("#apiUsername").val();
