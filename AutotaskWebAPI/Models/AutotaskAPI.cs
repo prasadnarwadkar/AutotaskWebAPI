@@ -1,10 +1,7 @@
 ﻿using AutotaskWebAPI.Autotask.Net.Webservices;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics;
 using System.Net;
-using System.Text;
 using System.Web.Services.Protocols;
 
 namespace AutotaskWebAPI.Models
