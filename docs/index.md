@@ -105,6 +105,14 @@ namespace BasicAuthentication.Client
 
 ```
 
+function createBasicAuthHeader(user, password) {
+    var token = user + ":" + password;
+
+    var hash = btoa(token);
+
+    return "Basic " + hash;
+    }
+    
 function submitAccountSearch()
 {
     var userName = $("#apiUsername").val();
@@ -191,12 +199,16 @@ Following is a lookup table for ticket status.
 HTTP GET to {base url}/api/ticket/GetByAccountIdAndStatus/{}/{}.
 For example, {base url}/api/ticket/GetByAccountIdAndStatus/12345678/8 returns all tickets with account id 12345678 and status as 8 (In Progress).
 
-## Example: Posting a ticket note for a ticket
+## Example: Posting a ticket note for a ticket using Generic endpoint
 
-HTTP POST to {base url}/api/note/post with the following body. Of course, the content type is application/json.
+Request body
 
 ```
-{"TicketId":"", "CreatorResourceId":"", "Title":"test note", "Description":"Description" ,"NoteType":3, "Publish":1}
+
+{"EntityType":"TicketNote","EntityObj":{"TicketId":"123", 
+"CreatorResourceId":"123", "Title":"string", 
+"Description":"string","NoteType":3, "Publish":2}}
+
 ```
 
 -`CreatorResourceId` is creator resource id which is resource id of the note creator.
@@ -209,7 +221,20 @@ HTTP POST to {base url}/api/note/post with the following body. Of course, the co
 
 -`NoteType` is note type. e.g for a user note it is 3. Please refer to [AT Web Services](https://www.autotask.net/help/Content/AdminSetup/2ExtensionsIntegrations/APIs/WebServicesAPI.htm).
 
--`Publish` is 1 to publish.
+-`Publish` is 1 to publish to all users or 2 to publish to internal users.
+
+```
+
+POST /api/generic/postentity HTTP/1.1
+Host: host-base-url
+Authorization: Basic xxxxxxxxxxxxx
+Content-Type: application/json
+
+{"EntityType":"TicketNote","EntityObj":{"TicketId":"123", 
+"CreatorResourceId":"123", "Title":"string", 
+"Description":"string","NoteType":3, "Publish":2}}
+
+```
 
 ## Example: Get Attachments by parent id (such as a ticket id) and attach date
 When you query an attachment, you first query an `AttachmentInfo`. Using id of a certain attachment info object, you can query the actual attachment.
