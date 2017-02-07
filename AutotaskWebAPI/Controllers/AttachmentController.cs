@@ -182,20 +182,17 @@ namespace AutotaskWebAPI.Controllers
                         attachment.Info = new AttachmentInfo();
 
                         // Parent type for a ticket parent is 4.
-                        attachment.Info.ParentType = 4;
+                        attachment.Info.ParentType = HttpContext.Current.Request.Form["ParentType"];
 
-                        attachment.Info.FullPath = HttpContext.Current.Request.Form["name"];
-                        attachment.Info.ParentID = HttpContext.Current.Request.Form["TicketId"];
-                        attachment.Info.Publish = 1;
-                        attachment.Info.Title = HttpContext.Current.Request.Form["name"];
+                        attachment.Info.FullPath = HttpContext.Current.Request.Form["FullPath"];
+                        attachment.Info.ParentID = HttpContext.Current.Request.Form["ParentID"];
+                        attachment.Info.Publish = HttpContext.Current.Request.Form["Publish"];
+                        attachment.Info.Title = HttpContext.Current.Request.Form["Title"];
                         attachment.Info.Type = "FILE_ATTACHMENT";
                         byte[] buffer = new byte[httpPostedFile.ContentLength];
 
                         httpPostedFile.InputStream.Read(buffer, 0, httpPostedFile.ContentLength);
                         attachment.Data = buffer;
-
-                        AutotaskAPI api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"],
-                                                        ConfigurationManager.AppSettings["APIPassword"]);
 
                         string errorMsg = string.Empty;
 
