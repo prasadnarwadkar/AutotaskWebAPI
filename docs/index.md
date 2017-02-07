@@ -283,7 +283,7 @@ At present, everything in basic mode of API usage is supported. In the near futu
 
 ###### Post a ticket attachment
 
-Attachment file is taken from input control of file type. `TicketId` is parent id taken from query string. You could ask user to populate it in a text field as well. The `url` is relative in the following example. However, since the Web API enables CORS from server side, you may deploy the Web API anywhere (e.g. your on-premise IIS, cloud hosting providers such as AWS, Azure etc.) and use that URL.
+Attachment file is taken from input control of file type. The `url` is relative in the following example. However, since the Web API enables CORS from server side, you may deploy the Web API anywhere (e.g. your on-premise web server, cloud hosting providers such as AWS, Azure etc.) and use that URL.
 
 ```
 function createNewAttachment()
@@ -291,11 +291,15 @@ function createNewAttachment()
     console.log('Posting the attachment...');
     var formData = new FormData();
     var attachedFile = $('#chosenFile')[0];
+    
     formData.append("attachedFile", attachedFile.files[0]);
-    console.log(attachedFile.files[0].name);
-    formData.append('name', attachedFile.files[0].name);
-    formData.append('TicketId', queries.id);
-
+    
+    formData.append("ParentID", 123); // attachment parent id.
+    formData.append('Title', attachedFile.files[0].name);// file title
+    formData.append('FullPath', attachedFile.files[0].name); // file full path
+    formData.append('Publish', '2'); // Publish to internal users.
+    formData.append('ParentType', '4'); // 4 indicates a ticket parent.
+    
     $.ajax({
         url: 'api/attachment/PostAttachment',
         type: 'POST',
@@ -320,16 +324,36 @@ function createNewAttachment()
 ###### Post a ticket attachment
 
 ```
-POST /api/attachment/PostAttachment HTTP/1.1
-Host: localhost:56786
-Cache-Control: no-cache
-Content-Type: multipart/form-data; 
-Content-Disposition: form-data; name="file1"; filename="file.txt"
+
+POST /api/attachment/PostTicketAttachment HTTP/1.1
+Host: base-api-url
+Authorization: Basic xxxxxxxxxx
+
+Content-Type: multipart/form-data;
+
+Content-Disposition: form-data; name="file1"; filename=""
 Content-Type: 
-Content-Disposition: form-data; name="TicketId"
-0
-Content-Disposition: form-data; name="name"
-file.txt
+
+Content-Disposition: form-data; name="ParentID"
+
+123
+
+Content-Disposition: form-data; name="Title"
+
+file1.txt
+
+Content-Disposition: form-data; name="FullPath"
+
+file1.txt
+
+Content-Disposition: form-data; name="Publish"
+
+2
+
+Content-Disposition: form-data; name="ParentType"
+
+4
+
 ```
 
 # Reference
