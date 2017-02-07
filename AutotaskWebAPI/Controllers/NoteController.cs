@@ -109,52 +109,5 @@ namespace AutotaskWebAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
         }
-
-        /// <summary>
-        /// Create a ticket note.
-        /// </summary>
-        /// <param name="details"></param>
-        /// <returns>Returns id of the created note.</returns>
-        [Route("api/note/PostTicketNote")]
-        [SwaggerResponse(typeof(Int32))]
-        [HttpPost]
-        public HttpResponseMessage PostTicketNote([FromBody] NoteDetails details)
-        {
-            if (!apiInitialized)
-            {
-                var response = Request.CreateResponse(HttpStatusCode.Found);
-                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
-                return response;
-            }
-
-            try
-            {
-                if (details == null)
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Bad Request: Note details passed are null or invalid");
-                }
-
-                string errorMsg = string.Empty;
-
-                TicketNote note = notesApi.CreateTicketNote(Convert.ToInt32(details.TicketId), 
-                                            details.Title.ToString(),
-                                            details.Description.ToString(), Convert.ToInt32(details.CreatorResourceId),
-                                            Convert.ToInt32(details.NoteType), Convert.ToInt32(details.Publish),
-                                            out errorMsg);
-
-                if (note != null)
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK, note.id);
-                }
-                else
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
-                }
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
     }
 }

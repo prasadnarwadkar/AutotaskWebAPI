@@ -12,19 +12,19 @@ namespace AutotaskWebAPI.Controllers
 {
     public class BaseApiController : ApiController
     {
-        protected AutotaskAPI api = null;
-        protected bool apiInitialized = false;
+        protected static AutotaskAPI api = null;
+        protected static bool apiInitialized = false;
 
-        protected ResourcesAPI resourcesApi = null;
-        protected TicketsAPI ticketsApi = null;
-        protected AccountsAPI accountsApi = null;
-        protected NotesAPI notesApi = null;
-        protected AttachmentsAPI attachmentsApi = null;
-        protected ResourceRolesAPI resourceRolesApi = null;
-        protected ContactsAPI contactsApi = null;
-        protected TasksAPI tasksApi = null;
-        protected ContractsAPI contractsApi = null;
-        protected GenericAPI genericApi = null;
+        protected static ResourcesAPI resourcesApi = null;
+        protected static TicketsAPI ticketsApi = null;
+        protected static AccountsAPI accountsApi = null;
+        protected static NotesAPI notesApi = null;
+        protected static AttachmentsAPI attachmentsApi = null;
+        protected static ResourceRolesAPI resourceRolesApi = null;
+        protected static ContactsAPI contactsApi = null;
+        protected static TasksAPI tasksApi = null;
+        protected static ContractsAPI contractsApi = null;
+        protected static GenericAPI genericApi = null;
 
         private static Tuple<string, string> ExtractUserNameAndPassword(string authorizationParameter)
         {
@@ -83,23 +83,45 @@ namespace AutotaskWebAPI.Controllers
         {
             try
             {
-                string[] authHeaders= HttpContext.Current.Request.Headers.GetValues("Authorization");
-                
-                if (authHeaders != null &&
-                    authHeaders.Count() > 0)
+                if (!apiInitialized)
                 {
-                    // Extract the actual base64 string by stripping off the Basic and space.
-                    string authValue = authHeaders[0];
-                    int indexOfBasic = authValue.IndexOf("Basic ");
-                    authValue = authValue.Substring(indexOfBasic + 6);
+                    string[] authHeaders = HttpContext.Current.Request.Headers.GetValues("Authorization");
 
-                    Tuple<string, string> userNameAndPasword = ExtractUserNameAndPassword(authValue);
-
-                    if (!string.IsNullOrEmpty(userNameAndPasword.Item1)
-                        && !string.IsNullOrEmpty(userNameAndPasword.Item2))
+                    if (authHeaders != null &&
+                        authHeaders.Count() > 0)
                     {
-                        // Username and password are available from Request's Authorization header.
-                        api = new AutotaskAPI(userNameAndPasword.Item1, userNameAndPasword.Item2);
+                        // Extract the actual base64 string by stripping off the Basic and space.
+                        string authValue = authHeaders[0];
+                        int indexOfBasic = authValue.IndexOf("Basic ");
+                        authValue = authValue.Substring(indexOfBasic + 6);
+
+                        Tuple<string, string> userNameAndPasword = ExtractUserNameAndPassword(authValue);
+
+                        if (!string.IsNullOrEmpty(userNameAndPasword.Item1)
+                            && !string.IsNullOrEmpty(userNameAndPasword.Item2))
+                        {
+                            // Username and password are available from Request's Authorization header.
+                            api = new AutotaskAPI(userNameAndPasword.Item1, userNameAndPasword.Item2);
+                        }
+                        else
+                        {
+                            // Are the username and password set in web.config appSettings keys?
+                            api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"],
+                                                    ConfigurationManager.AppSettings["APIPassword"]);
+                        }
+
+                        apiInitialized = true;
+
+                        resourcesApi = new ResourcesAPI(api);
+                        ticketsApi = new TicketsAPI(api);
+                        accountsApi = new AccountsAPI(api);
+                        notesApi = new NotesAPI(api);
+                        attachmentsApi = new AttachmentsAPI(api);
+                        resourceRolesApi = new ResourceRolesAPI(api);
+                        contactsApi = new ContactsAPI(api);
+                        tasksApi = new TasksAPI(api);
+                        contractsApi = new ContractsAPI(api);
+                        genericApi = new GenericAPI(api);
                     }
                     else
                     {
@@ -107,9 +129,9 @@ namespace AutotaskWebAPI.Controllers
                         api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"],
                                                 ConfigurationManager.AppSettings["APIPassword"]);
                     }
-
-                    apiInitialized = true;
-
+                }
+                else
+                {
                     resourcesApi = new ResourcesAPI(api);
                     ticketsApi = new TicketsAPI(api);
                     accountsApi = new AccountsAPI(api);
@@ -120,12 +142,6 @@ namespace AutotaskWebAPI.Controllers
                     tasksApi = new TasksAPI(api);
                     contractsApi = new ContractsAPI(api);
                     genericApi = new GenericAPI(api);
-                }
-                else
-                {
-                    // Are the username and password set in web.config appSettings keys?
-                    api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"],
-                                            ConfigurationManager.AppSettings["APIPassword"]);
                 }
             }
             catch (ArgumentException)
@@ -145,7 +161,7 @@ namespace AutotaskWebAPI.Controllers
         {
             if (!apiInitialized)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "API is not initialized. It needs valid API username and password. Please update web.config appSettings keys. Alternatively, you can set a valid authorization header with Basic scheme (e.g. Basic xxxxxx) with the request.");
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "API is not initialized. It needs valid API username and password. Please ensure you have set a valid authorization header on the request.");
             }
             else
             {
