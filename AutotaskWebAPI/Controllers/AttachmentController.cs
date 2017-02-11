@@ -21,7 +21,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="parentId"></param>
         /// <returns></returns>
-        [Route("api/attachment/GetInfoByParentId/{parentId}")]
+        [Route("api/attachments/parent/{parentId:int}")]
         [SwaggerResponse(typeof(List<AttachmentInfo>))]
         [HttpGet]
         public HttpResponseMessage GetInfoByParentId(long parentId)
@@ -53,7 +53,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="id">attachment id</param>
         /// <returns></returns>
-        [Route("api/attachment/GetById/{id}")]
+        [Route("api/attachments/{id:int}")]
         [SwaggerResponse(typeof(ByteArrayContent))]
         [HttpGet]
         public HttpResponseMessage GetById(long id)
@@ -90,7 +90,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="attachDate">Date Format: YYYY-MM-DD</param>
         /// <returns>All attachments attached to their parents respectively after given date.</returns>
-        [Route("api/attachment/GetInfoByAttachDate/{attachDate}")]
+        [Route("api/attachments/attachdate/{attachDate:datetime:regex(\\d{4}-\\d{2}-\\d{2})}")]
         [SwaggerResponse(typeof(List<AttachmentInfo>))]
         [HttpGet]
         public HttpResponseMessage GetInfoByAttachDate(string attachDate)
@@ -124,7 +124,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="parentId"></param>
         /// <param name="attachDate"></param>
         /// <returns>All attachments attached to their parents respectively after given date.</returns>
-        [Route("api/attachment/GetInfoByParentIdAndAttachDate/{parentId}/{attachDate}")]
+        [Route("api/attachments/parent/{parentId:int}/attachdate/{attachDate:datetime:regex(\\d{4}-\\d{2}-\\d{2})}")]
         [SwaggerResponse(typeof(List<AttachmentInfo>))]
         [HttpGet]
         public HttpResponseMessage GetInfoByParentIdAndAttachDate(long parentId, string attachDate)
@@ -163,7 +163,7 @@ namespace AutotaskWebAPI.Controllers
         /// TicketId: parent ticket id.
         /// </summary>
         /// <returns>id of the attachment created</returns>
-        [Route("api/attachment/PostTicketAttachment")]
+        [Route("api/attachments")]
         [SwaggerResponse(typeof(Int32))]
         [HttpPost]
         public HttpResponseMessage PostTicketAttachment()

@@ -20,7 +20,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="fieldName">e.g. Status</param>
         /// <param name="valueToSearch">String representation of an object value. e.g. "8"</param>
         /// <returns></returns>
-        [Route("api/picklist/GetLabel/{entityType}/{fieldName}/{valueToSearch}")]
+        [Route("api/picklists/{entityType}/{fieldName}/{valueToSearch}")]
         [SwaggerResponse(typeof(String))]
         [HttpGet]
         public HttpResponseMessage GetLabel(string entityType, string fieldName,
@@ -70,7 +70,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="fieldName">e.g. Status</param>
         /// <returns>All Picklist labels that represent integer values respectively 
         /// for a given field.</returns>
-        [Route("api/picklist/GetLabels/{entityType}/{fieldName}")]
+        [Route("api/picklists/{entityType}/{fieldName}")]
         [SwaggerResponse(typeof(PickListValue[]))]
         [HttpGet]
         public HttpResponseMessage GetLabels(string entityType, string fieldName)

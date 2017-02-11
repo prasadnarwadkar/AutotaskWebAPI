@@ -19,7 +19,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="ticketId"></param>
         /// <returns></returns>
-        [Route("api/note/GetByTicketId/{ticketId}")]
+        [Route("api/notes/ticket/{ticketId:int}")]
         [SwaggerResponse(typeof(List<TicketNote>))]
         [HttpGet]
         public HttpResponseMessage GetByTicketId(long ticketId)
@@ -51,7 +51,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [Route("api/note/GetById/{id}")]
+        [Route("api/notes/{id:int}")]
         [SwaggerResponse(typeof(TicketNote))]
         [HttpGet]
         public HttpResponseMessage GetById(long id)
@@ -81,9 +81,9 @@ namespace AutotaskWebAPI.Controllers
         /// Get notes which have last activity dates that occur after
         /// the passed-in date.
         /// </summary>
-        /// <param name="lastActivityDate">Date in the format YYYY-MM-DD</param>
+        /// <param name="lastActivityDate">Date in the format yyyy-mm-dd</param>
         /// <returns>Returns all notes which have activity in them after the given date.</returns>
-        [Route("api/note/GetByLastActivityDate/{lastActivityDate}")]
+        [Route("api/notes/lastactivitydate/{lastActivityDate:datetime:regex(\\d{4}-\\d{2}-\\d{2})}")]
         [SwaggerResponse(typeof(List<TicketNote>))]
         [HttpGet]
         public HttpResponseMessage GetByLastActivityDate(string lastActivityDate)

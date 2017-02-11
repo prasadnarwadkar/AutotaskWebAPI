@@ -21,9 +21,9 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="entityName">Name of the entity e.g. Ticket</param>
         /// <param name="fieldName">Field name. e.g. id</param>
-        /// <param name="fieldValue">Field value e.g. 12345. If you pass a date, it should be in the format 'YYYY-MM-DD'.</param>
+        /// <param name="fieldValue">Field value e.g. 12345. If you pass a date, it should be in the format 'yyyy-mm-dd'.</param>
         /// <returns></returns>
-        [Route("api/generic/GetByEntityNameFieldNameAndValue")]
+        [Route("api/generics")]
         [SwaggerResponse(typeof(List<Entity>))]
         [HttpGet]
         public HttpResponseMessage GetByEntityNameFieldNameAndValue(string entityName, string fieldName, 
@@ -82,7 +82,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="details">Entity details</param>
         /// <returns>id of the entity created</returns>
-        [Route("api/generic/PostEntity")]
+        [Route("api/generics")]
         [HttpPost]
         public HttpResponseMessage PostEntity([FromBody] JObject details)
         {
@@ -163,8 +163,8 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="details">Entity details</param>
         /// <returns>Returns id of the entity updated. Please query the entity with this id again to retrieve updated entity.</returns>
-        [Route("api/generic/UpdateEntity")]
-        [HttpPost]
+        [Route("api/generics")]
+        [HttpPut]
         public HttpResponseMessage UpdateEntity([FromBody] JObject details)
         {
             if (!apiInitialized)

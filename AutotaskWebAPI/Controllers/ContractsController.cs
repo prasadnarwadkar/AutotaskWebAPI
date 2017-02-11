@@ -18,7 +18,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="id">Contract id</param>
         /// <returns>Contract</returns>
-        [Route("api/contract/GetById/{id}")]
+        [Route("api/contracts/{id:int}")]
         [SwaggerResponse(typeof(Contract))]
         [HttpGet]
         public HttpResponseMessage GetById(long id)
@@ -50,7 +50,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="opportunityId"></param>
         /// <returns>Contract(s)</returns>
-        [Route("api/contract/GetByOpportunityId/{opportunityId}")]
+        [Route("api/contracts/opportunity/{opportunityId:int}")]
         [SwaggerResponse(typeof(List<Contract>))]
         [HttpGet]
         public HttpResponseMessage GetByOpportunityId(long opportunityId)
@@ -82,7 +82,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="contactId">Contact id</param>
         /// <returns>Contract(s)</returns>
-        [Route("api/contract/GetByContactId/{contactId}")]
+        [Route("api/contracts/contact/{contactId:int}")]
         [SwaggerResponse(typeof(List<Contract>))]
         [HttpGet]
         public HttpResponseMessage GetByContactId(long contactId)
@@ -114,7 +114,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="accountId"></param>
         /// <returns></returns>
-        [Route("api/contract/GetByAccountId/{accountId}")]
+        [Route("api/contracts/account/{accountId:int}")]
         [SwaggerResponse(typeof(List<Contract>))]
         [HttpGet]
         public HttpResponseMessage GetByAccountId(long accountId)

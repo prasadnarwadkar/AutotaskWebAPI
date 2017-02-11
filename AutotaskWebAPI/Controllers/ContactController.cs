@@ -18,7 +18,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="id">Contact id</param>
         /// <returns>Contact</returns>
-        [Route("api/contact/GetById/{id}")]
+        [Route("api/contacts/{id:int}")]
         [SwaggerResponse(typeof(Contact))]
         [HttpGet]
         public HttpResponseMessage GetById(long id)
@@ -52,7 +52,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="firstName">Contact first name</param>
         /// <param name="lastName">Contact last name</param>
         /// <returns>Contact(s)</returns>
-        [Route("api/contact/GetByName/{firstName}/{lastName}")]
+        [Route("api/contacts/name/{firstName}/{lastName}")]
         [SwaggerResponse(typeof(List<Contact>))]
         [HttpGet]
         public HttpResponseMessage GetByName(string firstName, string lastName)
@@ -85,7 +85,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        [Route("api/contact/GetByEmail")]
+        [Route("api/contacts/email")]
         [SwaggerResponse(typeof(List<Contact>))]
         [HttpGet]
         public HttpResponseMessage GetByEmail(string email)
@@ -117,7 +117,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="accountId"></param>
         /// <returns>Contact(s)</returns>
-        [Route("api/contact/GetByAccountId/{accountId}")]
+        [Route("api/contacts/account/{accountId:int}")]
         [SwaggerResponse(typeof(List<Contact>))]
         [HttpGet]
         public HttpResponseMessage GetByAccountId(long accountId)

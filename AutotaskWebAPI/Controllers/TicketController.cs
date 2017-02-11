@@ -19,7 +19,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="accountId"></param>
         /// <returns></returns>
-        [Route("api/ticket/GetByAccountId/{accountId}")]
+        [Route("api/tickets/account/{accountId:int}")]
         [SwaggerResponse(typeof(List<Ticket>))]
         [HttpGet]
         public HttpResponseMessage GetByAccountId(long accountId)
@@ -51,7 +51,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [Route("api/ticket/GetById/{id}")]
+        [Route("api/tickets/{id:int}")]
         [SwaggerResponse(typeof(Ticket))]
         [HttpGet]
         public HttpResponseMessage GetById(long id)
@@ -83,7 +83,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="creatorResourceId">Id of the resource who created the Ticket(s).</param>
         /// <returns></returns>
-        [Route("api/ticket/GetByCreatorResourceId/{creatorResourceId}")]
+        [Route("api/tickets/creator/{creatorResourceId:int}")]
         [SwaggerResponse(typeof(List<Ticket>))]
         [HttpGet]
         public HttpResponseMessage GetByCreatorResourceId(long creatorResourceId)
@@ -115,7 +115,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="lastActivityDate"></param>
         /// <returns></returns>
-        [Route("api/ticket/GetByLastActivityDate/{lastActivityDate}")]
+        [Route("api/tickets/lastactivitydate/{lastActivityDate:datetime:regex(\\d{4}-\\d{2}-\\d{2})}")]
         [SwaggerResponse(typeof(List<Ticket>))]
         [HttpGet]
         public HttpResponseMessage GetByLastActivityDate(string lastActivityDate)
@@ -148,7 +148,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="accountId">Account id to which the ticket(s) belong.</param>
         /// <param name="status">Status as an integer passed as string. e.g. "8".</param>
         /// <returns>List of tickets.</returns>
-        [Route("api/ticket/GetByAccountIdAndStatus/{accountId}/{status}")]
+        [Route("api/tickets/account/{accountId:int}/status/{status:int}")]
         [SwaggerResponse(typeof(List<Ticket>))]
         [HttpGet]
         public HttpResponseMessage GetByAccountIdAndStatus(long accountId, long status)
@@ -181,7 +181,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="accountId">Account id to which the ticket(s) belong.</param>
         /// <param name="priority">Priority as an integer e.g. 6.</param>
         /// <returns>List of tickets.</returns>
-        [Route("api/ticket/GetByAccountIdAndPriority/{accountId}/{priority}")]
+        [Route("api/tickets/account/{accountId:int}/priority/{priority:int}")]
         [SwaggerResponse(typeof(List<Ticket>))]
         [HttpGet]
         public HttpResponseMessage GetByAccountIdAndPriority(long accountId, long priority)
@@ -213,7 +213,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="details">Details of Ticket to create.</param>
         /// <returns>id of created ticket</returns>
-        [Route("api/ticket/PostTicket")]
+        [Route("api/tickets")]
         [SwaggerResponse(typeof(Int32))]
         [HttpPost]
         public HttpResponseMessage PostTicket([FromBody] TicketDetails details)
@@ -261,9 +261,9 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="details">Details of Ticket to update.</param>
         /// <returns>id of updated ticket</returns>
-        [Route("api/ticket/UpdateTicket")]
+        [Route("api/tickets")]
         [SwaggerResponse(typeof(Int32))]
-        [HttpPost]
+        [HttpPut]
         public HttpResponseMessage UpdateTicket([FromBody] TicketUpdateDetails details)
         {
             if (!apiInitialized)

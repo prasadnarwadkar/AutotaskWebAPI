@@ -18,7 +18,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="name">Account name begins with this parameter.</param>
         /// <returns>All accounts whose names begin with passed name.</returns>
-        [Route("api/account/GetByName/{name}")]
+        [Route("api/accounts/{name}")]
         [SwaggerResponse(typeof(List<Account>))]
         public HttpResponseMessage GetByName(string name)
         {
@@ -49,7 +49,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="lastActivityDate">Date string in the format YYYY-MM-DD. e.g. 2017-01-12</param>
         /// <returns></returns>
-        [Route("api/account/GetByLastActivityDate/{lastActivityDate}")]
+        [Route("api/accounts/{lastActivityDate:datetime:regex(\\d{4}-\\d{2}-\\d{2})}")]
         [SwaggerResponse(typeof(List<Account>))]
         [HttpGet]
         public HttpResponseMessage GetByLastActivityDate(string lastActivityDate)
@@ -81,7 +81,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="accountNumber">Account Number</param>
         /// <returns></returns>
-        [Route("api/account/GetByNumber/{accountNumber}")]
+        [Route("api/accounts/number/{accountNumber}")]
         [SwaggerResponse(typeof(List<Account>))]
         [HttpGet]
         public HttpResponseMessage GetByNumber(string accountNumber)
@@ -113,7 +113,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [Route("api/account/GetById/{id}")]
+        [Route("api/accounts/{id:int}")]
         [SwaggerResponse(typeof(Account))]
         [HttpGet]
         public HttpResponseMessage GetById(int id)

@@ -19,7 +19,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="projectId">Project id</param>
         /// <returns>All Task(s) with project id matching passed-in project id.</returns>
-        [Route("api/task/GetByProjectId/{projectId}")]
+        [Route("api/tasks/project/{projectId:int}")]
         [SwaggerResponse(typeof(List<Task>))]
         [HttpGet]
         public HttpResponseMessage GetByProjectId(long projectId)
@@ -51,7 +51,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [Route("api/task/GetById/{id}")]
+        [Route("api/tasks/{id:int}")]
         [SwaggerResponse(typeof(Task))]
         [HttpGet]
         public HttpResponseMessage GetById(long id)
@@ -83,7 +83,7 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="creatorResourceId"></param>
         /// <returns>All Task(s) with creator resource id matching passed-in creator resource id.</returns>
-        [Route("api/task/GetByCreatorResourceId/{creatorResourceId}")]
+        [Route("api/tasks/creator/{creatorResourceId:int}")]
         [SwaggerResponse(typeof(List<Task>))]
         [HttpGet]
         public HttpResponseMessage GetByCreatorResourceId(long creatorResourceId)
@@ -114,9 +114,10 @@ namespace AutotaskWebAPI.Controllers
         /// Get Task(s) which have last activity date that occurs after 
         /// passed-in date.
         /// </summary>
-        /// <param name="lastActivityDate">Date after which there is activity in the returned tasks.</param>
+        /// <param name="lastActivityDate">Date in the format yyyy-mm-dd. This is the 
+        /// date after which there is activity in the returned tasks.</param>
         /// <returns></returns>
-        [Route("api/task/GetByLastActivityDate/{lastActivityDate}")]
+        [Route("api/tasks/lastactivitydate/{lastActivityDate:datetime:regex(\\d{4}-\\d{2}-\\d{2})}")]
         [SwaggerResponse(typeof(List<Task>))]
         [HttpGet]
         public HttpResponseMessage GetByLastActivityDate(string lastActivityDate)
@@ -149,7 +150,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="projectId">Project id to which the task(s) belong.</param>
         /// <param name="status">Status as an integer e.g. 8.</param>
         /// <returns>List of tasks.</returns>
-        [Route("api/task/GetByProjectIdAndStatus/{projectId}/{status}")]
+        [Route("api/tasks/project/{projectId:int}/status/{status:int}")]
         [SwaggerResponse(typeof(List<Task>))]
         [HttpGet]
         public HttpResponseMessage GetByProjectIdAndStatus(long projectId, long status)
@@ -182,7 +183,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="projectId">Project id to which the task(s) belong.</param>
         /// <param name="priority">Priority as an integer e.g. 6.</param>
         /// <returns>List of tasks.</returns>
-        [Route("api/task/GetByProjectIdAndPriority/{projectId}/{priority}")]
+        [Route("api/tasks/project/{projectId:int}/priority/{priority:int}")]
         [SwaggerResponse(typeof(List<Task>))]
         [HttpGet]
         public HttpResponseMessage GetByProjectIdAndPriority(long projectId, long priority)
@@ -214,10 +215,10 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         /// <param name="details"></param>
         /// <returns>id of the created task</returns>
-        [Route("api/task/PostTask")]
+        [Route("api/tasks/")]
         [SwaggerResponse(typeof(Int32))]
         [HttpPost]
-        public HttpResponseMessage PostTask([FromBody] TaskDetails details)
+        public HttpResponseMessage Post([FromBody] TaskDetails details)
         {
             if (!apiInitialized)
             {
