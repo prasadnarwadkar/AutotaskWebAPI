@@ -38,7 +38,7 @@
             $("#loadingText").show();
             $("#accountTableBody").html('');
 
-            var urlToInvoke = 'api/account/getbyname/' + $("#accountNameTextBox").val();
+            var urlToInvoke = 'api/accounts/' + $("#accountNameTextBox").val();
             
             $.ajax({
                 url: urlToInvoke,
