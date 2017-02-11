@@ -41,7 +41,7 @@ namespace BasicAuthentication.Client
 {
     class Program
     {       
-        const string ApiOpEndPoint = "http://serverName/api/account/GetByName/test";
+        const string ApiOpEndPoint = "http://serverName/api/accounts/test";
 
         static void Main()
         {
@@ -138,7 +138,7 @@ function submitAccountSearch()
     $("#loadingText").show();
     $("#accountTableBody").html('');
 
-    var urlToInvoke = 'api/account/getbyname/' + $("#accountNameTextBox").val();
+    var urlToInvoke = 'api/accounts/' + $("#accountNameTextBox").val();
 
     $.ajax({
         url: urlToInvoke,
@@ -196,8 +196,8 @@ Following is a lookup table for ticket status.
 
 ###### URL
 
-HTTP GET to {base url}/api/ticket/GetByAccountIdAndStatus/{}/{}.
-For example, {base url}/api/ticket/GetByAccountIdAndStatus/12345678/8 returns all tickets with account id 12345678 and status as 8 (In Progress).
+HTTP GET to `{base url}/api/tickets/account/{}/status/{}`.
+For example,` {base url}/api/tickets/account/12345678/status/8` returns all tickets with account id 12345678 and status as 8 (In Progress).
 
 ## Example: Posting a ticket note for a ticket using Generic endpoint
 
@@ -225,7 +225,7 @@ Request body
 
 ```
 
-POST /api/generic/postentity HTTP/1.1
+POST /api/generics HTTP/1.1
 Host: host-base-url
 Authorization: Basic xxxxxxxxxxxxx
 Content-Type: application/json
@@ -244,7 +244,7 @@ So first, you would get attachment info.
 
 ###### URL
 
-`{base url}/api/attachment/GetInfoByParentIdAndAttachDate/123/2016-12-22`
+`{base url}/api/attachments/parent/123/attachdate/2016-12-22`
 
 This will return a list of `AttachmentInfo` objects.
 
@@ -252,7 +252,7 @@ Then for each `AttachmentInfo` object, you would get its id using `AttachmentInf
 
 ###### URL
 
-`{base url}/api/attachment/GetById/123`
+`{base url}/api/attachments/123`
 
 This will return attachment byte array content which can be consumed at client side.
 
@@ -260,7 +260,7 @@ This will return attachment byte array content which can be consumed at client s
 
 You might want to get entities by their last activity date or last modified date. When you send a date in such a case, the API methods return entities with last activity date or last modified date which is after the date argument. 
 
-For example, if you send a date argument such as 2016-12-22 to an API endpoint, it returns tickets which have last activity date that is after 22nd Dec 2016. Always send dates to Web API operations that require dates in the format 'YYYY-MM-DD'.
+For example, if you send a date argument such as 2016-12-22 to an API endpoint, it returns tickets which have last activity date that is after 22nd Dec 2016. Always send dates to Web API operations that require dates in the format 'yyyy-mm-dd'.
 
 e.g. `{base url}/api/ticket/GetByLastActivityDate/2016-12-22`
 
@@ -271,7 +271,7 @@ Error handling is quite extensive in this API. I have used error messages from A
 You may want to use Postman (Chrome extension) to test the API. Any other RESTful API testing tool can also be used, even Fiddler can be used. I have used Postman and found it suitable for my purposes. This Web API uses Swagger spec to document the API endpoints. This makes it easy to try the API and create client-side code to consume them in your dashboards, intranet web apps and so forth.
 
 # Current Status
-At present `Account`, `Ticket`, `Contact`, `Contract`, `Resource`, `TicketNote`, `Attachment` and `Picklist` entities are supported with their own controllers. All other entities are supported using a Generic controller which allows getting any entity by its name, a field name and field value.
+At present `Account`, `Ticket`, `Contact`, `Contract`, `Resource`, `TicketNote`, `Attachment` and `Picklist`, `Task` entities are supported with their own controllers. All other entities are supported using a Generic controller which allows getting any entity by its name, a field name and field value.
 
 # Roadmap
 
@@ -301,7 +301,7 @@ function createNewAttachment()
     formData.append('ParentType', '4'); // 4 indicates a ticket parent.
     
     $.ajax({
-        url: 'api/attachment/PostAttachment',
+        url: 'api/attachments',
         type: 'POST',
         data: formData,
         cache: false,
@@ -325,7 +325,7 @@ function createNewAttachment()
 
 ```
 
-POST /api/attachment/PostTicketAttachment HTTP/1.1
+POST /api/attachments HTTP/1.1
 Host: base-api-url
 Authorization: Basic xxxxxxxxxx
 
