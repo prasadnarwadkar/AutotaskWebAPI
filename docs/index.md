@@ -55,7 +55,8 @@ namespace BasicAuthentication.Client
                 Console.WriteLine("Sending request with basic auth header...");
                 Console.WriteLine("Response is: ");
                 Console.WriteLine(await TryRequestAsync(client, 
-                                  CreateBasicCredentials("myUserName", "myPassword")));
+                                  CreateBasicCredentials("myUserName", 
+                                                        "myPassword")));
             }
         }
 
@@ -245,7 +246,9 @@ Host: {api base url}
 Authorization: Basic xxxxxx
 Content-Type: application/json
 
-{"EntityType":"TicketNote","EntityObj":{"Id":"123","TicketId":"123", "CreatorResourceId":"123", "Title":"test note 3", "Description":"test description","NoteType":3, "Publish":2}}
+{"EntityType":"TicketNote","EntityObj":{"Id":"123","TicketId":"123", 
+"CreatorResourceId":"123", "Title":"test note 3", 
+"Description":"test description","NoteType":3, "Publish":2}}
 
 ```
 
