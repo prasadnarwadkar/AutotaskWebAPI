@@ -236,6 +236,19 @@ Content-Type: application/json
 
 ```
 
+Updating a ticket note is similar. TicketNote `id` is the only additional parameter.
+
+```
+
+PUT /api/generics HTTP/1.1
+Host: {api base url}
+Authorization: Basic xxxxxx
+Content-Type: application/json
+
+{"EntityType":"TicketNote","EntityObj":{"Id":"29729225","TicketId":"14141", "CreatorResourceId":"29683366", "Title":"test note 3", "Description":"test description 29729225","NoteType":3, "Publish":2}}
+
+```
+
 ## Example: Get Attachments by parent id (such as a ticket id) and attach date
 When you query an attachment, you first query an `AttachmentInfo`. Using id of a certain attachment info object, you can query the actual attachment.
 This is tricky but that is how it is structured in Autotask. 
