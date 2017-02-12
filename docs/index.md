@@ -236,7 +236,7 @@ Content-Type: application/json
 
 ```
 
-Updating a ticket note is similar. TicketNote `id` is the only additional parameter.
+Updating a ticket note is similar. TicketNote `id` is the only additional parameter. Instead of `POST`, use `PUT`.
 
 ```
 
