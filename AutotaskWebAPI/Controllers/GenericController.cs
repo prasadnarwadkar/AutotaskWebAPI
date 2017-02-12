@@ -22,7 +22,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="entityName">Name of the entity e.g. Ticket</param>
         /// <param name="fieldName">Field name. e.g. id</param>
         /// <param name="fieldValue">Field value e.g. 12345. If you pass a date, it should be in the format 'yyyy-mm-dd'.</param>
-        /// <returns></returns>
+        /// <returns>List of entities for which field value of the field name matches the passed-in value. e.g. id value matches the passed-in id value.</returns>
         [Route("api/generics")]
         [SwaggerResponse(typeof(List<Entity>))]
         [HttpGet]
