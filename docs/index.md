@@ -245,7 +245,7 @@ Host: {api base url}
 Authorization: Basic xxxxxx
 Content-Type: application/json
 
-{"EntityType":"TicketNote","EntityObj":{"Id":"29729225","TicketId":"14141", "CreatorResourceId":"29683366", "Title":"test note 3", "Description":"test description 29729225","NoteType":3, "Publish":2}}
+{"EntityType":"TicketNote","EntityObj":{"Id":"123","TicketId":"123", "CreatorResourceId":"123", "Title":"test note 3", "Description":"test description","NoteType":3, "Publish":2}}
 
 ```
 
