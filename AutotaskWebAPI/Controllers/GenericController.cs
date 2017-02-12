@@ -69,7 +69,8 @@ namespace AutotaskWebAPI.Controllers
         /// <summary>
         /// Create an entity.
         /// Returns id of the entity created. Please query the entity with this id again to retrieve created entity.
-        /// Pass entity details to create like so:
+        /// Pass entity details to create. E.g.
+        /// 
         /// {"EntityType":"Task","EntityObj":
         ///    {
         ///      "projectid": 12345,
@@ -77,8 +78,9 @@ namespace AutotaskWebAPI.Controllers
         ///      "title": "string",
         ///      "description": "string"
         ///    }}
-        ///    Change entity type to the type you would like to create.
-        /// As of now, it supports Task, TicketNote and Contact entities.
+        /// 
+        /// Change entity type to the type you would like to create.
+        /// As of now, it supports Task, TicketNote, Contact, Contract and Resource entities.
         /// </summary>
         /// <param name="details">Entity details</param>
         /// <returns>id of the entity created</returns>
@@ -122,6 +124,12 @@ namespace AutotaskWebAPI.Controllers
                         case "TicketNote":
                             entity = genericApi.CreateEntity(details["EntityObj"].ToObject<TicketNote>(), out errorMsg);
                             break;
+                        case "Contract":
+                            entity = genericApi.CreateEntity(details["EntityObj"].ToObject<Contract>(), out errorMsg);
+                            break;
+                        case "Resource":
+                            entity = genericApi.CreateEntity(details["EntityObj"].ToObject<Resource>(), out errorMsg);
+                            break;
                         default:
                             return Request.CreateErrorResponse(HttpStatusCode.NotImplemented, "Entity type not supported yet.");
                     }
@@ -149,7 +157,8 @@ namespace AutotaskWebAPI.Controllers
         /// <summary>
         /// Update an entity.
         /// Returns id of the entity updated. Please query the entity with this id again to retrieve updated entity.
-        /// Pass entity details to update like so:
+        /// Pass entity details to update. E.g.
+        /// 
         /// {"EntityType":"Task","EntityObj":
         ///    {
         ///      "id":123,
@@ -158,8 +167,9 @@ namespace AutotaskWebAPI.Controllers
         ///      "title": "string",
         ///      "description": "string"
         ///    }}
+        ///    
         /// Change entity type to the type you would like to update.
-        /// As of now, it supports Task, Contact, Contract and Resource entities.
+        /// As of now, it supports Task, TicketNote, Contact, Contract and Resource entities.
         /// </summary>
         /// <param name="details">Entity details</param>
         /// <returns>Returns id of the entity updated. Please query the entity with this id again to retrieve updated entity.</returns>
@@ -204,7 +214,7 @@ namespace AutotaskWebAPI.Controllers
                             entity = genericApi.UpdateEntity(details["EntityObj"].ToObject<Contract>(), out errorMsg);
                             break;
                         case "Resource":
-                            entity = genericApi.UpdateEntity(details["EntityObj"].ToObject<Contract>(), out errorMsg);
+                            entity = genericApi.UpdateEntity(details["EntityObj"].ToObject<Resource>(), out errorMsg);
                             break;
                         case "TicketNote":
                             entity = genericApi.UpdateEntity(details["EntityObj"].ToObject<TicketNote>(), out errorMsg);
