@@ -49,3 +49,4 @@ _bin_deployableAssemblies
 packages
 bin
 obj
+*.suo
