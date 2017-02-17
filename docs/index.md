@@ -372,6 +372,236 @@ Content-Disposition: form-data; name="ParentType"
 
 ```
 
+# Complex Queries
+
+Page number 347 of [PDF Guide] (https://www.autotask.net/help/Content/LinkedDOCUMENTS/WSAPI/T_WebServicesAPIv1_5.pdf) shows a complex query. To realize this type of complex query using this API, here is an example. Here I have used JavaScript union and intersection of arrays to achieve this. The individual parts of the complex query are invoked with the Generic API separately and then results (list of entities) are combined using union or intersection depending on how the conditions are linked to each other. 
+If you use AND operator, intersect the arrays resulting from the two conditions. If you use OR operator, union the arrays resulting from the two conditions.
+Example follows. It uses the conditions that are ORed with each other and then nested. Similar example with JavaScript code follows.
+
+```
+
+<queryxml>
+<entity>contact</entity>
+<query>
+<field>lastname
+<expression op="equals">Brett</expression>
+</field>
+<condition operator="OR">
+<condition>
+<field>firstname
+<expression op="equals">Larry</expression>
+</field>
+<field>lastname
+<expression op="equals">Brown</expression>
+</field>
+</condition>
+<condition operator="OR">
+<field>firstname
+<expression op="equals">Mary</expression>
+</field>
+<field>lastname
+<expression op="equals">Smith</expression>
+</field>
+</condition>
+</condition>
+</query>
+</queryxml>
+
+```
+
+## JavaScript
+
+```
+
+/*
+
+If you use AND operator, intersect the arrays
+resulting from the two conditions.
+
+If you use OR operator, union the arrays
+resulting from the two conditions.
+*/
+function runComplexQuery() {
+  var authHeader = '';
+
+  if (sessionStorage.authHeader) {
+  authHeader = sessionStorage.authHeader;
+  }
+  else {
+  var userName = $("#apiUsername").val();
+
+  if (userName.length == 0) {
+  alert("Please enter user name");
+  return;
+  }
+
+  var passWord = $("#apiPassword").val();
+
+  if (passWord.length == 0) {
+  alert("Please enter password");
+  return;
+  }
+
+  authHeader = createBasicAuthHeader(userName, passWord);
+  }
+
+  var headers = {};
+  headers.Authorization = authHeader;
+
+  $("#loadingText").html("Loading...");
+  $("#loadingText").show();
+  $("#contactTableBody").html('');
+
+  var urlToInvoke = 'api/generics?entityName=Contact&fieldName=lastname&fieldValue=' + $("#queryPart2_2lName").val();
+  var queryPart2_2List = [];
+  var queryPart2_1List = [];
+
+  $.ajax({
+  url: urlToInvoke,
+  method: 'get',
+  headers: headers,
+  success: function (list) {
+
+  // filter out list.
+  $.each(list, function (index, value) {
+  if (value.firstNameField == $("#queryPart2_2fName").val()) {
+      queryPart2_2List.push(value);
+  }
+  });
+
+  var urlToInvoke = 'api/generics?entityName=Contact&fieldName=lastname&fieldValue=' + $("#queryPart2_1lName").val();
+
+  $.ajax({
+  url: urlToInvoke,
+  method: 'get',
+  headers: headers,
+  success: function (list2_1) {
+
+      // filter out list.
+      $.each(list2_1, function (index, value) {
+          if (value.firstNameField == $("#queryPart2_1fName").val()) {
+              queryPart2_1List.push(value);
+          }
+      });
+
+      var queryPart2_List = union(queryPart2_1List, queryPart2_2List);
+
+      var urlToInvoke = 'api/generics?entityName=Contact&fieldName=lastname&fieldValue=' + $("#queryPart1").val();
+
+      $.ajax({
+          url: urlToInvoke,
+          method: 'get',
+          headers: headers,
+          success: function (list1) {
+              var queryFinalList = union(queryPart2_List, list1);
+
+              console.log("Complex query results in: " + JSON.stringify(queryFinalList));
+
+              var contactTableBodyHtml = "";
+
+              $.each(queryFinalList, function (index, value) {
+                  // Each value is a contact.
+                  contactTableBodyHtml += '<tr>';
+                  contactTableBodyHtml += '<td>' + value.idField + '</td>';
+                  contactTableBodyHtml += '<td>' + value.firstNameField + '</td>';
+                  contactTableBodyHtml += '<td>' + value.lastNameField + '</td>';
+                  contactTableBodyHtml += '</tr>';
+              });
+
+              $("#contactTableBody").html(contactTableBodyHtml);
+              $("#loadingText").hide();
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+              $("#loadingText").html(JSON.parse(XMLHttpRequest.responseText).Message);
+              $("#loadingText").show();
+
+              console.log(textStatus + " " + errorThrown);
+          }
+      });
+  },
+  error: function (XMLHttpRequest, textStatus, errorThrown) {
+      $("#loadingText").html(JSON.parse(XMLHttpRequest.responseText).Message);
+      $("#loadingText").show();
+
+      console.log(textStatus + " " + errorThrown);
+  }
+  });
+
+  },
+  error: function (XMLHttpRequest, textStatus, errorThrown) {
+    $("#loadingText").html(JSON.parse(XMLHttpRequest.responseText).Message);
+    $("#loadingText").show();
+
+    console.log(textStatus + " " + errorThrown);
+  }
+  });
+
+}
+
+```
+
+## HTML
+
+```
+
+<div id="contactSearch" class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Following query is similar to the query on page 347 of the Autotask Web API guide (PDF) <a href="https://www.autotask.net/help/Content/LinkedDOCUMENTS/WSAPI/T_WebServicesAPIv1_5.pdf">here.</a></label>
+                        <h5>Contact query</h5>
+                        <p>(</p>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="control-label">Enter last name</label>
+                                <input type="text" id="queryPart1" class="form-control" maxlength="50" />
+                            </div>                            
+                        </div>
+
+                        <p>OR ( </p>
+                        <p>(</p>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="control-label">Enter first name</label>
+                                <input type="text" id="queryPart2_1fName" class="form-control" maxlength="50" />
+                            </div>
+                            <div class="col-sm-1">
+                                <p>and</p>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="control-label">Enter last name</label>
+                                <input type="text" id="queryPart2_1lName" class="form-control" maxlength="50" />
+                                <p>)</p>
+                            </div>
+                        </div>
+
+                        <p>OR (</p>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="control-label">Enter first name</label>
+                                <input type="text" id="queryPart2_2fName" class="form-control" maxlength="50" />
+                            </div>
+                            <div class="col-sm-1">
+                                <p>and</p>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="control-label">Enter last name</label>
+                                <input type="text" id="queryPart2_2lName" class="form-control" maxlength="50" />
+                                <p>)</p>
+                            </div>
+                        </div>
+                        <div class="column">
+
+                            <p>)</p>
+                            <p>)</p>
+                        </div>
+
+                        <input type="button" class="btn btn-primary" id="submitButton" title="Run Complex Query" value="Run Complex Query" onclick="runComplexQuery();" />
+                    </div>
+                </div>
+
+```
+
+In case you use C# to invoke the API, use [Intersect] (https://msdn.microsoft.com/en-us/library/bb460136(v=vs.110).aspx) or [Union] (https://msdn.microsoft.com/en-us/library/bb341731(v=vs.110).aspx). 
+ 
 # Reference
 
 Please always refer to [AT Web Services](https://www.autotask.net/help/Content/AdminSetup/2ExtensionsIntegrations/APIs/WebServicesAPI.htm). This page has links to download a PDF guide which explains all business rules of querying an entity, creating an entity and udpating an entity. Whenever you receive errors from Web API, they are meaningful errors thrown by Autotask SOAP API and explain what went wrong. In these cases of errors, it makes sense to refer to the PDF guide.
