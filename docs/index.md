@@ -374,7 +374,7 @@ Content-Disposition: form-data; name="ParentType"
 
 # Complex Queries
 
-Page number 347 of [PDF Guide] (https://www.autotask.net/help/Content/LinkedDOCUMENTS/WSAPI/T_WebServicesAPIv1_5.pdf) shows a complex query. To realize this type of complex query using this API, here is an example. Here I have used JavaScript union and intersection of arrays to achieve this. The individual parts of the complex query are invoked with the Generic API separately and then results (list of entities) are combined using union or intersection depending on how the conditions are linked to each other. 
+Page number 347 of [PDF Guide](https://www.autotask.net/help/Content/LinkedDOCUMENTS/WSAPI/T_WebServicesAPIv1_5.pdf) shows a complex query. To realize this type of complex query using this API, here is an example. Here I have used JavaScript union and intersection of arrays to achieve this. The individual parts of the complex query are invoked with the Generic API separately and then results (list of entities) are combined using union or intersection depending on how the conditions are linked to each other. 
 If you use AND operator, intersect the arrays resulting from the two conditions. If you use OR operator, union the arrays resulting from the two conditions.
 Example follows. It uses the conditions that are ORed with each other and then nested. Similar example with JavaScript code follows.
 
@@ -600,7 +600,7 @@ function runComplexQuery() {
 
 ```
 
-In case you use C# to invoke the API, use [Intersect] (https://msdn.microsoft.com/en-us/library/bb460136(v=vs.110).aspx) or [Union] (https://msdn.microsoft.com/en-us/library/bb341731(v=vs.110).aspx). 
+In case you use C# to invoke the API, use [Intersect](https://msdn.microsoft.com/en-us/library/bb460136(v=vs.110).aspx) or [Union](https://msdn.microsoft.com/en-us/library/bb341731(v=vs.110).aspx). 
  
 # Reference
 
