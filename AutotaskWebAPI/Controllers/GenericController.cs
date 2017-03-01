@@ -85,8 +85,7 @@ namespace AutotaskWebAPI.Controllers
         /// {"EntityType":"Ticket",
         ///     "EntityObj":
         ///     {
-        ///     "AccountID":0, 
-        ///     "CreatorResourceID":12345, 
+        ///     "AccountID":0,
         ///     "Title":"title", 
         ///     "Description":"Description",
         ///     "Priority":6,
@@ -194,8 +193,7 @@ namespace AutotaskWebAPI.Controllers
         ///     "EntityObj":
         ///     {
         ///     "id":12345, 
-        ///     "AccountID":0, 
-        ///     "CreatorResourceID":12345, 
+        ///     "AccountID":0,
         ///     "Title":"title", 
         ///     "Description":"Description",
         ///     "Priority":6,
