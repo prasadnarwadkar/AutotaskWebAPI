@@ -71,20 +71,38 @@ namespace AutotaskWebAPI.Controllers
         /// Returns id of the entity created. Please query the entity with this id again to retrieve created entity.
         /// Pass entity details to create. E.g.
         /// 
-        /// {"EntityType":"Task","EntityObj":
-        ///    {
+        /// {"EntityType":"Task",
+        ///     "EntityObj":
+        ///     {
         ///      "projectid": 12345,
         ///      "creatorResourceId": 12345,
         ///      "title": "string",
         ///      "description": "string"
-        ///    }}
+        ///     }
+        ///  }
         /// 
-        /// Change entity type to the type you would like to create.
-        /// As of now, it supports Task, TicketNote, Contact, Contract and Resource entities.
+        /// Another example:
+        /// {"EntityType":"Ticket",
+        ///     "EntityObj":
+        ///     {
+        ///     "AccountID":0, 
+        ///     "CreatorResourceID":12345, 
+        ///     "Title":"title", 
+        ///     "Description":"Description",
+        ///     "Priority":6,
+        ///     "Status":8,
+        ///     "DueDateTime":"2017-03-04T00:00:00",
+        ///     "QueueID":12345
+        ///     }
+        ///   }
+        ///   
+        /// Substitute entity type with the type you would like to create.
+        /// As of now, it supports Task, Ticket, TicketNote, Contact, Contract and Resource entities.
         /// </summary>
         /// <param name="details">Entity details</param>
-        /// <returns>id of the entity created</returns>
+        /// <returns>Returns id of the entity created. Please query the entity with this id again to retrieve created entity.</returns>
         [Route("api/generics")]
+        [SwaggerResponse(typeof(long))]
         [HttpPost]
         public HttpResponseMessage PostEntity([FromBody] JObject details)
         {
@@ -117,6 +135,9 @@ namespace AutotaskWebAPI.Controllers
                     {
                         case "Task":
                             entity = genericApi.CreateEntity(details["EntityObj"].ToObject<Task>(), out errorMsg);
+                            break;
+                        case "Ticket":
+                            entity = genericApi.CreateEntity(details["EntityObj"].ToObject<Ticket>(), out errorMsg);
                             break;
                         case "Contact":
                             entity = genericApi.CreateEntity(details["EntityObj"].ToObject<Contact>(), out errorMsg);
@@ -168,12 +189,29 @@ namespace AutotaskWebAPI.Controllers
         ///      "description": "string"
         ///    }}
         ///    
+        /// Another example:
+        /// {"EntityType":"Ticket",
+        ///     "EntityObj":
+        ///     {
+        ///     "id":12345, 
+        ///     "AccountID":0, 
+        ///     "CreatorResourceID":12345, 
+        ///     "Title":"title", 
+        ///     "Description":"Description",
+        ///     "Priority":6,
+        ///     "Status":8,
+        ///     "DueDateTime":"2017-03-04T00:00:00",
+        ///     "QueueID":12345
+        ///     }
+        ///  }
+        /// 
         /// Change entity type to the type you would like to update.
-        /// As of now, it supports Task, TicketNote, Contact, Contract and Resource entities.
+        /// As of now, it supports Task, Ticket, TicketNote, Contact, Contract and Resource entities.
         /// </summary>
         /// <param name="details">Entity details</param>
         /// <returns>Returns id of the entity updated. Please query the entity with this id again to retrieve updated entity.</returns>
         [Route("api/generics")]
+        [SwaggerResponse(typeof(long))]
         [HttpPut]
         public HttpResponseMessage UpdateEntity([FromBody] JObject details)
         {
@@ -206,6 +244,9 @@ namespace AutotaskWebAPI.Controllers
                     {
                         case "Task":
                             entity = genericApi.UpdateEntity(details["EntityObj"].ToObject<Task>(), out errorMsg);
+                            break;
+                        case "Ticket":
+                            entity = genericApi.UpdateEntity(details["EntityObj"].ToObject<Ticket>(), out errorMsg);
                             break;
                         case "Contact":
                             entity = genericApi.UpdateEntity(details["EntityObj"].ToObject<Contact>(), out errorMsg);
