@@ -138,6 +138,11 @@ namespace AutotaskWebAPI.Models
             {
                 errorMsg = ex.Message;
 
+                if (errorMsg.Contains("Object reference not set to an instance of an object"))
+                {
+                    errorMsg = string.Format("Field {0} of Entity {1} doesn't have a picklist.", fieldName, entityType);
+                }
+
                 // This is sort of fatal exception. The entity name or field name or 
                 // both are incorrect and might not exist.
                 return null;

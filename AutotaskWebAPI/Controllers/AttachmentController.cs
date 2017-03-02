@@ -155,12 +155,24 @@ namespace AutotaskWebAPI.Controllers
 
         /// <summary>
         /// Create an attachment.
-        /// POST api/attachment/PostTicketAttachment
-        /// Body:
-        /// Form-data
-        /// File1: file chosen by user from client side.
-        /// name: file name
-        /// TicketId: parent ticket id.
+        /// e.g.
+        ///    POST /api/attachments HTTP/1.1
+        ///    Host: {base url}
+        ///    Authorization: Basic {auth token here}
+        ///
+        ///    Content-Type: multipart/form-data; 
+        ///    Content-Disposition: form-data; name="file1"; filename=""
+        ///    Content-Type: 
+        ///    Content-Disposition: form-data; name="ParentID"
+        ///    12345
+        ///    Content-Disposition: form-data; name="Title"
+        ///    myFile.txt
+        ///    Content-Disposition: form-data; name="FullPath"
+        ///    myFile.txt
+        ///    Content-Disposition: form-data; name="Publish"
+        ///    2
+        ///    Content-Disposition: form-data; name="ParentType"
+        ///    4
         /// </summary>
         /// <returns>id of the attachment created</returns>
         [Route("api/attachments")]
