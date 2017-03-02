@@ -116,7 +116,7 @@ namespace AutotaskWebAPI.Controllers
             {
                 if (details == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Bad Request: Entity details passed are null or invalid");
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Bad Request: Entity details passed are null or invalid. Please make sure that the JSON you sent is well-formed.");
                 }
 
                 string errorMsg = string.Empty;
