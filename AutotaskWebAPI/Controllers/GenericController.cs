@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace AutotaskWebAPI.Controllers
 {
@@ -13,6 +14,7 @@ namespace AutotaskWebAPI.Controllers
     /// Provides Generic API for any entity and any of its fields.
     /// You can use this API for getting any entity by any of its fields.
     /// </summary>
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class GenericController : BaseApiController
     {
         /// <summary>

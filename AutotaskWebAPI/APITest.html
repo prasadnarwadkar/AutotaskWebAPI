@@ -60,7 +60,7 @@
             $("#loadingText").show();
             $("#accountTableBody").html('');
 
-            var urlToInvoke = 'api/accounts/' + $("#accountNameTextBox").val();
+            var urlToInvoke = 'http://autotaskwebapi.us-west-2.elasticbeanstalk.com/api/accounts/' + $("#accountNameTextBox").val();
 
             $.ajax({
                 url: urlToInvoke,
@@ -82,7 +82,13 @@
                     $("#loadingText").hide();
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    $("#loadingText").html(JSON.parse(XMLHttpRequest.responseText).Message);
+                    if (XMLHttpRequest.responseText) {
+                        $("#loadingText").html(JSON.parse(XMLHttpRequest.responseText).Message);
+                    }
+                    else {
+                        console.log("error");
+                        $("#loadingText").html("error");
+                    }
                     $("#loadingText").show();
 
                     console.log(textStatus + " " + errorThrown);
@@ -156,7 +162,7 @@
             $("#loadingText").show();
             $("#contactTableBody").html('');
 
-            var urlToInvoke = 'api/generics?entityName=Contact&fieldName=lastname&fieldValue=' + $("#queryPart2_2lName").val();
+            var urlToInvoke = 'http://autotaskwebapi.us-west-2.elasticbeanstalk.com/api/generics?entityName=Contact&fieldName=lastname&fieldValue=' + $("#queryPart2_2lName").val();
             var queryPart2_2List = [];
             var queryPart2_1List = [];
 
@@ -173,7 +179,7 @@
                         }
                     });
 
-                    var urlToInvoke = 'api/generics?entityName=Contact&fieldName=lastname&fieldValue=' + $("#queryPart2_1lName").val();
+                    var urlToInvoke = 'http://autotaskwebapi.us-west-2.elasticbeanstalk.com/api/generics?entityName=Contact&fieldName=lastname&fieldValue=' + $("#queryPart2_1lName").val();
 
                     $.ajax({
                         url: urlToInvoke,
@@ -190,7 +196,7 @@
 
                             var queryPart2_List = union(queryPart2_1List, queryPart2_2List);
 
-                            var urlToInvoke = 'api/generics?entityName=Contact&fieldName=lastname&fieldValue=' + $("#queryPart1").val();
+                            var urlToInvoke = 'http://autotaskwebapi.us-west-2.elasticbeanstalk.com/api/generics?entityName=Contact&fieldName=lastname&fieldValue=' + $("#queryPart1").val();
 
                             $.ajax({
                                 url: urlToInvoke,

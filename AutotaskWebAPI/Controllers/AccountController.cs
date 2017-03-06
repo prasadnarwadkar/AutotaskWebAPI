@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace AutotaskWebAPI.Controllers
 {
     /// <summary>
     /// Provides API for Account entity in Autotask.
     /// </summary>
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AccountController : BaseApiController
     {
         /// <summary>
@@ -19,6 +21,7 @@ namespace AutotaskWebAPI.Controllers
         /// <param name="name">Account name begins with this parameter.</param>
         /// <returns>All accounts whose names begin with passed name.</returns>
         [Route("api/accounts/{name}")]
+        [HttpGet]
         [SwaggerResponse(typeof(List<Account>))]
         public HttpResponseMessage GetByName(string name)
         {

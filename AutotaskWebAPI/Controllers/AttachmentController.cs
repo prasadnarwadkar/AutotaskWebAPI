@@ -8,12 +8,14 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace AutotaskWebAPI.Controllers
 {
     /// <summary>
     /// Provides API for Attachments in Autotask.
     /// </summary>
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AttachmentController : BaseApiController
     {
         /// <summary>

@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace AutotaskWebAPI.Controllers
 {
     /// <summary>
     /// Provides API for Contract entity in Autotask.
     /// </summary>
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ContractController : BaseApiController
     {
         /// <summary>
