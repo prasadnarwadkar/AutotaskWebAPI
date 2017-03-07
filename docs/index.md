@@ -397,17 +397,14 @@ Condition type:
 // Array of fields is null.
  = ['1', '2', '3'],
 operatorVal (integer): 
-Operator. None, OR, AND
-= ['0', '1', '2'],
+Operator. OR, AND
+= ['1', '2'],
 fields (Array[SimpleField], optional),
 childConditions (Array[Condition], optional)
 }
 SimpleField {
 fieldName (string, optional),
-op (integer): 
-Field operator. e.g. {value}
- = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', 
- '13', '14', '15'],
+op (string), // field operator
 valueToUse (string, optional)
 }
 
@@ -459,13 +456,13 @@ Content-Type: application/json
 	{
 	"ConditionType":2, 
 	"ChildConditions": [],
-	"OperatorVal":"None", 
+	"OperatorVal":"AND", 
 	"Fields":[{"FieldName":"firstname", "op":"Equals", "ValueToUse":"Joe"}]
 	},
 	{
 		"ConditionType":2, 
 		"ChildConditions": [],
-		"OperatorVal":"None", 
+		"OperatorVal":"AND", 
 		"Fields":[{"FieldName":"lastname", "op":"Equals", "ValueToUse":"Smith"}]
 	}
 ]
@@ -509,7 +506,7 @@ Content-Type: application/json
 		{
 			"ConditionType":2, 
 			"ChildConditions": [],
-			"OperatorVal":"None", 
+			"OperatorVal":"AND", 
 			"Fields":[{"FieldName":"firstname", "op":"Equals", "ValueToUse":"Joe"}]
 		},
 		{
@@ -558,7 +555,7 @@ Content-Type: application/json
 ```
 
 POST /api/complexquery HTTP/1.1
-Host: localhost:56786
+Host: {{base url}}
 Authorization: Basic xxxx
 Content-Type: application/json
 
@@ -567,11 +564,11 @@ Content-Type: application/json
 	"conditions": [
 		{
 			"conditionType": 1,
-			"operatorVal": 0,
+			"operatorVal": "AND",
 			"fields": [
 				{
 					"fieldName": "firstname",
-					"op": 1,
+					"op": "Equals",
 					"valueToUse": "Joe"
 				}
 			],
@@ -579,21 +576,21 @@ Content-Type: application/json
 		},
 		{
 			"conditionType": 3,
-			"operatorVal": 1,
+			"operatorVal": "OR",
 			"fields": null,
 			"childConditions": [
 				{
 					"conditionType": 2,
-					"operatorVal": 0,
+					"operatorVal": "AND",
 					"fields": [
 						{
 							"fieldName": "firstname",
-							"op": 1,
+							"op": "Equals",
 							"valueToUse": "Larry"
 						},
 						{
 							"fieldName": "lastname",
-							"op": 1,
+							"op": "Equals",
 							"valueToUse": "Brown"
 						}
 					],
@@ -601,16 +598,16 @@ Content-Type: application/json
 				},
 				{
 					"conditionType": 2,
-					"operatorVal": 1,
+					"operatorVal": "OR",
 					"fields": [
 						{
 							"fieldName": "firstname",
-							"op": 1,
+							"op": "Equals",
 							"valueToUse": "Mary"
 						},
 						{
 							"fieldName": "lastname",
-							"op": 1,
+							"op": "Equals",
 							"valueToUse": "Smith"
 						}
 					],
