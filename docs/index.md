@@ -1,5 +1,5 @@
 # AutotaskWebAPI
-ASP.NET Web API which wraps Autotask (AT) SOAP API. It helps developers use the Web API from any client (HTML5 web app, AngularJS web app, desktop client and so forth). It is RESTful. Using the SOAP API directly is tedious and needs wrapping code in clients like JavaScript/jQuery, web apps and desktop apps. This ASP.NET Web API fulfils this need. 
+This is an ASP.NET Web API which wraps Autotask (AT) SOAP API. It helps developers use the Web API from any client (HTML5 web app, AngularJS web app, desktop client and so forth). It is RESTful. Using the SOAP API directly is tedious and needs wrapping code in clients like JavaScript/jQuery, web apps and desktop apps. This ASP.NET Web API fulfils this need. 
 
 # Benefits
 I believe that the API will serve as an important toolset to create dashboards, both desktop and web-based for your Autotask account whereby your employees and clients can easily work with Autotask entities directly from your dashboard rather than navigating into Autotask portal. 
@@ -278,7 +278,7 @@ You might want to get entities by their last activity date or last modified date
 
 For example, if you send a date argument such as 2016-12-22 to an API endpoint, it returns tickets which have last activity date that is after 22nd Dec 2016. Always send dates to Web API operations that require dates in the format 'yyyy-mm-dd'.
 
-e.g. `{base url}/api/ticket/GetByLastActivityDate/2016-12-22`
+e.g. `{base url}/api/tickets/lastactivitydate/2016-12-22`
 
 # Error handling
 Error handling is quite extensive in this API. I have used error messages from AT SOAP API which are quite user-friendly. For example, while creating a ticket, you must pass both assigned resource id and assigned resource role id together or else there will be an error which the message properly indicates. Please check the error message in the http response in case of an error. If there is no error, the response contains JSON object containing all data you requested. Sometimes you might get an empty list of entities which is alright if the parameters do not match any of the entities in the AT database. If there is no error, your query is deemed to have worked.
@@ -374,17 +374,120 @@ Content-Disposition: form-data; name="ParentType"
 
 # Complex Queries
 
-Page number 347 of [PDF Guide](https://www.autotask.net/help/Content/LinkedDOCUMENTS/WSAPI/T_WebServicesAPIv1_5.pdf) shows a complex query. To realize this type of complex query using this API, here is an example. Here I have used JavaScript union and intersection of arrays to achieve this. The individual parts of the complex query are invoked with the Generic API separately and then results (list of entities) are combined using union or intersection depending on how the conditions are linked to each other. 
-If you use AND operator, intersect the arrays resulting from the two conditions. If you use OR operator, union the arrays resulting from the two conditions.
-Example follows. It uses the conditions that are ORed with each other and then nested. Similar example with JavaScript code follows.
+Pages 345-347 of [PDF Guide](https://www.autotask.net/help/Content/LinkedDOCUMENTS/WSAPI/T_WebServicesAPIv1_5.pdf) shows complex queries. To realize this type of complex query using this API, here are a few examples. 
+
+The complex query is realized using POST method. However, it returns a list of entities matching the given condition(s).
+Model of the POST body is the following.
+
+```
+
+ComplexQuery {
+entityName (string, optional),
+conditions (Array[Condition], optional)
+}
+Condition {
+conditionType (integer): 
+Condition type: 1 = Field // Array of nested Conditions is null. Only a field is present. 2 = SimpleCondition // Array of nested conditions is null. Array of fields is not null and contains the list of multiple fields used by the condition . 3= NestedConditions // nested conditions. Array of fields is null.
+ = ['1', '2', '3'],
+operatorVal (integer): 
+Operator. None, OR, AND
+= ['0', '1', '2'],
+fields (Array[SimpleField], optional),
+childConditions (Array[Condition], optional)
+}
+SimpleField {
+fieldName (string, optional),
+op (integer): 
+Field operator. e.g. {value}
+ = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15'],
+valueToUse (string, optional)
+}
+
+```
+
+Field operator is one of the following.
+
+```
+
+Equals, NotEqual, GreaterThan, LessThan, GreaterThanorEquals, LessThanOrEquals, BeginsWith,EndsWith, Contains, IsNotNull, IsNull, IsThisDay, Like, NotLike, SoundsLike 
+
+```
+
+## Multiple Fields Query
 
 ```
 
 <queryxml>
 <entity>contact</entity>
 <query>
+<condition>
+<field>firstname
+<expression op="equals">Joe</expression>
+</field>
+</condition>
+<condition>
 <field>lastname
-<expression op="equals">Brett</expression>
+<expression op="equals">Smith</expression>
+</field>
+</condition>
+</query>
+</queryxml>
+
+```
+
+```
+
+POST /api/complexquery HTTP/1.1
+Host: {{base url}}
+Authorization: Basic xxxx
+Content-Type: application/json
+
+{"EntityName":"Contact", "Conditions":[{"ConditionType":2, "ChildConditions": [],"OperatorVal":"None", "Fields":[{"FieldName":"firstname", "op":"Equals", "ValueToUse":"Joe"}]},{"ConditionType":2, "ChildConditions": [],"OperatorVal":"None", "Fields":[{"FieldName":"lastname", "op":"Equals", "ValueToUse":"Smith"}]}]}
+
+```
+
+## Multiple Fields combined with OR
+
+```
+
+<queryxml>
+<entity>contact</entity>
+<query>
+<condition>
+<field>firstname
+<expression op="equals">Joe</expression>
+</field>
+</condition>
+<condition operator="OR">
+<field>lastname
+<expression op="equals">Brown</expression>
+</field>
+</condition>
+</query>
+</queryxml>
+
+```
+
+```
+
+POST /api/complexquery HTTP/1.1
+Host: {{base url}}
+Authorization: Basic xxxx
+Content-Type: application/json
+
+{"EntityName":"Contact", "Conditions":[{"ConditionType":2, "ChildConditions": [],"OperatorVal":"None", "Fields":[{"FieldName":"firstname", "op":"Equals", "ValueToUse":"Joe"}]},{"ConditionType":2, "ChildConditions": [],"OperatorVal":"OR", "Fields":[{"FieldName":"lastname", "op":"Equals", "ValueToUse":"Brown"}]}]}
+
+```
+
+## Nested Conditions
+
+```
+
+<queryxml>
+<entity>contact</entity>
+<query>
+<field>firstname
+<expression op="equals">Joe</expression>
 </field>
 <condition operator="OR">
 <condition>
@@ -409,199 +512,74 @@ Example follows. It uses the conditions that are ORed with each other and then n
 
 ```
 
-## JavaScript
-
 ```
 
-/*
+POST /api/complexquery HTTP/1.1
+Host: localhost:56786
+Authorization: Basic xxxx
+Content-Type: application/json
 
-If you use AND operator, intersect the arrays
-resulting from the two conditions.
-
-If you use OR operator, union the arrays
-resulting from the two conditions.
-*/
-function runComplexQuery() {
-  var authHeader = '';
-
-  if (sessionStorage.authHeader) {
-  authHeader = sessionStorage.authHeader;
-  }
-  else {
-  var userName = $("#apiUsername").val();
-
-  if (userName.length == 0) {
-  alert("Please enter user name");
-  return;
-  }
-
-  var passWord = $("#apiPassword").val();
-
-  if (passWord.length == 0) {
-  alert("Please enter password");
-  return;
-  }
-
-  authHeader = createBasicAuthHeader(userName, passWord);
-  }
-
-  var headers = {};
-  headers.Authorization = authHeader;
-
-  $("#loadingText").html("Loading...");
-  $("#loadingText").show();
-  $("#contactTableBody").html('');
-
-  var urlToInvoke = 'api/generics?entityName=Contact&fieldName=lastname&fieldValue=' + $("#queryPart2_2lName").val();
-  var queryPart2_2List = [];
-  var queryPart2_1List = [];
-
-  $.ajax({
-  url: urlToInvoke,
-  method: 'get',
-  headers: headers,
-  success: function (list) {
-
-  // filter out list.
-  $.each(list, function (index, value) {
-  if (value.firstNameField == $("#queryPart2_2fName").val()) {
-      queryPart2_2List.push(value);
-  }
-  });
-
-  var urlToInvoke = 'api/generics?entityName=Contact&fieldName=lastname&fieldValue=' + $("#queryPart2_1lName").val();
-
-  $.ajax({
-  url: urlToInvoke,
-  method: 'get',
-  headers: headers,
-  success: function (list2_1) {
-
-      // filter out list.
-      $.each(list2_1, function (index, value) {
-          if (value.firstNameField == $("#queryPart2_1fName").val()) {
-              queryPart2_1List.push(value);
-          }
-      });
-
-      var queryPart2_List = union(queryPart2_1List, queryPart2_2List);
-
-      var urlToInvoke = 'api/generics?entityName=Contact&fieldName=lastname&fieldValue=' + $("#queryPart1").val();
-
-      $.ajax({
-          url: urlToInvoke,
-          method: 'get',
-          headers: headers,
-          success: function (list1) {
-              var queryFinalList = union(queryPart2_List, list1);
-
-              console.log("Complex query results in: " + JSON.stringify(queryFinalList));
-
-              var contactTableBodyHtml = "";
-
-              $.each(queryFinalList, function (index, value) {
-                  // Each value is a contact.
-                  contactTableBodyHtml += '<tr>';
-                  contactTableBodyHtml += '<td>' + value.idField + '</td>';
-                  contactTableBodyHtml += '<td>' + value.firstNameField + '</td>';
-                  contactTableBodyHtml += '<td>' + value.lastNameField + '</td>';
-                  contactTableBodyHtml += '</tr>';
-              });
-
-              $("#contactTableBody").html(contactTableBodyHtml);
-              $("#loadingText").hide();
-          },
-          error: function (XMLHttpRequest, textStatus, errorThrown) {
-              $("#loadingText").html(JSON.parse(XMLHttpRequest.responseText).Message);
-              $("#loadingText").show();
-
-              console.log(textStatus + " " + errorThrown);
-          }
-      });
-  },
-  error: function (XMLHttpRequest, textStatus, errorThrown) {
-      $("#loadingText").html(JSON.parse(XMLHttpRequest.responseText).Message);
-      $("#loadingText").show();
-
-      console.log(textStatus + " " + errorThrown);
-  }
-  });
-
-  },
-  error: function (XMLHttpRequest, textStatus, errorThrown) {
-    $("#loadingText").html(JSON.parse(XMLHttpRequest.responseText).Message);
-    $("#loadingText").show();
-
-    console.log(textStatus + " " + errorThrown);
-  }
-  });
-
+{
+	"entityName": "contact",
+	"conditions": [
+		{
+			"conditionType": 1,
+			"operatorVal": 0,
+			"fields": [
+				{
+					"fieldName": "firstname",
+					"op": 1,
+					"valueToUse": "Joe"
+				}
+			],
+			"childConditions": null
+		},
+		{
+			"conditionType": 3,
+			"operatorVal": 1,
+			"fields": null,
+			"childConditions": [
+				{
+					"conditionType": 2,
+					"operatorVal": 0,
+					"fields": [
+						{
+							"fieldName": "firstname",
+							"op": 1,
+							"valueToUse": "Larry"
+						},
+						{
+							"fieldName": "lastname",
+							"op": 1,
+							"valueToUse": "Brown"
+						}
+					],
+					"childConditions": null
+				},
+				{
+					"conditionType": 2,
+					"operatorVal": 1,
+					"fields": [
+						{
+							"fieldName": "firstname",
+							"op": 1,
+							"valueToUse": "Mary"
+						},
+						{
+							"fieldName": "lastname",
+							"op": 1,
+							"valueToUse": "Smith"
+						}
+					],
+					"childConditions": null
+				}
+			]
+		}
+	]
 }
 
 ```
 
-## HTML
-
-```
-
-<div id="contactSearch" class="col-sm-4">
-                    <div class="form-group">
-                        <label class="control-label">Following query is similar to the query on page 347 of the Autotask Web API guide (PDF) <a href="https://www.autotask.net/help/Content/LinkedDOCUMENTS/WSAPI/T_WebServicesAPIv1_5.pdf">here.</a></label>
-                        <h5>Contact query</h5>
-                        <p>(</p>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <label class="control-label">Enter last name</label>
-                                <input type="text" id="queryPart1" class="form-control" maxlength="50" />
-                            </div>                            
-                        </div>
-
-                        <p>OR ( </p>
-                        <p>(</p>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <label class="control-label">Enter first name</label>
-                                <input type="text" id="queryPart2_1fName" class="form-control" maxlength="50" />
-                            </div>
-                            <div class="col-sm-1">
-                                <p>and</p>
-                            </div>
-                            <div class="col-sm-3">
-                                <label class="control-label">Enter last name</label>
-                                <input type="text" id="queryPart2_1lName" class="form-control" maxlength="50" />
-                                <p>)</p>
-                            </div>
-                        </div>
-
-                        <p>OR (</p>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <label class="control-label">Enter first name</label>
-                                <input type="text" id="queryPart2_2fName" class="form-control" maxlength="50" />
-                            </div>
-                            <div class="col-sm-1">
-                                <p>and</p>
-                            </div>
-                            <div class="col-sm-3">
-                                <label class="control-label">Enter last name</label>
-                                <input type="text" id="queryPart2_2lName" class="form-control" maxlength="50" />
-                                <p>)</p>
-                            </div>
-                        </div>
-                        <div class="column">
-
-                            <p>)</p>
-                            <p>)</p>
-                        </div>
-
-                        <input type="button" class="btn btn-primary" id="submitButton" title="Run Complex Query" value="Run Complex Query" onclick="runComplexQuery();" />
-                    </div>
-                </div>
-
-```
-
-In case you use C# to invoke the API, use [Intersect](https://msdn.microsoft.com/en-us/library/bb460136(v=vs.110).aspx) or [Union](https://msdn.microsoft.com/en-us/library/bb341731(v=vs.110).aspx). 
- 
 # Reference
 
 Please always refer to [AT Web Services](https://www.autotask.net/help/Content/AdminSetup/2ExtensionsIntegrations/APIs/WebServicesAPI.htm). This page has links to download a PDF guide which explains all business rules of querying an entity, creating an entity and udpating an entity. Whenever you receive errors from Web API, they are meaningful errors thrown by Autotask SOAP API and explain what went wrong. In these cases of errors, it makes sense to refer to the PDF guide.
