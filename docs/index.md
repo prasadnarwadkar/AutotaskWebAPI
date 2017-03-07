@@ -276,7 +276,7 @@ This will return attachment byte array content which can be consumed at client s
 
 You might want to get entities by their last activity date or last modified date. When you send a date in such a case, the API methods return entities with last activity date or last modified date which is after the date argument. 
 
-For example, if you send a date argument such as 2016-12-22 to an API endpoint, it returns tickets which have last activity date that is after 22nd Dec 2016. Always send dates to Web API operations that require dates in the format 'yyyy-mm-dd'.
+For example, if you send a date argument such as 2016-12-22 to an API endpoint, it returns tickets which have last activity date that is after 22nd Dec 2016. Always send dates to Web API operations, that require dates, in the format 'yyyy-mm-dd'.
 
 e.g. `{base url}/api/tickets/lastactivitydate/2016-12-22`
 
@@ -387,11 +387,14 @@ conditions (Array[Condition], optional)
 }
 Condition {
 conditionType (integer): 
-Condition type: 1 = Field // Array of nested Conditions is null. Only a field is present. 
-                2 = SimpleCondition // Array of nested conditions is null. 
-								Array of fields is not null and 
-								contains the list of multiple fields used by the condition. 
-								3= NestedConditions // nested conditions. Array of fields is null.
+Condition type: 
+1 = Field // Array of nested Conditions is null. 
+	  // Only a field is present. 
+2 = SimpleCondition // Array of nested conditions is null. 
+// Array of fields is not null and 
+// contains the list of multiple fields used by the condition. 
+3= NestedConditions // nested conditions. 
+// Array of fields is null.
  = ['1', '2', '3'],
 operatorVal (integer): 
 Operator. None, OR, AND
@@ -403,7 +406,8 @@ SimpleField {
 fieldName (string, optional),
 op (integer): 
 Field operator. e.g. {value}
- = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15'],
+ = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', 
+ '13', '14', '15'],
 valueToUse (string, optional)
 }
 
@@ -414,7 +418,8 @@ Field operator is one of the following.
 ```
 
 Equals, NotEqual, GreaterThan, LessThan, GreaterThanorEquals, LessThanOrEquals, 
-BeginsWith,EndsWith, Contains, IsNotNull, IsNull, IsThisDay, Like, NotLike, SoundsLike 
+BeginsWith,EndsWith, Contains, IsNotNull, IsNull, IsThisDay, Like, NotLike, 
+SoundsLike 
 
 ```
 
@@ -448,22 +453,22 @@ Authorization: Basic xxxx
 Content-Type: application/json
 
 {
-	"EntityName":"Contact", 
-	"Conditions":
-	[
-		{
-			"ConditionType":2, 
-			"ChildConditions": [],
-			"OperatorVal":"None", 
-			"Fields":[{"FieldName":"firstname", "op":"Equals", "ValueToUse":"Joe"}]
-		},
-		{
-			"ConditionType":2, 
-			"ChildConditions": [],
-			"OperatorVal":"None", 
-			"Fields":[{"FieldName":"lastname", "op":"Equals", "ValueToUse":"Smith"}]
-		}
-	]
+"EntityName":"Contact", 
+"Conditions":
+[
+	{
+	"ConditionType":2, 
+	"ChildConditions": [],
+	"OperatorVal":"None", 
+	"Fields":[{"FieldName":"firstname", "op":"Equals", "ValueToUse":"Joe"}]
+	},
+	{
+		"ConditionType":2, 
+		"ChildConditions": [],
+		"OperatorVal":"None", 
+		"Fields":[{"FieldName":"lastname", "op":"Equals", "ValueToUse":"Smith"}]
+	}
+]
 }
 
 ```
