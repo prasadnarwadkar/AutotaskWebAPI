@@ -387,7 +387,11 @@ conditions (Array[Condition], optional)
 }
 Condition {
 conditionType (integer): 
-Condition type: 1 = Field // Array of nested Conditions is null. Only a field is present. 2 = SimpleCondition // Array of nested conditions is null. Array of fields is not null and contains the list of multiple fields used by the condition . 3= NestedConditions // nested conditions. Array of fields is null.
+Condition type: 1 = Field // Array of nested Conditions is null. Only a field is present. 
+                2 = SimpleCondition // Array of nested conditions is null. 
+								Array of fields is not null and 
+								contains the list of multiple fields used by the condition. 
+								3= NestedConditions // nested conditions. Array of fields is null.
  = ['1', '2', '3'],
 operatorVal (integer): 
 Operator. None, OR, AND
@@ -409,7 +413,8 @@ Field operator is one of the following.
 
 ```
 
-Equals, NotEqual, GreaterThan, LessThan, GreaterThanorEquals, LessThanOrEquals, BeginsWith,EndsWith, Contains, IsNotNull, IsNull, IsThisDay, Like, NotLike, SoundsLike 
+Equals, NotEqual, GreaterThan, LessThan, GreaterThanorEquals, LessThanOrEquals, 
+BeginsWith,EndsWith, Contains, IsNotNull, IsNull, IsThisDay, Like, NotLike, SoundsLike 
 
 ```
 
@@ -442,7 +447,24 @@ Host: {{base url}}
 Authorization: Basic xxxx
 Content-Type: application/json
 
-{"EntityName":"Contact", "Conditions":[{"ConditionType":2, "ChildConditions": [],"OperatorVal":"None", "Fields":[{"FieldName":"firstname", "op":"Equals", "ValueToUse":"Joe"}]},{"ConditionType":2, "ChildConditions": [],"OperatorVal":"None", "Fields":[{"FieldName":"lastname", "op":"Equals", "ValueToUse":"Smith"}]}]}
+{
+	"EntityName":"Contact", 
+	"Conditions":
+	[
+		{
+			"ConditionType":2, 
+			"ChildConditions": [],
+			"OperatorVal":"None", 
+			"Fields":[{"FieldName":"firstname", "op":"Equals", "ValueToUse":"Joe"}]
+		},
+		{
+			"ConditionType":2, 
+			"ChildConditions": [],
+			"OperatorVal":"None", 
+			"Fields":[{"FieldName":"lastname", "op":"Equals", "ValueToUse":"Smith"}]
+		}
+	]
+}
 
 ```
 
@@ -475,7 +497,23 @@ Host: {{base url}}
 Authorization: Basic xxxx
 Content-Type: application/json
 
-{"EntityName":"Contact", "Conditions":[{"ConditionType":2, "ChildConditions": [],"OperatorVal":"None", "Fields":[{"FieldName":"firstname", "op":"Equals", "ValueToUse":"Joe"}]},{"ConditionType":2, "ChildConditions": [],"OperatorVal":"OR", "Fields":[{"FieldName":"lastname", "op":"Equals", "ValueToUse":"Brown"}]}]}
+{
+	"EntityName":"Contact", 
+	"Conditions":
+	[
+		{
+			"ConditionType":2, 
+			"ChildConditions": [],
+			"OperatorVal":"None", 
+			"Fields":[{"FieldName":"firstname", "op":"Equals", "ValueToUse":"Joe"}]
+		},
+		{
+			"ConditionType":2, 
+			"ChildConditions": [],
+			"OperatorVal":"OR", 
+			"Fields":[{"FieldName":"lastname", "op":"Equals", "ValueToUse":"Brown"}]}
+	]
+}
 
 ```
 
