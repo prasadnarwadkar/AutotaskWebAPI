@@ -423,7 +423,7 @@ SoundsLike
 
 ```
 
-## Multiple Fields Query
+###### Multiple Fields Query
 
 ```
 
@@ -473,7 +473,7 @@ Content-Type: application/json
 
 ```
 
-## Multiple Fields combined with OR
+###### Multiple Fields combined with OR
 
 ```
 
@@ -522,7 +522,7 @@ Content-Type: application/json
 
 ```
 
-## Nested Conditions
+###### Nested Conditions
 
 ```
 
