@@ -276,7 +276,7 @@ This will return attachment byte array content which can be consumed at client s
 
 You might want to get entities by their last activity date or last modified date. When you send a date in such a case, the API methods return entities with last activity date or last modified date which is after the date argument. 
 
-For example, if you send a date argument such as 2016-12-22 to an API endpoint, it returns tickets which have last activity date that is after 22nd Dec 2016. Always send dates to Web API operations, that require dates, in the format 'yyyy-mm-dd'.
+For example, if you send a date argument such as 2016-12-22 to an API endpoint, it returns tickets which have last activity date that is after 22nd Dec 2016. While sending date parameters to the operations of this Web API, please send them in 'yyyy-mm-dd' format.
 
 e.g. `{base url}/api/tickets/lastactivitydate/2016-12-22`
 
@@ -291,7 +291,7 @@ At present `Account`, `Ticket`, `Contact`, `Contract`, `Resource`, `TicketNote`,
 
 # Roadmap
 
-At present, everything in basic mode of API usage is supported. In the near future, I have planned to support more business rules handled in Web API rather than facing errors from Autotask SOAP API and propagating them back to Web API.
+At present, everything in basic mode of API usage is supported. In the near future, I have planned to support more business rules in Web API rather than facing errors thrown by Autotask SOAP API and propagating them back to Web API.
 
 # More Advanced Examples
 
@@ -453,18 +453,18 @@ Content-Type: application/json
 "EntityName":"Contact", 
 "Conditions":
 [
-	{
-	"ConditionType":2, 
-	"ChildConditions": [],
-	"OperatorVal":"AND", 
-	"Fields":[{"FieldName":"firstname", "op":"Equals", "ValueToUse":"Joe"}]
-	},
-	{
-		"ConditionType":2, 
-		"ChildConditions": [],
-		"OperatorVal":"AND", 
-		"Fields":[{"FieldName":"lastname", "op":"Equals", "ValueToUse":"Smith"}]
-	}
+{
+"ConditionType":2, 
+"ChildConditions": [],
+"OperatorVal":"AND", 
+"Fields":[{"FieldName":"firstname", "op":"Equals", "ValueToUse":"Joe"}]
+},
+{
+"ConditionType":2, 
+"ChildConditions": [],
+"OperatorVal":"AND", 
+"Fields":[{"FieldName":"lastname", "op":"Equals", "ValueToUse":"Smith"}]
+}
 ]
 }
 
@@ -500,21 +500,21 @@ Authorization: Basic xxxx
 Content-Type: application/json
 
 {
-	"EntityName":"Contact", 
-	"Conditions":
-	[
-		{
-			"ConditionType":2, 
-			"ChildConditions": [],
-			"OperatorVal":"AND", 
-			"Fields":[{"FieldName":"firstname", "op":"Equals", "ValueToUse":"Joe"}]
-		},
-		{
-			"ConditionType":2, 
-			"ChildConditions": [],
-			"OperatorVal":"OR", 
-			"Fields":[{"FieldName":"lastname", "op":"Equals", "ValueToUse":"Brown"}]}
-	]
+"EntityName":"Contact", 
+"Conditions":
+[
+{
+"ConditionType":2, 
+"ChildConditions": [],
+"OperatorVal":"AND", 
+"Fields":[{"FieldName":"firstname", "op":"Equals", "ValueToUse":"Joe"}]
+},
+{
+"ConditionType":2, 
+"ChildConditions": [],
+"OperatorVal":"OR", 
+"Fields":[{"FieldName":"lastname", "op":"Equals", "ValueToUse":"Brown"}]}
+]
 }
 
 ```
@@ -560,62 +560,62 @@ Authorization: Basic xxxx
 Content-Type: application/json
 
 {
-	"entityName": "contact",
-	"conditions": [
-		{
-			"conditionType": 1,
-			"operatorVal": "AND",
-			"fields": [
-				{
-					"fieldName": "firstname",
-					"op": "Equals",
-					"valueToUse": "Joe"
-				}
-			],
-			"childConditions": null
-		},
-		{
-			"conditionType": 3,
-			"operatorVal": "OR",
-			"fields": null,
-			"childConditions": [
-				{
-					"conditionType": 2,
-					"operatorVal": "AND",
-					"fields": [
-						{
-							"fieldName": "firstname",
-							"op": "Equals",
-							"valueToUse": "Larry"
-						},
-						{
-							"fieldName": "lastname",
-							"op": "Equals",
-							"valueToUse": "Brown"
-						}
-					],
-					"childConditions": null
-				},
-				{
-					"conditionType": 2,
-					"operatorVal": "OR",
-					"fields": [
-						{
-							"fieldName": "firstname",
-							"op": "Equals",
-							"valueToUse": "Mary"
-						},
-						{
-							"fieldName": "lastname",
-							"op": "Equals",
-							"valueToUse": "Smith"
-						}
-					],
-					"childConditions": null
-				}
-			]
-		}
-	]
+"entityName": "contact",
+"conditions": [
+{
+"conditionType": 1,
+"operatorVal": "AND",
+"fields": [
+{
+"fieldName": "firstname",
+"op": "Equals",
+"valueToUse": "Joe"
+}
+],
+"childConditions": null
+},
+{
+"conditionType": 3,
+"operatorVal": "OR",
+"fields": null,
+"childConditions": [
+{
+"conditionType": 2,
+"operatorVal": "AND",
+"fields": [
+{
+"fieldName": "firstname",
+"op": "Equals",
+"valueToUse": "Larry"
+},
+{
+"fieldName": "lastname",
+"op": "Equals",
+"valueToUse": "Brown"
+}
+],
+"childConditions": null
+},
+{
+"conditionType": 2,
+"operatorVal": "OR",
+"fields": [
+{
+"fieldName": "firstname",
+"op": "Equals",
+"valueToUse": "Mary"
+},
+{
+"fieldName": "lastname",
+"op": "Equals",
+"valueToUse": "Smith"
+}
+],
+"childConditions": null
+}
+]
+}
+]
 }
 
 ```
