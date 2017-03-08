@@ -33,7 +33,7 @@ namespace AutotaskWebAPI.Models.Tests
 
             string errorMsg = string.Empty;
 
-            var contact = testInstance.GetContactByEmail("pmponzi@tceglobal.com", out errorMsg);
+            var contact = testInstance.GetContactByEmail("test@example.com", out errorMsg);
 
             Assert.IsTrue(errorMsg.Length == 0);
         }
