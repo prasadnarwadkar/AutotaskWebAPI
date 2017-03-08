@@ -3,6 +3,7 @@
 <head>
     <title>API Test Page</title>
     <meta charset="utf-8" itemscope="" itemtype="http://schema.org/WebPage" />
+     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
@@ -39,7 +40,7 @@
             }
 
             $("#accountSearch").show();
-            $("#contactSearch").show();
+            
             $("#loginForm").hide();
         }
 
@@ -97,170 +98,17 @@
 
         }
 
-        function union(o1, o2) {
-            var tempNewObj = o1;
-
-            if (o1.length === undefined && typeof o1 !== "number") {
-                $.each(o2, function (key, value) {
-                    if (o1[key] === undefined) {
-                        tempNewObj[key] = value;
-                    } else {
-                        tempNewObj[key] = mergeDeep(o1[key], o2[key]);
-                    }
-                });
-            }
-            else if (o1.length > 0 && typeof o1 !== "string") {
-                $.each(o2, function (index) {
-                    if (JSON.stringify(o1).indexOf(JSON.stringify(o2[index])) === -1) {
-                        tempNewObj.push(o2[index]);
-                    }
-                });
-            }
-            else {
-
-                tempNewObj = o2;
-            }
-            return tempNewObj;
-        };
-
-        /*
-
-        If you use AND operator, intersect the arrays
-        resulting from the two conditions.
-
-        If you use OR operator, union the arrays
-        resulting from the two conditions.
-        */
-        function runComplexQuery() {
-            var authHeader = '';
-
-            if (sessionStorage.authHeader) {
-                authHeader = sessionStorage.authHeader;
-            }
-            else {
-                var userName = $("#apiUsername").val();
-
-                if (userName.length == 0) {
-                    alert("Please enter user name");
-                    return;
-                }
-
-                var passWord = $("#apiPassword").val();
-
-                if (passWord.length == 0) {
-                    alert("Please enter password");
-                    return;
-                }
-
-                authHeader = createBasicAuthHeader(userName, passWord);
-            }
-
-            var headers = {};
-            headers.Authorization = authHeader;
-
-            $("#loadingText").html("Loading...");
-            $("#loadingText").show();
-            $("#contactTableBody").html('');
-
-            var urlToInvoke = 'http://autotaskwebapi.us-west-2.elasticbeanstalk.com/api/generics?entityName=Contact&fieldName=lastname&fieldValue=' + $("#queryPart2_2lName").val();
-            var queryPart2_2List = [];
-            var queryPart2_1List = [];
-
-            $.ajax({
-                url: urlToInvoke,
-                method: 'get',
-                headers: headers,
-                success: function (list) {
-                    
-                    // filter out list.
-                    $.each(list, function (index, value) {
-                        if (value.firstNameField == $("#queryPart2_2fName").val()) {
-                            queryPart2_2List.push(value);
-                        }
-                    });
-
-                    var urlToInvoke = 'http://autotaskwebapi.us-west-2.elasticbeanstalk.com/api/generics?entityName=Contact&fieldName=lastname&fieldValue=' + $("#queryPart2_1lName").val();
-
-                    $.ajax({
-                        url: urlToInvoke,
-                        method: 'get',
-                        headers: headers,
-                        success: function (list2_1) {
-                            
-                            // filter out list.
-                            $.each(list2_1, function (index, value) {
-                                if (value.firstNameField == $("#queryPart2_1fName").val()) {
-                                    queryPart2_1List.push(value);
-                                }
-                            });
-
-                            var queryPart2_List = union(queryPart2_1List, queryPart2_2List);
-
-                            var urlToInvoke = 'http://autotaskwebapi.us-west-2.elasticbeanstalk.com/api/generics?entityName=Contact&fieldName=lastname&fieldValue=' + $("#queryPart1").val();
-
-                            $.ajax({
-                                url: urlToInvoke,
-                                method: 'get',
-                                headers: headers,
-                                success: function (list1) {
-                                    var queryFinalList = union(queryPart2_List, list1);
-
-                                    console.log("Complex query results in: " + JSON.stringify(queryFinalList));
-
-                                    var contactTableBodyHtml = "";
-
-                                    $.each(queryFinalList, function (index, value) {
-                                        // Each value is an contact.
-                                        contactTableBodyHtml += '<tr>';
-                                        contactTableBodyHtml += '<td>' + value.idField + '</td>';
-                                        contactTableBodyHtml += '<td>' + value.firstNameField + '</td>';
-                                        contactTableBodyHtml += '<td>' + value.lastNameField + '</td>';
-                                        contactTableBodyHtml += '</tr>';
-                                    });
-
-                                    $("#contactTableBody").html(contactTableBodyHtml);
-                                    $("#loadingText").hide();
-                                },
-                                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                                    $("#loadingText").html(JSON.parse(XMLHttpRequest.responseText).Message);
-                                    $("#loadingText").show();
-
-                                    console.log(textStatus + " " + errorThrown);
-                                }
-                            });
-                        },
-                        error: function (XMLHttpRequest, textStatus, errorThrown) {
-                            $("#loadingText").html(JSON.parse(XMLHttpRequest.responseText).Message);
-                            $("#loadingText").show();
-
-                            console.log(textStatus + " " + errorThrown);
-                        }
-                    });
-
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    $("#loadingText").html(JSON.parse(XMLHttpRequest.responseText).Message);
-                    $("#loadingText").show();
-
-                    console.log(textStatus + " " + errorThrown);
-                }
-            });
-
-        }
-
         $(document).ready(function () {
             console.log('document ready...');
             $("#loadingText").hide();
 
             if (sessionStorage.authHeader) {
                 $("#loginForm").hide();
-                $("#accountSearch").show();
-                $("#contactSearch").show();
+                $("#accountSearch").show();                
             }
             else {
                 $("#loginForm").show();
                 $("#accountSearch").hide();
-                $("#contactSearch").hide();
             }
 
         });
@@ -310,75 +158,7 @@
                         <tbody id="accountTableBody"></tbody>
                     </table>
                 </div>
-            </div>
-            <div class="row">
-                <div id="contactSearch" class="col-sm-4">
-                    <div class="form-group">
-                        <label class="control-label">Following query is similar to the query on page 347 of the Autotask Web API guide (PDF) <a href="https://www.autotask.net/help/Content/LinkedDOCUMENTS/WSAPI/T_WebServicesAPIv1_5.pdf">here.</a></label>
-                        <h5>Contact query</h5>
-                        <p>(</p>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <label class="control-label">Enter last name</label>
-                                <input type="text" id="queryPart1" class="form-control" maxlength="50" />
-                            </div>                            
-                        </div>
-
-                        <p>OR ( </p>
-                        <p>(</p>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <label class="control-label">Enter first name</label>
-                                <input type="text" id="queryPart2_1fName" class="form-control" maxlength="50" />
-                            </div>
-                            <div class="col-sm-1">
-                                <p>and</p>
-                            </div>
-                            <div class="col-sm-3">
-                                <label class="control-label">Enter last name</label>
-                                <input type="text" id="queryPart2_1lName" class="form-control" maxlength="50" />
-                                <p>)</p>
-                            </div>
-                        </div>
-
-                        <p>OR (</p>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <label class="control-label">Enter first name</label>
-                                <input type="text" id="queryPart2_2fName" class="form-control" maxlength="50" />
-                            </div>
-                            <div class="col-sm-1">
-                                <p>and</p>
-                            </div>
-                            <div class="col-sm-3">
-                                <label class="control-label">Enter last name</label>
-                                <input type="text" id="queryPart2_2lName" class="form-control" maxlength="50" />
-                                <p>)</p>
-                            </div>
-                        </div>
-                        <div class="column">
-
-                            <p>)</p>
-                            <p>)</p>
-                        </div>
-
-                        <input type="button" class="btn btn-primary" id="submitButton" title="Run Complex Query" value="Run Complex Query" onclick="runComplexQuery();" />
-                    </div>
-                </div>
-                <div class="col-sm-8">
-                    <table id="contactComplexQueryResults" class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Autotask Contact Id</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                            </tr>
-                        </thead>
-                        <tbody id="contactTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-            
+            </div>            
         </div>
     </section>
 
