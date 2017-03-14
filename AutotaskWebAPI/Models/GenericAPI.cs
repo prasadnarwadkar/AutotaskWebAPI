@@ -109,7 +109,7 @@ namespace AutotaskWebAPI.Models
                                 if (!string.IsNullOrEmpty(field.FieldName)
                                     && !string.IsNullOrEmpty(field.op))
                                 {
-                                    strResource.Append(string.Format("<field>{0}<expression op=\"equals\">", field.FieldName));
+                                    strResource.Append(string.Format("<field>{0}<expression op=\"{1}\">", field.FieldName, field.op));
                                     strResource.Append(field.ValueToUse);
                                     strResource.Append("</expression></field>");
                                 }
