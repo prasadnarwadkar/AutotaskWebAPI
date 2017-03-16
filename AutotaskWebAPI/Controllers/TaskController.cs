@@ -49,6 +49,76 @@ namespace AutotaskWebAPI.Controllers
         }
 
         /// <summary>
+        /// Get Task(s) which are due today or overdue given a 
+        /// resource the tasks are assigned to.
+        /// Date passed should be in EST/EDT timezone.
+        /// Format: YYYY-MM-DDTHH:mm:ss. e.g. 2017-03-31T20:00:00
+        /// </summary>
+        /// <param name="assignedResourceId">Assigned Resource Id</param>
+        /// <param name="date">Due date (end date) which is same as or after 
+        /// the end date of the tasks to be returned.
+        /// </param>
+        /// <returns></returns>
+        [Route("api/tasks/dueoroverdue/{assignedResourceId:int}")]
+        [SwaggerResponse(typeof(List<Task>))]
+        [HttpGet]
+        public HttpResponseMessage GetDueOrOverdue(long assignedResourceId, string date)
+        {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
+            string errorMsg = string.Empty;
+
+            var result = tasksApi.GetDueOrOverdue(assignedResourceId, date, out errorMsg);
+
+            if (errorMsg.Length > 0)
+            {
+                // There is an error.
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+        }
+
+        /// <summary>
+        /// Get Open Task(s) by assigned resource id.
+        /// </summary>
+        /// <param name="assignedResourceId">Id of the resource the task has been assigned to.</param>
+        /// <returns></returns>
+        [Route("api/tasks/openassigned/{assignedResourceId:int}")]
+        [SwaggerResponse(typeof(List<Task>))]
+        [HttpGet]
+        public HttpResponseMessage GetOpenTasksByAssignedResourceId(long assignedResourceId)
+        {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
+            string errorMsg = string.Empty;
+
+            var result = tasksApi.GetOpenTasksByAssignedResourceId(assignedResourceId, out errorMsg);
+
+            if (errorMsg.Length > 0)
+            {
+                // There is an error.
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+        }
+
+        /// <summary>
         /// Get Task given its id.
         /// </summary>
         /// <param name="id"></param>

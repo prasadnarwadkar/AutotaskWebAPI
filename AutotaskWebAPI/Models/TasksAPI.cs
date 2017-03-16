@@ -14,6 +14,86 @@ namespace AutotaskWebAPI.Models
             api = apiInstance;
         }
 
+        public List<Task> GetOpenTasksByAssignedResourceId(long assignedResourceId, out string errorMsg)
+        {
+            List<Task> list = new List<Task>();
+
+            string ret = string.Empty;
+            errorMsg = string.Empty;
+
+            // Query
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>Task</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<field>AssignedResourceID<expression op=\"equals\">");
+            strResource.Append(assignedResourceId);
+            strResource.Append("</expression></field>");
+            strResource.Append("<field>Status<expression op=\"NotEqual\">");
+            strResource.Append(5);
+            strResource.Append("</expression></field>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+            {
+                foreach (Entity entity in respResource.EntityResults)
+                {
+                    list.Add((Task)entity);
+                }
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
+            }
+
+            return list;
+        }
+
+        public List<Task> GetDueOrOverdue(long assignedResourceId,
+                                            string date, out string errorMsg)
+        {
+            List<Task> list = new List<Task>();
+
+            string ret = string.Empty;
+            errorMsg = string.Empty;
+
+            // Query
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>Task</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<field>EndDateTime<expression op=\"LessThanOrEquals\">");
+            strResource.Append(date);
+            strResource.Append("</expression></field>");
+            strResource.Append("<field>AssignedResourceID<expression op=\"equals\">");
+            strResource.Append(assignedResourceId);
+            strResource.Append("</expression></field>");
+            strResource.Append("<field>Status<expression op=\"NotEqual\">");
+            strResource.Append(5);
+            strResource.Append("</expression></field>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+            {
+                foreach (Entity entity in respResource.EntityResults)
+                {
+                    list.Add((Task)entity);
+                }
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
+            }
+
+            return list;
+        }
+
         public Task CreateTask(long projectId, 
                                 long status, long taskType,
                                 string title, long creatorResourceID,

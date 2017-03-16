@@ -113,6 +113,38 @@ namespace AutotaskWebAPI.Controllers
         }
 
         /// <summary>
+        /// Get Open Ticket(s) by assigned resource id.
+        /// </summary>
+        /// <param name="assignedResourceId">Id of the resource the ticket has been assigned to.</param>
+        /// <returns></returns>
+        [Route("api/tickets/openassigned/{assignedResourceId:int}")]
+        [SwaggerResponse(typeof(List<Ticket>))]
+        [HttpGet]
+        public HttpResponseMessage GetOpenTicketsByAssignedResourceId(long assignedResourceId)
+        {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
+            string errorMsg = string.Empty;
+
+            var result = ticketsApi.GetOpenTicketsByAssignedResourceId(assignedResourceId, out errorMsg);
+
+            if (errorMsg.Length > 0)
+            {
+                // There is an error.
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+        }
+
+        /// <summary>
         /// Get Ticket(s) which have activity in them after the date passed-in as argument.
         /// </summary>
         /// <param name="lastActivityDate"></param>
@@ -132,6 +164,44 @@ namespace AutotaskWebAPI.Controllers
             string errorMsg = string.Empty;
 
             var result = ticketsApi.GetTicketByLastActivityDate(lastActivityDate, out errorMsg);
+
+            if (errorMsg.Length > 0)
+            {
+                // There is an error.
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMsg);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+        }
+
+        /// <summary>
+        /// Get Ticket(s) which are due today or overdue given a 
+        /// resource the tickets are assigned to.
+        /// Date passed should be in EST/EDT timezone.
+        /// Format: YYYY-MM-DDTHH:mm:ss. e.g. 2017-03-31T20:00:00
+        /// </summary>
+        /// <param name="assignedResourceId">Assigned Resource Id</param>
+        /// <param name="date">Due date which is same as or after 
+        /// the due date of the tickets to be returned.
+        /// </param>
+        /// <returns></returns>
+        [Route("api/tickets/dueoroverdue/{assignedResourceId:int}")]
+        [SwaggerResponse(typeof(List<Ticket>))]
+        [HttpGet]
+        public HttpResponseMessage GetDueOrOverdue(long assignedResourceId, string date)
+        {
+            if (!apiInitialized)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Found);
+                response.Headers.Location = new Uri(Url.Route("NotInitialized", null), UriKind.Relative);
+                return response;
+            }
+
+            string errorMsg = string.Empty;
+
+            var result = ticketsApi.GetDueOrOverdue(assignedResourceId, date, out errorMsg);
 
             if (errorMsg.Length > 0)
             {

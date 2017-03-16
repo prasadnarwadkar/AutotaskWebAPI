@@ -285,6 +285,44 @@ namespace AutotaskWebAPI.Models
             return list;
         }
 
+        public List<Ticket> GetOpenTicketsByAssignedResourceId(long assignedResourceId, out string errorMsg)
+        {
+            List<Ticket> list = new List<Ticket>();
+
+            string ret = string.Empty;
+            errorMsg = string.Empty;
+
+            // Query
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>Ticket</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<field>AssignedResourceID<expression op=\"equals\">");
+            strResource.Append(assignedResourceId);
+            strResource.Append("</expression></field>");
+            strResource.Append("<field>Status<expression op=\"NotEqual\">");
+            strResource.Append(5);
+            strResource.Append("</expression></field>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+            {
+                foreach (Entity entity in respResource.EntityResults)
+                {
+                    list.Add((Ticket)entity);
+                }
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
+            }
+
+            return list;
+        }
+
         public Ticket GetTicketById(long id, out string errorMsg)
         {
             string ret = string.Empty;
@@ -331,6 +369,48 @@ namespace AutotaskWebAPI.Models
             strResource.Append("<query>");
             strResource.Append("<field>LastActivityDate<expression op=\"greaterthan\">");
             strResource.Append(lastActivityDate);
+            strResource.Append("</expression></field>");
+            strResource.Append("</query></queryxml>");
+
+            ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+
+            if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
+            {
+                foreach (Entity entity in respResource.EntityResults)
+                {
+                    list.Add((Ticket)entity);
+                }
+            }
+            else if (respResource.Errors != null &&
+                    respResource.Errors.Length > 0)
+            {
+                errorMsg = respResource.Errors[0].Message;
+            }
+
+            return list;
+        }
+
+        public List<Ticket> GetDueOrOverdue(long assignedResourceId, 
+                                            string date, out string errorMsg)
+        {
+            List<Ticket> list = new List<Ticket>();
+
+            string ret = string.Empty;
+            errorMsg = string.Empty;
+
+            // Query
+            StringBuilder strResource = new StringBuilder();
+            strResource.Append("<queryxml version=\"1.0\">");
+            strResource.Append("<entity>Ticket</entity>");
+            strResource.Append("<query>");
+            strResource.Append("<field>DueDateTime<expression op=\"LessThanOrEquals\">");
+            strResource.Append(date);
+            strResource.Append("</expression></field>");
+            strResource.Append("<field>AssignedResourceID<expression op=\"equals\">");
+            strResource.Append(assignedResourceId);
+            strResource.Append("</expression></field>");
+            strResource.Append("<field>Status<expression op=\"NotEqual\">");
+            strResource.Append(5);
             strResource.Append("</expression></field>");
             strResource.Append("</query></queryxml>");
 
