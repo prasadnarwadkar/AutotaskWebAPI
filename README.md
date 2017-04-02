@@ -3,7 +3,7 @@ ASP.NET Web API which wraps Autotask (AT) SOAP API. It helps developers use the 
 
 # Usage
 
-Examples of Usage and other info is available [here] (https://prasadnarwadkar.github.io/AutotaskWebAPI/).
+Examples of Usage and other info is available [here](https://prasadnarwadkar.github.io/AutotaskWebAPI/).
 
 ## Namespaces used
 Two prominent namespaces used are
