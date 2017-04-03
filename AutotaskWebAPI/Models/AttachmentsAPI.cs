@@ -47,7 +47,8 @@ namespace AutotaskWebAPI.Models
         /// <summary>
         /// Get attachment info by parent id. Usually parent is a ticket.
         /// </summary>
-        /// <param name="parentId"></param>
+        /// <param name="parentId">Id of the Parent of the attachment</param>
+        /// <param name="errorMsg">Error message from SOAP API, if any.</param>
         /// <returns></returns>
         public List<AttachmentInfo> GetAttachmentInfoByParentId(long parentId,
                                                                 out string errorMsg)
@@ -86,7 +87,8 @@ namespace AutotaskWebAPI.Models
         /// Get attachment info by attach date. 
         /// This is the date at or after which it was attached to its parent.
         /// </summary>
-        /// <param name="attachDate"></param>
+        /// <param name="attachDate">Date at or after which attachment was attached to its parent.</param>
+        /// <param name="errorMsg">Error message from SOAP API, if any.</param>
         /// <returns></returns>
         public List<AttachmentInfo> GetAttachmentInfoByAttachDate(string attachDate,
                                                                 out string errorMsg)

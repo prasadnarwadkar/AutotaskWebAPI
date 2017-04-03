@@ -91,6 +91,7 @@ namespace AutotaskWebAPI.Models
         /// <param name="entityType">e.g. Account</param>
         /// <param name="fieldName">e.g. AccountType which follows a picklist.</param>
         /// <param name="valueToSearch">e.g. 1 which should return label "Customer".</param>
+        /// <param name="errorMsg">Error message from SOAP API, if any.</param>
         /// <returns>Label matching the passed value.</returns>
         public string GetPickListLabel(string entityType, string fieldName,
                                         string valueToSearch, out string errorMsg)
