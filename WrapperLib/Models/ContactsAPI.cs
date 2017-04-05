@@ -1,16 +1,17 @@
-﻿using AutotaskWebAPI.Autotask.Net.Webservices;
+﻿using WrapperLib.Autotask.Net.Webservices;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AutotaskWebAPI.Models
+namespace WrapperLib.Models
 {
-    public class ContactsAPI
+    /// <summary>
+    /// API for Contact entity.
+    /// </summary>
+    public class ContactsAPI : ApiBase
     {
-        private AutotaskAPI api = null;
-
-        public ContactsAPI(AutotaskAPI apiInstance)
+        public ContactsAPI(string user, string password) : base(user, password)
         {
-            api = apiInstance;
+
         }
 
         /// <summary>
@@ -36,7 +37,7 @@ namespace AutotaskWebAPI.Models
             strContact.Append("</expression></field>");
             strContact.Append("</query></queryxml>");
 
-            ATWSResponse respContact = api._atwsServices.query(strContact.ToString(), out errorMsg);
+            ATWSResponse respContact = _atwsServices.query(strContact.ToString(), out errorMsg);
 
             if (respContact.ReturnCode > 0 && respContact.EntityResults.Length > 0)
             {
@@ -69,7 +70,7 @@ namespace AutotaskWebAPI.Models
             strContact.Append("</expression></field>");
             strContact.Append("</query></queryxml>");
 
-            ATWSResponse respContact = api._atwsServices.query(strContact.ToString(), out errorMsg);
+            ATWSResponse respContact = _atwsServices.query(strContact.ToString(), out errorMsg);
 
             if (respContact.ReturnCode > 0 && respContact.EntityResults.Length > 0)
             {
@@ -103,7 +104,7 @@ namespace AutotaskWebAPI.Models
             strContact.Append("</expression></field>");
             strContact.Append("</query></queryxml>");
 
-            ATWSResponse respContact = api._atwsServices.query(strContact.ToString(), out errorMsg);
+            ATWSResponse respContact = _atwsServices.query(strContact.ToString(), out errorMsg);
 
             if (respContact.ReturnCode > 0 && respContact.EntityResults.Length > 0)
             {
@@ -150,7 +151,7 @@ namespace AutotaskWebAPI.Models
             strContact.Append("</expression></field></condition>");
             strContact.Append("</query></queryxml>");
 
-            ATWSResponse respContact = api._atwsServices.query(strContact.ToString(), out errorMsg);
+            ATWSResponse respContact = _atwsServices.query(strContact.ToString(), out errorMsg);
 
             if (respContact.ReturnCode > 0 && respContact.EntityResults.Length > 0)
             {

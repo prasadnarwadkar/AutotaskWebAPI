@@ -1,18 +1,19 @@
-﻿using AutotaskWebAPI.Autotask.Net.Webservices;
+﻿using WrapperLib.Autotask.Net.Webservices;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.Services.Protocols;
 
-namespace AutotaskWebAPI.Models
+namespace WrapperLib.Models
 {
-    public class AttachmentsAPI
+    /// <summary>
+    /// API for Attachment entity.
+    /// </summary>
+    public class AttachmentsAPI :ApiBase
     {
-        private AutotaskAPI api = null;
-
-        public AttachmentsAPI(AutotaskAPI apiInstance)
+        public AttachmentsAPI(string user, string password) : base(user, password)
         {
-            api = apiInstance;
+
         }
 
         public Attachment GetAttachmentById(long id, out string errorMsg)
@@ -21,7 +22,7 @@ namespace AutotaskWebAPI.Models
 
             try
             {
-                var result = api._atwsServices.GetAttachment(id);
+                var result = _atwsServices.GetAttachment(id);
 
                 if (result != null)
                 {
@@ -65,7 +66,7 @@ namespace AutotaskWebAPI.Models
             strResource.Append("</expression></field>");
             strResource.Append("</query></queryxml>");
 
-            ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+            ATWSResponse respResource = _atwsServices.query(strResource.ToString(), out errorMsg);
 
             if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
             {
@@ -107,7 +108,7 @@ namespace AutotaskWebAPI.Models
                 strResource.Append("</expression></field>");
                 strResource.Append("</query></queryxml>");
 
-                ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+                ATWSResponse respResource = _atwsServices.query(strResource.ToString(), out errorMsg);
 
                 if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
                 {
@@ -147,7 +148,7 @@ namespace AutotaskWebAPI.Models
                 strResource.Append("</expression></field></condition>");
                 strResource.Append("</query></queryxml>");
 
-                ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+                ATWSResponse respResource = _atwsServices.query(strResource.ToString(), out errorMsg);
 
                 if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
                 {
@@ -172,7 +173,7 @@ namespace AutotaskWebAPI.Models
 
             try
             {
-                return api._atwsServices.CreateAttachment(attachment);
+                return _atwsServices.CreateAttachment(attachment);
             }
             catch (SoapException ex)
             {

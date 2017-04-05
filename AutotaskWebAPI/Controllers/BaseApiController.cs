@@ -1,5 +1,4 @@
-﻿using AutotaskWebAPI.Models;
-using System;
+﻿using System;
 using System.Configuration;
 using System.Linq;
 using System.Net;
@@ -8,13 +7,13 @@ using System.Text;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using WrapperLib.Models;
 
 namespace AutotaskWebAPI.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class BaseApiController : ApiController
+    public abstract class BaseApiController : ApiController
     {
-        protected static AutotaskAPI api = null;
         protected static bool apiInitialized = false;
 
         protected static ResourcesAPI resourcesApi = null;
@@ -27,6 +26,7 @@ namespace AutotaskWebAPI.Controllers
         protected static TasksAPI tasksApi = null;
         protected static ContractsAPI contractsApi = null;
         protected static GenericAPI genericApi = null;
+        protected static PicklistAPI picklistApi = null;
 
         private static Tuple<string, string> ExtractUserNameAndPassword(string authorizationParameter)
         {
@@ -83,6 +83,9 @@ namespace AutotaskWebAPI.Controllers
         /// </summary>
         public BaseApiController()
         {
+            string username = string.Empty;
+            string password = string.Empty;
+
             try
             {
                 if (!apiInitialized)
@@ -103,47 +106,68 @@ namespace AutotaskWebAPI.Controllers
                             && !string.IsNullOrEmpty(userNameAndPasword.Item2))
                         {
                             // Username and password are available from Request's Authorization header.
-                            api = new AutotaskAPI(userNameAndPasword.Item1, userNameAndPasword.Item2);
+                            username = userNameAndPasword.Item1;
+                            password = userNameAndPasword.Item2;
                         }
                         else
                         {
                             // Are the username and password set in web.config appSettings keys?
-                            api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"],
-                                                    ConfigurationManager.AppSettings["APIPassword"]);
+                            username = ConfigurationManager.AppSettings["APIUsername"];
+                            password = ConfigurationManager.AppSettings["APIPassword"];
                         }
 
-                        apiInitialized = true;
+                        resourcesApi = new ResourcesAPI(username, password);
 
-                        resourcesApi = new ResourcesAPI(api);
-                        ticketsApi = new TicketsAPI(api);
-                        accountsApi = new AccountsAPI(api);
-                        notesApi = new NotesAPI(api);
-                        attachmentsApi = new AttachmentsAPI(api);
-                        resourceRolesApi = new ResourceRolesAPI(api);
-                        contactsApi = new ContactsAPI(api);
-                        tasksApi = new TasksAPI(api);
-                        contractsApi = new ContractsAPI(api);
-                        genericApi = new GenericAPI(api);
+                        if (!resourcesApi.IsApiInitialized())
+                        {
+                            apiInitialized = false;
+                        }
+                        else
+                        {
+                            apiInitialized = true;
+                        }
+
+                        ticketsApi = new TicketsAPI(username, password);
+                        accountsApi = new AccountsAPI(username, password);
+                        notesApi = new NotesAPI(username, password);
+                        attachmentsApi = new AttachmentsAPI(username, password);
+                        resourceRolesApi = new ResourceRolesAPI(username, password);
+                        contactsApi = new ContactsAPI(username, password);
+                        tasksApi = new TasksAPI(username, password);
+                        contractsApi = new ContractsAPI(username, password);
+                        genericApi = new GenericAPI(username, password);
+                        picklistApi = new PicklistAPI(username, password);
                     }
                     else
                     {
                         // Are the username and password set in web.config appSettings keys?
-                        api = new AutotaskAPI(ConfigurationManager.AppSettings["APIUsername"],
-                                                ConfigurationManager.AppSettings["APIPassword"]);
+                        username = ConfigurationManager.AppSettings["APIUsername"];
+                        password = ConfigurationManager.AppSettings["APIPassword"];
                     }
                 }
                 else
                 {
-                    resourcesApi = new ResourcesAPI(api);
-                    ticketsApi = new TicketsAPI(api);
-                    accountsApi = new AccountsAPI(api);
-                    notesApi = new NotesAPI(api);
-                    attachmentsApi = new AttachmentsAPI(api);
-                    resourceRolesApi = new ResourceRolesAPI(api);
-                    contactsApi = new ContactsAPI(api);
-                    tasksApi = new TasksAPI(api);
-                    contractsApi = new ContractsAPI(api);
-                    genericApi = new GenericAPI(api);
+                    resourcesApi = new ResourcesAPI(username, password);
+
+                    if (!resourcesApi.IsApiInitialized())
+                    {
+                        apiInitialized = false;
+                    }
+                    else
+                    {
+                        apiInitialized = true;
+                    }
+
+                    ticketsApi = new TicketsAPI(username, password);
+                    accountsApi = new AccountsAPI(username, password);
+                    notesApi = new NotesAPI(username, password);
+                    attachmentsApi = new AttachmentsAPI(username, password);
+                    resourceRolesApi = new ResourceRolesAPI(username, password);
+                    contactsApi = new ContactsAPI(username, password);
+                    tasksApi = new TasksAPI(username, password);
+                    contractsApi = new ContractsAPI(username, password);
+                    genericApi = new GenericAPI(username, password);
+                    picklistApi = new PicklistAPI(username, password);
                 }
             }
             catch (ArgumentException)

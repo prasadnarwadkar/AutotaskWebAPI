@@ -1,5 +1,4 @@
 ﻿using AutotaskWebAPI.Autotask.Net.Webservices;
-using AutotaskWebAPI.Models;
 using NSwag.Annotations;
 using System;
 using System.Collections.Generic;

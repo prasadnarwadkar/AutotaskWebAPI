@@ -1,6 +1,4 @@
-﻿using AutotaskWebAPI.Autotask.Net.Webservices;
-using AutotaskWebAPI.Models;
-using Newtonsoft.Json.Linq;
+﻿using WrapperLib.Autotask.Net.Webservices;
 using NSwag.Annotations;
 using System;
 using System.Collections.Generic;
@@ -9,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using WrapperLib.Models;
 
 namespace AutotaskWebAPI.Controllers
 {

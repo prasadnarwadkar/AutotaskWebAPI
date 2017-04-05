@@ -1,23 +1,25 @@
-﻿using AutotaskWebAPI.Autotask.Net.Webservices;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
+using WrapperLib.Autotask.Net.Webservices;
 
-namespace AutotaskWebAPI.Models
+namespace WrapperLib.Models
 {
-    public class NotesAPI
+    /// <summary>
+    /// API for TicketNote entity.
+    /// Provides methods such as get note by ticket id.
+    /// </summary>
+    public class NotesAPI :ApiBase
     {
-        private AutotaskAPI api = null;
-
-        public NotesAPI(AutotaskAPI apiInstance)
+        public NotesAPI(string user, string password) : base(user, password)
         {
-            api = apiInstance;
+
         }
 
         /// <summary>
         /// Get a note by its ticket id.
         /// </summary>
         /// <param name="ticketId"></param>
-        /// <param name="errorMsg">Out parameter to set error from AT SOAP API.</param>
+        /// <param name="errorMsg">Out parameter to set error from AT SOAP </param>
         /// <returns></returns>
         public List<TicketNote> GetNoteByTicketId(long ticketId, out string errorMsg)
         {
@@ -36,7 +38,7 @@ namespace AutotaskWebAPI.Models
             strResource.Append("</expression></field>");
             strResource.Append("</query></queryxml>");
 
-            ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+            ATWSResponse respResource = _atwsServices.query(strResource.ToString(), out errorMsg);
 
             if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
             {
@@ -72,7 +74,7 @@ namespace AutotaskWebAPI.Models
             strResource.Append("</expression></field>");
             strResource.Append("</query></queryxml>");
 
-            ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+            ATWSResponse respResource = _atwsServices.query(strResource.ToString(), out errorMsg);
 
             if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
             {
@@ -105,7 +107,7 @@ namespace AutotaskWebAPI.Models
             strResource.Append("</expression></field>");
             strResource.Append("</query></queryxml>");
 
-            ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+            ATWSResponse respResource = _atwsServices.query(strResource.ToString(), out errorMsg);
 
             if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
             {
@@ -151,7 +153,7 @@ namespace AutotaskWebAPI.Models
 
             Entity[] entNote = new Entity[] { noteAct };
 
-            ATWSResponse respNote = api._atwsServices.create(entNote, out errorMsg);
+            ATWSResponse respNote = _atwsServices.create(entNote, out errorMsg);
 
             if (respNote.ReturnCode > 0 && respNote.EntityResults.Length > 0)
             {
@@ -168,6 +170,4 @@ namespace AutotaskWebAPI.Models
             return null;
         }
     }
-
-
 }

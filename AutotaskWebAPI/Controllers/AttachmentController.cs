@@ -1,9 +1,7 @@
-﻿using AutotaskWebAPI.Autotask.Net.Webservices;
-using AutotaskWebAPI.Models;
+﻿using WrapperLib.Autotask.Net.Webservices;
 using NSwag.Annotations;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Net;
 using System.Net.Http;
 using System.Web;

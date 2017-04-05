@@ -1,17 +1,18 @@
-﻿using AutotaskWebAPI.Autotask.Net.Webservices;
+﻿using WrapperLib.Autotask.Net.Webservices;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AutotaskWebAPI.Models
+namespace WrapperLib.Models
 {
-    public class TicketsAPI
+    /// <summary>
+    /// API for Ticket entity
+    /// </summary>
+    public class TicketsAPI : ApiBase
     {
-        private AutotaskAPI api = null;
-
-        public TicketsAPI(AutotaskAPI apiInstance)
+        public TicketsAPI(string user, string password) : base(user, password)
         {
-            api = apiInstance;
+
         }
 
         public long UpdateTicket(TicketUpdateDetails ticketToUpdate, out string errorMsg)
@@ -71,7 +72,7 @@ namespace AutotaskWebAPI.Models
                     ticket.ContractServiceBundleID = ticketToUpdate.ContractServiceBundleID;
 
                     Entity[] entityArray = new Entity[] { ticket };
-                    ATWSResponse respUpdate = api._atwsServices.update(entityArray, out errorMsg);
+                    ATWSResponse respUpdate = _atwsServices.update(entityArray, out errorMsg);
 
                     if (respUpdate.ReturnCode > 0 && respUpdate.EntityResults.Length > 0)
                     {
@@ -120,7 +121,7 @@ namespace AutotaskWebAPI.Models
 
             Entity[] entityToCreate = new Entity[] { ticket };
 
-            ATWSResponse response = api._atwsServices.create(entityToCreate, out error);
+            ATWSResponse response = _atwsServices.create(entityToCreate, out error);
 
             if (response.ReturnCode > 0 && response.EntityResults.Length > 0)
             {
@@ -159,7 +160,7 @@ namespace AutotaskWebAPI.Models
             strResource.Append("</expression></field></condition>");
             strResource.Append("</query></queryxml>");
 
-            ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+            ATWSResponse respResource = _atwsServices.query(strResource.ToString(), out errorMsg);
 
             if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
             {
@@ -194,7 +195,7 @@ namespace AutotaskWebAPI.Models
             strResource.Append("</expression></field>");
             strResource.Append("</query></queryxml>");
 
-            ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+            ATWSResponse respResource = _atwsServices.query(strResource.ToString(), out errorMsg);
 
             if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
             {
@@ -232,7 +233,7 @@ namespace AutotaskWebAPI.Models
             strResource.Append("</expression></field></condition>");
             strResource.Append("</query></queryxml>");
 
-            ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+            ATWSResponse respResource = _atwsServices.query(strResource.ToString(), out errorMsg);
 
             if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
             {
@@ -267,7 +268,7 @@ namespace AutotaskWebAPI.Models
             strResource.Append("</expression></field>");
             strResource.Append("</query></queryxml>");
 
-            ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+            ATWSResponse respResource = _atwsServices.query(strResource.ToString(), out errorMsg);
 
             if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
             {
@@ -305,7 +306,7 @@ namespace AutotaskWebAPI.Models
             strResource.Append("</expression></field>");
             strResource.Append("</query></queryxml>");
 
-            ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+            ATWSResponse respResource = _atwsServices.query(strResource.ToString(), out errorMsg);
 
             if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
             {
@@ -338,7 +339,7 @@ namespace AutotaskWebAPI.Models
             strResource.Append("</expression></field>");
             strResource.Append("</query></queryxml>");
 
-            ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+            ATWSResponse respResource = _atwsServices.query(strResource.ToString(), out errorMsg);
 
             if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
             {
@@ -372,7 +373,7 @@ namespace AutotaskWebAPI.Models
             strResource.Append("</expression></field>");
             strResource.Append("</query></queryxml>");
 
-            ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+            ATWSResponse respResource = _atwsServices.query(strResource.ToString(), out errorMsg);
 
             if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
             {
@@ -414,7 +415,7 @@ namespace AutotaskWebAPI.Models
             strResource.Append("</expression></field>");
             strResource.Append("</query></queryxml>");
 
-            ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+            ATWSResponse respResource = _atwsServices.query(strResource.ToString(), out errorMsg);
 
             if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
             {

@@ -1,17 +1,20 @@
-﻿using AutotaskWebAPI.Autotask.Net.Webservices;
+﻿using WrapperLib.Autotask.Net.Webservices;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AutotaskWebAPI.Models
+namespace WrapperLib.Models
 {
-    public class ResourceRolesAPI
+    /// <summary>
+    /// API for ResourceRole entity.
+    /// Uses a simple Dto in order to 
+    /// pass only necessary info.
+    /// </summary>
+    public class ResourceRolesAPI : ApiBase
     {
-        private AutotaskAPI api = null;
-
-        public ResourceRolesAPI(AutotaskAPI apiInstance)
+        public ResourceRolesAPI(string user, string password) : base(user, password)
         {
-            api = apiInstance;
+
         }
 
         /// <summary>
@@ -35,7 +38,7 @@ namespace AutotaskWebAPI.Models
             strResource.Append("</expression></field>");
             strResource.Append("</query></queryxml>");
 
-            ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+            ATWSResponse respResource = _atwsServices.query(strResource.ToString(), out errorMsg);
 
             if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
             {
@@ -78,7 +81,7 @@ namespace AutotaskWebAPI.Models
             strResource.Append("</expression></field>");
             strResource.Append("</query></queryxml>");
 
-            ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+            ATWSResponse respResource = _atwsServices.query(strResource.ToString(), out errorMsg);
 
             if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
             {
@@ -130,7 +133,7 @@ namespace AutotaskWebAPI.Models
             strResource.Append("</expression></field>");
             strResource.Append("</query></queryxml>");
 
-            ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+            ATWSResponse respResource = _atwsServices.query(strResource.ToString(), out errorMsg);
 
             if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
             {

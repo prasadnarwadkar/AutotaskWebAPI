@@ -1,16 +1,17 @@
-﻿using AutotaskWebAPI.Autotask.Net.Webservices;
+﻿using WrapperLib.Autotask.Net.Webservices;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AutotaskWebAPI.Models
+namespace WrapperLib.Models
 {
-    public class ContractsAPI
+    /// <summary>
+    /// API for Contract entity
+    /// </summary>
+    public class ContractsAPI : ApiBase
     {
-        private AutotaskAPI api = null;
-
-        public ContractsAPI(AutotaskAPI apiInstance)
+        public ContractsAPI(string user, string password) : base(user, password)
         {
-            api = apiInstance;
+
         }
 
         public Contract GetContractById(long id, out string errorMsg)
@@ -28,7 +29,7 @@ namespace AutotaskWebAPI.Models
             strContract.Append("</expression></field>");
             strContract.Append("</query></queryxml>");
 
-            ATWSResponse respContract = api._atwsServices.query(strContract.ToString(), out errorMsg);
+            ATWSResponse respContract = _atwsServices.query(strContract.ToString(), out errorMsg);
 
             if (respContract.ReturnCode > 0 && respContract.EntityResults.Length > 0)
             {
@@ -65,7 +66,7 @@ namespace AutotaskWebAPI.Models
             strContract.Append("</expression></field>");
             strContract.Append("</query></queryxml>");
 
-            ATWSResponse respContract = api._atwsServices.query(strContract.ToString(), out errorMsg);
+            ATWSResponse respContract = _atwsServices.query(strContract.ToString(), out errorMsg);
 
             if (respContract.ReturnCode > 0 && respContract.EntityResults.Length > 0)
             {
@@ -100,7 +101,7 @@ namespace AutotaskWebAPI.Models
             strContract.Append("</expression></field>");
             strContract.Append("</query></queryxml>");
 
-            ATWSResponse respContract = api._atwsServices.query(strContract.ToString(), out errorMsg);
+            ATWSResponse respContract = _atwsServices.query(strContract.ToString(), out errorMsg);
 
             if (respContract.ReturnCode > 0 && respContract.EntityResults.Length > 0)
             {
@@ -135,7 +136,7 @@ namespace AutotaskWebAPI.Models
             strContract.Append("</expression></field>");
             strContract.Append("</query></queryxml>");
 
-            ATWSResponse respContract = api._atwsServices.query(strContract.ToString(), out errorMsg);
+            ATWSResponse respContract = _atwsServices.query(strContract.ToString(), out errorMsg);
 
             if (respContract.ReturnCode > 0 && respContract.EntityResults.Length > 0)
             {

@@ -1,53 +1,36 @@
-﻿using AutotaskWebAPI.Autotask.Net.Webservices;
-using System;
+﻿using System;
 
-namespace AutotaskWebAPI.Models
+namespace WrapperLib.Models
 {
-    /// <summary>
-    /// Generic entity details.
-    /// </summary>
-    public class EntityDetails
+    public class ResourceRoleDto
     {
-        /// <summary>
-        /// This can contain any entity, Ticket, TicketNote, Task etc.
-        /// </summary>
-        public Entity EntityObj { get; set; }
+        public long ResourceId { get; set; }
+        public long RoleId { get; set; }
+        public string RoleName { get; set; }
+        public string RoleDescription { get; set; }
+    }
+
+    public class RoleDto
+    {
+        public long Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
     }
 
     /// <summary>
-    /// Details of a TicketNote to create it.
+    /// Task details required to create it.
     /// </summary>
-    public class NoteDetails
+    public class TaskDetails
     {
-        /// <summary>
-        /// Ticket id. Parent of the note.
-        /// </summary>
-        public long TicketId { get; set; }
-
-        /// <summary>
-        /// Note creator resource id.
-        /// </summary>
-        public long CreatorResourceId { get; set; }
-
-        /// <summary>
-        /// Note title
-        /// </summary>
+        public long ProjectID { get; set; }
         public string Title { get; set; }
-
-        /// <summary>
-        /// Note description.
-        /// </summary>
+        public long id { get; set; }
         public string Description { get; set; }
-
-        /// <summary>
-        /// Note type
-        /// </summary>
-        public long NoteType { get; set; }
-
-        /// <summary>
-        /// Publish the note?. Set 1 to publish.
-        /// </summary>
-        public long Publish { get; set; }
+        public int Status { get; set; }
+        public long AssignedResourceID { get; set; }
+        public long AssignedResourceRoleID { get; set; }
+        public long CreatorResourceID { get; set; }
+        public int TaskType { get; set; }
     }
 
     /// <summary>
@@ -255,38 +238,5 @@ namespace AutotaskWebAPI.Models
             get;
             set;
         }
-    }
-
-    /// <summary>
-    /// Ticket details required to create it.
-    /// </summary>
-    public class TicketDetails
-    {
-        public long AccountID { get; set; }
-        public string Title { get; set; }
-        public long id { get; set; }
-        public string Description { get; set; }
-        public int Status { get; set; }
-        public string DueDateTime { get; set; }
-        public long AssignedResourceID { get; set; }
-        public long AssignedResourceRoleID { get; set; }
-        public long CreatorResourceID { get; set; }
-        public int Priority { get; set; }
-    }
-
-    /// <summary>
-    /// Task details required to create it.
-    /// </summary>
-    public class TaskDetails
-    {
-        public long ProjectID { get; set; }
-        public string Title { get; set; }
-        public long id { get; set; }
-        public string Description { get; set; }
-        public int Status { get; set; }
-        public long AssignedResourceID { get; set; }
-        public long AssignedResourceRoleID { get; set; }
-        public long CreatorResourceID { get; set; }
-        public int TaskType { get; set; }
     }
 }

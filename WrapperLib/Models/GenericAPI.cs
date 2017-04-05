@@ -1,17 +1,18 @@
-﻿using AutotaskWebAPI.Autotask.Net.Webservices;
+﻿using WrapperLib.Autotask.Net.Webservices;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AutotaskWebAPI.Models
+namespace WrapperLib.Models
 {
-    public class GenericAPI
+    /// <summary>
+    /// API for any entity (generic)
+    /// </summary>
+    public class GenericAPI : ApiBase
     {
-        private AutotaskAPI api = null;
-
-        public GenericAPI(AutotaskAPI apiInstance)
+        public GenericAPI(string user, string password) : base(user, password)
         {
-            api = apiInstance;
+
         }
 
         public List<Entity> GetEntityByListOfConditions(string entityName, Condition[] conditions, out string errorMsg)
@@ -192,7 +193,7 @@ namespace AutotaskWebAPI.Models
 
             strResource.Append("</query></queryxml>");
 
-            ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+            ATWSResponse respResource = _atwsServices.query(strResource.ToString(), out errorMsg);
 
             if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
             {
@@ -237,7 +238,7 @@ namespace AutotaskWebAPI.Models
             strResource.Append("</expression></field>");
             strResource.Append("</query></queryxml>");
 
-            ATWSResponse respResource = api._atwsServices.query(strResource.ToString(), out errorMsg);
+            ATWSResponse respResource = _atwsServices.query(strResource.ToString(), out errorMsg);
 
             if (respResource.ReturnCode > 0 && respResource.EntityResults.Length > 0)
             {
@@ -274,7 +275,7 @@ namespace AutotaskWebAPI.Models
                 if (errorMsg.Length == 0)
                 {
                     Entity[] entityArray = new Entity[] { entityToUpdate };
-                    ATWSResponse respUpdate = api._atwsServices.update(entityArray, out errorMsg);
+                    ATWSResponse respUpdate = _atwsServices.update(entityArray, out errorMsg);
 
                     if (respUpdate.ReturnCode > 0 && respUpdate.EntityResults.Length > 0)
                     {
@@ -309,7 +310,7 @@ namespace AutotaskWebAPI.Models
 
             Entity[] entityArray = new Entity[] { entityToCreate };
 
-            ATWSResponse response = api._atwsServices.create(entityArray, out errorMsg);
+            ATWSResponse response = _atwsServices.create(entityArray, out errorMsg);
 
             if (response.ReturnCode > 0 && response.EntityResults.Length > 0)
             {

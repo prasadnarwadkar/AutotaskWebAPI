@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace AutotaskWebAPI.Models
+namespace WrapperLib.Models
 {
     /// <summary>
     /// Operator. OR, AND

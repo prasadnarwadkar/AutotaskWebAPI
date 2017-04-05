@@ -14,6 +14,8 @@ namespace AutotaskWebAPI.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class PicklistController : BaseApiController
     {
+        
+
         /// <summary>
         /// Get a picklist label given an entity name, field name and 
         /// value to search.
@@ -52,7 +54,7 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            var result = api.GetPickListLabel(entityType, fieldName, valueToSearch.ToString(), out errorMsg);
+            var result = picklistApi.GetPickListLabel(entityType, fieldName, valueToSearch.ToString(), out errorMsg);
 
             if (errorMsg.Length > 0)
             {
@@ -96,7 +98,7 @@ namespace AutotaskWebAPI.Controllers
 
             string errorMsg = string.Empty;
 
-            var result = api.GetPickListLabelsByField(entityType, fieldName, out errorMsg);
+            var result = picklistApi.GetPickListLabelsByField(entityType, fieldName, out errorMsg);
 
             if (errorMsg.Length > 0)
             {

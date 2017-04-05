@@ -203,32 +203,10 @@
     <Compile Include="Controllers\ResourceController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Controllers\TicketController.cs" />
-    <Compile Include="Models\AccountsAPI.cs" />
-    <Compile Include="Models\AttachmentsAPI.cs" />
-    <Compile Include="Models\Condition.cs" />
-    <Compile Include="Models\ContractsAPI.cs" />
-    <Compile Include="Models\DtoModels.cs" />
-    <Compile Include="Models\GenericAPI.cs" />
-    <Compile Include="Models\NotesAPI.cs" />
-    <Compile Include="Models\ResourceDetails.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AccountDto.cs" />
-    <Compile Include="Models\AttachmentDto.cs" />
-    <Compile Include="Models\Constants.cs" />
-    <Compile Include="Models\AutotaskAPI.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\InvoiceDto.cs" />
-    <Compile Include="Models\ResourceRoleDto.cs" />
-    <Compile Include="Models\ResourceRolesAPI.cs" />
-    <Compile Include="Models\ContactsAPI.cs" />
-    <Compile Include="Models\TasksAPI.cs" />
-    <Compile Include="Models\TicketsAPI.cs" />
-    <Compile Include="Models\ResourcesAPI.cs" />
-    <Compile Include="Models\TicketNoteDto.cs" />
-    <Compile Include="Models\TimeEntryDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -306,6 +284,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WrapperLib\WrapperLib.csproj">
+      <Project>{284c796c-fce1-4a54-a27f-c9f2d85889a4}</Project>
+      <Name>WrapperLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

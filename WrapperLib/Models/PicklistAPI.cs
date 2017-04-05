@@ -1,128 +1,15 @@
-﻿using AutotaskWebAPI.Autotask.Net.Webservices;
-using System;
-using System.Configuration;
-using System.Net;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web.Services.Protocols;
+using WrapperLib.Autotask.Net.Webservices;
 
-namespace AutotaskWebAPI.Models
+namespace WrapperLib.Models
 {
-    /// <summary>
-    /// Public Class AutotaskAPI.
-    /// </summary>
-    public class AutotaskAPI : IDisposable
-	{
-        /// <summary>
-        /// Autotask SOAP API client.
-        /// </summary>
-		public ATWS _atwsServices = null;
-        private int utcOffsetInMins = Convert.ToInt32(ConfigurationManager.AppSettings["utcOffsetInMins"]);
-        private string _webServiceBaseAPIURL = ConfigurationManager.AppSettings["APIServiceURLZoneInfo"];
-        
-		/// <summary>
-		/// Public Constructor.
-		/// </summary>
-		public AutotaskAPI(string user, string pass)
-		{
-            if (string.IsNullOrEmpty(user))
-            {
-                throw new ArgumentException("Autotask API username is blank");
-            }
-            else
-            {
-                if (string.IsNullOrEmpty(pass))
-                {
-                    throw new ArgumentException("Autotask API password is blank");
-                }
-            }
-
-            // Initialize db context.
-			string zoneURL = string.Empty;
-
-			this._atwsServices = new ATWS();
-			this._atwsServices.Url = this._webServiceBaseAPIURL;
-
-			CredentialCache cache = new CredentialCache();
-			cache.Add(new Uri(this._atwsServices.Url), "BASIC", new NetworkCredential(user, pass));
-			this._atwsServices.Credentials = cache;
-
-            try
-            {
-                ATWSZoneInfo zoneInfo = new ATWSZoneInfo();
-                zoneInfo = this._atwsServices.getZoneInfo(user);
-                if (zoneInfo.ErrorCode >= 0)
-                {
-                    zoneURL = zoneInfo.URL;
-                    this._atwsServices = new ATWS();
-                    this._atwsServices.Url = zoneInfo.URL;
-                    cache = new CredentialCache();
-                    cache.Add(new Uri(this._atwsServices.Url), "BASIC", new NetworkCredential(user, pass));
-                    this._atwsServices.Credentials = cache;
-                }
-                else
-                {
-                    //throw new Exception("Error with getZoneInfo()");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error with getZoneInfo()- error: " + ex.Message);
-            }
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                // dispose managed resources
-                _atwsServices.Dispose();
-            }
-            // free native resources
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Get pick list label given its value.
-        /// </summary>
-        /// <param name="entityType">e.g. Account</param>
-        /// <param name="fieldName">e.g. AccountType which follows a picklist.</param>
-        /// <param name="valueToSearch">e.g. 1 which should return label "Customer".</param>
-        /// <param name="errorMsg">Error message from SOAP API, if any.</param>
-        /// <returns>Label matching the passed value.</returns>
-        public string GetPickListLabel(string entityType, string fieldName,
-                                        string valueToSearch, out string errorMsg)
-        {
-            errorMsg = string.Empty;
-
-            try
-            {
-                var fields = this._atwsServices.GetFieldInfo(entityType);
-
-                return AutotaskAPI.PickListLabelFromValue(fields, fieldName, valueToSearch);
-            }
-
-            catch (SoapException ex)
-            {
-                errorMsg = ex.Message;
-
-                // This is sort of fatal exception. The entity name or field name or 
-                // both are incorrect and might not exist.
-                return string.Empty;
-            }
-            catch (Exception ex)
-            {
-                errorMsg = ex.Message;
-
-                // This is sort of fatal exception. The entity name or field name or 
-                // both are incorrect and might not exist.
-                return string.Empty;
-            }
-        }
-
+    public class PicklistAPI : ApiBase
+    {
         public PickListValue[] GetPickListLabelsByField(string entityType, string fieldName,
                                                 out string errorMsg)
         {
@@ -130,9 +17,9 @@ namespace AutotaskWebAPI.Models
 
             try
             {
-                var fields = this._atwsServices.GetFieldInfo(entityType);
+                var fields = _atwsServices.GetFieldInfo(entityType);
 
-                return AutotaskAPI.PickListLabelsFromField(fields, fieldName);
+                return PickListLabelsFromField(fields, fieldName);
             }
 
             catch (SoapException ex)
@@ -155,6 +42,44 @@ namespace AutotaskWebAPI.Models
                 // This is sort of fatal exception. The entity name or field name or 
                 // both are incorrect and might not exist.
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Get pick list label given its value.
+        /// </summary>
+        /// <param name="entityType">e.g. Account</param>
+        /// <param name="fieldName">e.g. AccountType which follows a picklist.</param>
+        /// <param name="valueToSearch">e.g. 1 which should return label "Customer".</param>
+        /// <param name="errorMsg">Error message from SOAP API, if any.</param>
+        /// <returns>Label matching the passed value.</returns>
+        public string GetPickListLabel(string entityType, string fieldName,
+                                        string valueToSearch, out string errorMsg)
+        {
+            errorMsg = string.Empty;
+
+            try
+            {
+                var fields = _atwsServices.GetFieldInfo(entityType);
+
+                return PickListLabelFromValue(fields, fieldName, valueToSearch);
+            }
+
+            catch (SoapException ex)
+            {
+                errorMsg = ex.Message;
+
+                // This is sort of fatal exception. The entity name or field name or 
+                // both are incorrect and might not exist.
+                return string.Empty;
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+
+                // This is sort of fatal exception. The entity name or field name or 
+                // both are incorrect and might not exist.
+                return string.Empty;
             }
         }
 
@@ -223,6 +148,11 @@ namespace AutotaskWebAPI.Models
         protected static PickListValue FindPickListValue(PickListValue[] pickListValue, string valueID)
         {
             return Array.Find(pickListValue, element => element.Value == valueID);
-        }        
+        }
+
+        public PicklistAPI(string user, string password) : base(user, password)
+        {
+
+        }
     }
 }
