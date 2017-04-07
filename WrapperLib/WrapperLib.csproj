@@ -58,6 +58,7 @@
     <Compile Include="Models\PicklistAPI.cs" />
     <Compile Include="Models\ResourceRolesAPI.cs" />
     <Compile Include="Models\ResourcesAPI.cs" />
+    <Compile Include="Models\SoapCallingExtensions.cs" />
     <Compile Include="Models\TasksAPI.cs" />
     <Compile Include="Models\TicketsAPI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
