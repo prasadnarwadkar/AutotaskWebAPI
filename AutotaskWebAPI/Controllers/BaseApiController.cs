@@ -16,17 +16,19 @@ namespace AutotaskWebAPI.Controllers
     {
         protected static bool apiInitialized = false;
 
-        protected static ResourcesAPI resourcesApi = null;
-        protected static TicketsAPI ticketsApi = null;
-        protected static AccountsAPI accountsApi = null;
-        protected static NotesAPI notesApi = null;
-        protected static AttachmentsAPI attachmentsApi = null;
-        protected static ResourceRolesAPI resourceRolesApi = null;
-        protected static ContactsAPI contactsApi = null;
-        protected static TasksAPI tasksApi = null;
-        protected static ContractsAPI contractsApi = null;
-        protected static GenericAPI genericApi = null;
-        protected static PicklistAPI picklistApi = null;
+        #region Entity API wrapper instances
+        protected static ResourcesAPI resourcesApi = new ResourcesAPI();
+        protected static TicketsAPI ticketsApi = new TicketsAPI();
+        protected static AccountsAPI accountsApi = new AccountsAPI();
+        protected static NotesAPI notesApi = new NotesAPI();
+        protected static AttachmentsAPI attachmentsApi = new AttachmentsAPI();
+        protected static ResourceRolesAPI resourceRolesApi = new ResourceRolesAPI();
+        protected static ContactsAPI contactsApi = new ContactsAPI();
+        protected static TasksAPI tasksApi = new TasksAPI();
+        protected static ContractsAPI contractsApi = new ContractsAPI();
+        protected static GenericAPI genericApi = new GenericAPI();
+        protected static PicklistAPI picklistApi = new PicklistAPI();
+        #endregion
 
         private static Tuple<string, string> ExtractUserNameAndPassword(string authorizationParameter)
         {
@@ -116,9 +118,9 @@ namespace AutotaskWebAPI.Controllers
                             password = ConfigurationManager.AppSettings["APIPassword"];
                         }
 
-                        resourcesApi = new ResourcesAPI(username, password);
+                        ApiBase.Init(username, password);
 
-                        if (!resourcesApi.IsApiInitialized())
+                        if (!ApiBase.IsApiInitialized())
                         {
                             apiInitialized = false;
                         }
@@ -126,17 +128,6 @@ namespace AutotaskWebAPI.Controllers
                         {
                             apiInitialized = true;
                         }
-
-                        ticketsApi = new TicketsAPI(username, password);
-                        accountsApi = new AccountsAPI(username, password);
-                        notesApi = new NotesAPI(username, password);
-                        attachmentsApi = new AttachmentsAPI(username, password);
-                        resourceRolesApi = new ResourceRolesAPI(username, password);
-                        contactsApi = new ContactsAPI(username, password);
-                        tasksApi = new TasksAPI(username, password);
-                        contractsApi = new ContractsAPI(username, password);
-                        genericApi = new GenericAPI(username, password);
-                        picklistApi = new PicklistAPI(username, password);
                     }
                     else
                     {
@@ -147,9 +138,9 @@ namespace AutotaskWebAPI.Controllers
                 }
                 else
                 {
-                    resourcesApi = new ResourcesAPI(username, password);
+                    ApiBase.Init(username, password);
 
-                    if (!resourcesApi.IsApiInitialized())
+                    if (!ApiBase.IsApiInitialized())
                     {
                         apiInitialized = false;
                     }
@@ -157,17 +148,6 @@ namespace AutotaskWebAPI.Controllers
                     {
                         apiInitialized = true;
                     }
-
-                    ticketsApi = new TicketsAPI(username, password);
-                    accountsApi = new AccountsAPI(username, password);
-                    notesApi = new NotesAPI(username, password);
-                    attachmentsApi = new AttachmentsAPI(username, password);
-                    resourceRolesApi = new ResourceRolesAPI(username, password);
-                    contactsApi = new ContactsAPI(username, password);
-                    tasksApi = new TasksAPI(username, password);
-                    contractsApi = new ContractsAPI(username, password);
-                    genericApi = new GenericAPI(username, password);
-                    picklistApi = new PicklistAPI(username, password);
                 }
             }
             catch (ArgumentException)

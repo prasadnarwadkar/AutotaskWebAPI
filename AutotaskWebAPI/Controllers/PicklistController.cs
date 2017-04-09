@@ -1,4 +1,4 @@
-﻿using AutotaskWebAPI.Autotask.Net.Webservices;
+﻿using WrapperLib.Autotask.Net.Webservices;
 using NSwag.Annotations;
 using System;
 using System.Net;

@@ -9,11 +9,6 @@ namespace WrapperLib.Models
     /// </summary>
     public class ContractsAPI : ApiBase
     {
-        public ContractsAPI(string user, string password) : base(user, password)
-        {
-
-        }
-
         public Contract GetContractById(long id, out string errorMsg)
         {
             string ret = string.Empty;

@@ -10,11 +10,6 @@ namespace WrapperLib.Models
     /// </summary>
     public class TasksAPI : ApiBase
     {
-        public TasksAPI(string user, string password) : base(user, password)
-        {
-
-        }
-
         public List<Task> GetOpenTasksByAssignedResourceId(long assignedResourceId, out string errorMsg)
         {
             List<Task> list = new List<Task>();

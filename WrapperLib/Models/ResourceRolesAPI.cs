@@ -12,11 +12,6 @@ namespace WrapperLib.Models
     /// </summary>
     public class ResourceRolesAPI : ApiBase
     {
-        public ResourceRolesAPI(string user, string password) : base(user, password)
-        {
-
-        }
-
         /// <summary>
         /// Get role by id.
         /// </summary>

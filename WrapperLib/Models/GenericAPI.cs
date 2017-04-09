@@ -10,11 +10,6 @@ namespace WrapperLib.Models
     /// </summary>
     public class GenericAPI : ApiBase
     {
-        public GenericAPI(string user, string password) : base(user, password)
-        {
-
-        }
-
         public List<Entity> GetEntityByListOfConditions(string entityName, Condition[] conditions, out string errorMsg)
         {
             List<Entity> list = new List<Entity>();

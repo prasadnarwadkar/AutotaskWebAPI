@@ -10,11 +10,6 @@ namespace WrapperLib.Models
     /// </summary>
     public class TicketsAPI : ApiBase
     {
-        public TicketsAPI(string user, string password) : base(user, password)
-        {
-
-        }
-
         public long UpdateTicket(TicketUpdateDetails ticketToUpdate, out string errorMsg)
         {
             try

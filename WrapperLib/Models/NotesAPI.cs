@@ -10,11 +10,6 @@ namespace WrapperLib.Models
     /// </summary>
     public class NotesAPI :ApiBase
     {
-        public NotesAPI(string user, string password) : base(user, password)
-        {
-
-        }
-
         /// <summary>
         /// Get a note by its ticket id.
         /// </summary>

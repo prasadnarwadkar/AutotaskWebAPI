@@ -149,10 +149,5 @@ namespace WrapperLib.Models
         {
             return Array.Find(pickListValue, element => element.Value == valueID);
         }
-
-        public PicklistAPI(string user, string password) : base(user, password)
-        {
-
-        }
     }
 }

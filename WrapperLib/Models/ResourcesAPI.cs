@@ -9,11 +9,6 @@ namespace WrapperLib.Models
     /// </summary>
     public class ResourcesAPI : ApiBase
     {
-        public ResourcesAPI(string user, string password) : base(user, password)
-        {
-
-        }
-
         /// <summary>
         /// Get resource by email. Uses exact match to passed email address.
         /// </summary>

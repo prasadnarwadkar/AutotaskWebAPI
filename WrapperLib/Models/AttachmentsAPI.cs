@@ -11,11 +11,6 @@ namespace WrapperLib.Models
     /// </summary>
     public class AttachmentsAPI :ApiBase
     {
-        public AttachmentsAPI(string user, string password) : base(user, password)
-        {
-
-        }
-
         public Attachment GetAttachmentById(long id, out string errorMsg)
         {
             errorMsg = string.Empty;

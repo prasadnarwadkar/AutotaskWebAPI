@@ -45,10 +45,6 @@ namespace WrapperLib.Models
             return list;
         }
 
-        public AccountsAPI(string user, string password):base(user, password)
-        {
-
-        }
         /// <summary>
         /// Get account by id
         /// </summary>

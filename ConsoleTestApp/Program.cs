@@ -9,16 +9,16 @@ namespace ConsoleTestApp
     {
         static void Main(string[] args)
         {
-            var notesApi = new NotesAPI(ConfigurationManager.AppSettings["APIUsername"],
-                                        ConfigurationManager.AppSettings["APIPassword"]);
+            ApiBase.Init("YOUR Autotask API username here",
+                          "YOUR Autotask API password here");
             string errorMsg = string.Empty;
 
-            if (notesApi.IsApiInitialized())
+            if (ApiBase.IsApiInitialized())
             {
                 // out parameter 'errorMsg' contains the error(s) thrown by SOAP API.
                 
                 // Replace the dummy ticket id below with real ticket id.
-                var notes = notesApi.GetNoteByTicketId(12345, out errorMsg);
+                var notes = new NotesAPI().GetNoteByTicketId(12345, out errorMsg);
 
                 if (string.IsNullOrEmpty(errorMsg))
                 {
@@ -26,18 +26,12 @@ namespace ConsoleTestApp
                     {
                         Console.WriteLine(string.Format("Note details=> Note id: {0} Note Title: {1} Note Description: {2}", note.id, note.Title, note.Description));
                     }
-                }                
-            }
+                }
 
-            var ticketApi = new TicketsAPI(ConfigurationManager.AppSettings["APIUsername"],
-                                        ConfigurationManager.AppSettings["APIPassword"]);
-
-            if (ticketApi.IsApiInitialized())
-            {
                 // out parameter 'errorMsg' contains the error(s) thrown by SOAP API.
 
                 // Replace the dummy ticket id below with real ticket id.
-                var ticket = ticketApi.GetTicketById(12345, out errorMsg);
+                var ticket = new TicketsAPI().GetTicketById(12345, out errorMsg);
 
                 if (string.IsNullOrEmpty(errorMsg))
                 {
