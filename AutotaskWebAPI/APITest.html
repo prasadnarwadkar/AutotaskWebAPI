@@ -62,7 +62,7 @@
             $("#accountTableBody").html('');
 
             var urlToInvoke = 'http://autotaskwebapi.us-west-2.elasticbeanstalk.com/api/accounts/' + $("#accountNameTextBox").val();
-
+            //var urlToInvoke = 'api/accounts/' + $("#accountNameTextBox").val();
             $.ajax({
                 url: urlToInvoke,
                 method: 'get',
