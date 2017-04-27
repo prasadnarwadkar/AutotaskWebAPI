@@ -173,9 +173,6 @@ function submitAccountSearch()
         
 ```
 
-## Testing the Web API
-This Web API is documented with [Swagger.](http://autotaskwebapi.us-west-2.elasticbeanstalk.com/swagger/) It lists all APIs with details of operations, requests, and response types.
-
 ## Example: Querying Tickets by account id and status
 
 A ticket is always associated with an account. It makes sense to query tickets by account id and to narrow down search, it helps to filter them by status (e.g. Complete, In Progress, Waiting Approval etc.).
