@@ -14,7 +14,7 @@ System.Web.Http;
 Namespace ```AutotaskWebAPI.Autotask.Net.Webservices``` refers to [AT Web Services](https://www.autotask.net/help/Content/AdminSetup/2ExtensionsIntegrations/APIs/WebServicesAPI.htm). Please check the VS solutions demonstrating .NET code to query SOAP based AT API.
 
 ## Configuration
-  All you need is two keys in appSettings (web.config) with values as per your Autotask Account.
+  All you need is two keys in appSettings (web.config) with values as per your Autotask&reg; Account.
   ```
   <add key="APIUsername" value="" />
   <add key="APIPassword" value="" />
